@@ -24,9 +24,11 @@ class LoginController extends Controller
         $user = User::where('username', $request->username)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            session(['user_id'   => $user->id,
-                     'username'  => $user->username,
-                     'full_name' => $user->first_name . ' ' . $user->last_name]);
+            session([
+                'user_id'   => $user->id,
+                'username'  => $user->username,
+                'full_name' => $user->first_name . ' ' . $user->last_name
+            ]);
 
             return redirect()->route('dashboard');
         }
