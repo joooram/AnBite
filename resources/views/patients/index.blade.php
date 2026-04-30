@@ -47,42 +47,7 @@
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <div class="logo-circle">
-                <svg viewBox="0 0 42 42" fill="none">
-                    <circle cx="21" cy="21" r="20" stroke="#1a3a1a" stroke-width="1.5"/>
-                    <rect x="19" y="10" width="4" height="22" rx="2" fill="#1a3a1a"/>
-                    <rect x="10" y="19" width="22" height="4" rx="2" fill="#1a3a1a"/>
-                </svg>
-            </div>
-            <span class="logo-text">AnBite</span>
-        </div>
-        <nav>
-            <a href="{{ route('dashboard') }}" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                Dashboard
-            </a>
-            <a href="{{ route('patients.index') }}" class="nav-item active">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                Patient Registration
-            </a>
-            <a href="#" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                Hotspot Heatmap
-            </a>
-            <a href="#" class="nav-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Barangay Records
-            </a>
-        </nav>
-        <div class="sidebar-footer">
-            <a href="{{ route('logout') }}" class="nav-item logout">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Logout
-            </a>
-        </div>
-    </aside>
+@include('layouts.sidebar')
 
     <main class="main">
         <div class="page-header">

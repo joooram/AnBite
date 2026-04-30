@@ -46,7 +46,6 @@ Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients
 
 // ── HOTSPOT MAP ───────────────────────────────────────────────
 Route::get('/hotspot', function () {
-    if (!session('user_id')) return redirect()->route('login');
     return view('hotspot.index');
 })->name('hotspot');
 
