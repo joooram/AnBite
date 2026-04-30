@@ -1,9 +1,20 @@
+
+
 <style>
     /* Dito nakalagay ang design ng sidebar mo para hindi masira sa ibang pages */
     .sidebar { width: 230px; background: #1a3a1a; min-height: 100vh; display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; z-index: 100; }
+    
     .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .logo-circle { width: 36px; height: 36px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .logo-circle svg { width: 18px; height: 18px; }
+    
+    /* Ito na ang design para sa mismong Logo mo (Walang background, walang bilog) */
+    .logo-image {
+        width: 36px;           /* Medyo pinalakihan ko para mas litaw */
+        height: auto;          /* Auto para hindi ma-stretch */
+        object-fit: contain; 
+        background: transparent; 
+        border-radius: 0; 
+    }
+    
     .logo-text { font-size: 1.2rem; font-weight: 800; color: white; }
     .nav-label { color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.5rem; }
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem; color: #bbb; text-decoration: none; border-radius: 8px; margin-bottom: 0.5rem; transition: 0.2s; }
@@ -13,15 +24,10 @@
     .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
 </style>
 
+
 <aside class="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-circle">
-            <svg viewBox="0 0 42 42" fill="none">
-                <circle cx="21" cy="21" r="20" stroke="#1a3a1a" stroke-width="1.5"/>
-                <rect x="19" y="10" width="4" height="22" rx="2" fill="#1a3a1a"/>
-                <rect x="10" y="19" width="22" height="4" rx="2" fill="#1a3a1a"/>
-            </svg>
-        </div>
+<img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image">
         <span class="logo-text">AnBite</span>
     </div>
 
