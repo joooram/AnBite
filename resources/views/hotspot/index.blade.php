@@ -10,56 +10,56 @@
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+*       { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif; /* Pinantay sa Patient Records font */
             background: #f3f4f6;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Container para hindi matakpan ng Sidebar */
+        /* ITO ANG PINAKAMAHALAGA: MATCH ANG 220px ng Sidebar */
         .main-container {
-            margin-left: 230px; 
+            margin-left: 220px; 
             padding: 2rem;
-            width: calc(100% - 230px);
+            width: calc(100% - 220px);
+            max-width: calc(100% - 220px);
         }
 
-        .map-wrapper {
+        /* Pinantay natin yung white boxes sa ".panel" style ng records mo */
+        .panel {
             background: white;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .table-wrapper {
-            margin-top: 2rem;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            border: 0.5px solid #e8e8e8;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1.5rem;
         }
 
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        .custom-table th, .custom-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+            font-size: 0.82rem;
         }
 
         .custom-table th {
-            background-color: #1a3a1a;
+            text-align: left;
+            padding: 10px 12px;
+            background: #1a3a1a;
             color: white;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .custom-table td {
+            padding: 12px;
+            border-bottom: 0.5px solid #f5f5f5;
         }
 
         .custom-table tr:hover {
-            background-color: #f9f9f9;
+            background-color: #fafafa;
         }
     </style>
 </head>
@@ -71,7 +71,7 @@
         <h2 style="margin-bottom: 20px; color: #1a3a1a;">Rabies Hotspot Map - Batangas City</h2>
 
         <div class="map-wrapper">
-            <div id="map" style="height: 500px; border-radius: 8px; z-index: 1;"></div> 
+            <div id="map" style="height: 400px; gap: 100px; border-radius: 5px; z-index: 1;"></div> 
         </div>
 
         <div class="table-wrapper">

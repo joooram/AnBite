@@ -2,9 +2,22 @@
 
 <style>
     /* Dito nakalagay ang design ng sidebar mo para hindi masira sa ibang pages */
-    .sidebar { width: 230px; background: #1a3a1a; min-height: 100vh; display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; z-index: 100; }
+    .sidebar { 
+    width: 220px; 
+    min-width: 220px; /* Idinagdag natin ito para hindi siya bumaba sa 230px */
+    flex-shrink: 0;   /* Idinagdag natin ito para hindi siya mapisil ng malalaking mapa o charts */
+    background: #1a3a1a; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    padding: 1.5rem 1rem; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: 9999; /* Para laging nasa ibabaw */ 
+}
     
-    .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
     
     /* Ito na ang design para sa mismong Logo mo (Walang background, walang bilog) */
     .logo-image {
@@ -28,7 +41,7 @@
 <aside class="sidebar">
     <div class="sidebar-logo">
 <img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image">
-        <span class="logo-text">AnBite</span>
+        
     </div>
 
     <div class="nav-label">Main Menu</div>
