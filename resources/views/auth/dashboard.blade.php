@@ -229,7 +229,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Total Vaccinated</div>
-                    <div class="stat-num">0</div>
+                    <div class="stat-num">30</div>
                     <div class="stat-sub">Completed PEP</div>
                 </div>
                 <div class="stat-icon" style="background:#E1F5EE;">
@@ -238,9 +238,9 @@
             </div>
             <div class="stat-card">
                 <div>
-                    <div class="stat-label">HIGH RISK CASES</div>
-                    <div class="stat-num">0</div>
-                    <div class="stat-sub">Category III</div>
+                    <div class="stat-label">Notified Patient</div>
+                    <div class="stat-num">30</div>
+                    <div class="stat-sub">Notified</div>
                 </div>
                 <div class="stat-icon" style="background:#FAEEDA;">
                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M320 64C334.7 64 348.2 72.1 355.2 85L571.2 485C577.9 497.4 577.6 512.4 570.4 524.5C563.2 536.6 550.1 544 536 544L104 544C89.9 544 76.8 536.6 69.6 524.5C62.4 512.4 62.1 497.4 68.8 485L284.8 85C291.8 72.1 305.3 64 320 64zM320 416C302.3 416 288 430.3 288 448C288 465.7 302.3 480 320 480C337.7 480 352 465.7 352 448C352 430.3 337.7 416 320 416zM320 224C301.8 224 287.3 239.5 288.6 257.7L296 361.7C296.9 374.2 307.4 384 319.9 384C332.5 384 342.9 374.3 343.8 361.7L351.2 257.7C352.5 239.5 338.1 224 319.8 224z"/></svg>
@@ -249,7 +249,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Dog Bites</div>
-                    <div class="stat-num">20</div>
+                    <div class="stat-num">18</div>
                     <div class="stat-sub">Canine incidents</div>
                 </div>
                 <div class="stat-icon" style="background:#E6F1FB;">
@@ -261,7 +261,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Cat Bites</div>
-                    <div class="stat-num">8</div>
+                    <div class="stat-num">17</div>
                     <div class="stat-sub">Feline incidents</div>
                 </div>
                 <div class="stat-icon" style="background:#EEEDFE;">
@@ -270,9 +270,9 @@
             </div>
             <div class="stat-card">
                 <div>
-                    <div class="stat-label">Other Animal Bites</div>
-                    <div class="stat-num">0</div>
-                    <div class="stat-sub">Other incidents</div>
+                    <div class="stat-label">Not Notified Patients</div>
+                    <div class="stat-num">5</div>
+                    <div class="stat-sub">Not yet notified</div>
                 </div>
                 <div class="stat-icon" style="background:#F1EFE8;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#5F5E5A" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -284,11 +284,14 @@
         <div class="mid-grid">
             <div class="panel">
                 <div class="panel-title">
-                    Monthly Bite Cases — Batangas City
+                    Quarterly Bite Cases — Batangas City
                     <span>{{ date('Y') }}</span>
                 </div>
-                <canvas id="casesChart" height="90"></canvas>
+                <div style="position: relative; height: 300px; width: 100%;">
+                <canvas id="casesChart"></canvas>
+                </div>
             </div>
+            
             <div class="panel">
                 <div class="panel-title">
                     Hotspot Map Preview
@@ -358,15 +361,43 @@
 
     <script>
         // Chart.js
-        const ctx = document.getElementById('casesChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                datasets: [{ label: 'Bite Cases', data: [0,0,0,0,0,0,0,0,0,0,0,0], backgroundColor: '#1a3a1a', borderRadius: 4 }]
+ const ctx = document.getElementById('casesChart').getContext('2d');
+
+    const casesChart = new Chart(ctx, {
+        type: 'line', 
+        data: {
+            // Pinalitan natin ang labels para maging Quarterly
+            labels: ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'],
+            datasets: [{
+                label: 'Bite Cases',
+                // Apat na numbers na lang! 
+                // (Pinagsama-sama ko yung mga dummy cases kanina per quarter)
+                data: [55, 95, 108, 76], 
+                
+                // Same design parin para bumagay sa theme mo
+                borderColor: '#2a5240', 
+                backgroundColor: 'rgba(42, 82, 64, 0.2)',
+                borderWidth: 2,
+                pointBackgroundColor: '#305930',
+                fill: true, 
+                tension: 0.3 
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false 
+                }
             },
-            options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } } }
-        });
+            scales: {
+                y: {
+                    beginAtZero: true 
+                }
+            }
+        }
+    });
 
         // Leaflet map preview
         const map = L.map('heatmapPreview', { center: [13.7565, 121.0583], zoom: 11, zoomControl: false, dragging: false, scrollWheelZoom: false });
