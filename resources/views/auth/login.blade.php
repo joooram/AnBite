@@ -1,251 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
     <title>AnBite — Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ============================================================
+           LIGHT MODE (default)
+        ============================================================ */
+        :root {
+            --green-accent: #3dba85;
+            --green-hover:  #30a873;
+            --text-dark:    #1a1a1a;
+            --text-light:   #999;
+            --border:       #e4ebe7;
+            --bg-right:     #eaf1ed;
+            --card-bg:      #ffffff;
+            --card-shadow:  0 8px 48px rgba(0,0,0,0.09);
+            --input-bg:     #ffffff;
+            --meta-text:    #555;
+            --terms-color:  #bbb;
+            --settings-color: #bbb;
+        }
+
+        /* ============================================================
+           DARK MODE
+        ============================================================ */
+        html.dark {
+            --bg-right:     #111c17;
+            --card-bg:      #1a2820;
+            --card-shadow:  0 8px 48px rgba(0,0,0,0.5);
+            --input-bg:     #1f3028;
+            --border:       #2a4035;
+            --text-dark:    #e8f5ee;
+            --text-light:   #6b9980;
+            --meta-text:    #88aa99;
+            --terms-color:  #456055;
+            --settings-color: #456055;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
             display: flex;
+            transition: background 0.3s;
         }
 
-        .page-left {
-            width: 50%;
-            background: #f3f4f6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem;
+        .layout { display: flex; width: 100%; min-height: 100vh; }
+
+        /* ===== LEFT PANEL ===== */
+        .left { width: 52%; position: relative; overflow: hidden; background: #c5d5cc; }
+        .circle { position: absolute; border-radius: 50%; }
+        .c1 { width: 600px; height: 600px; top: -200px; left: 10%; background: #2e5a45; animation: d1 20s ease-in-out infinite alternate; }
+        .c2 { width: 640px; height: 640px; top: -220px; right: -160px; background: #dce8e1; animation: d2 16s ease-in-out infinite alternate; }
+        .c3 { width: 680px; height: 680px; top: 5%; left: -140px; background: #e4ede8; animation: d3 22s ease-in-out infinite alternate; }
+        .c4 { width: 520px; height: 520px; top: 28%; right: -120px; background: #2e5a45; animation: d4 18s ease-in-out infinite alternate; }
+        .c5 { width: 580px; height: 580px; top: 20%; left: 5%; background: #d5e3dc; animation: d5 14s ease-in-out infinite alternate; }
+        .c6 { width: 280px; height: 280px; bottom: 20px; left: 5%; background: #2e5a45; opacity: 0.8; animation: d6 12s ease-in-out infinite alternate; }
+        .c7 { width: 500px; height: 500px; bottom: -160px; right: -100px; background: #dce8e1; animation: d7 18s ease-in-out infinite alternate; }
+        .c8 { width: 400px; height: 400px; bottom: -80px; left: 20%; background: #c2d6cc; animation: d8 15s ease-in-out infinite alternate; }
+        @keyframes d1{to{transform:translate(12px,18px);}} @keyframes d2{to{transform:translate(-14px,16px);}}
+        @keyframes d3{to{transform:translate(16px,-12px);}} @keyframes d4{to{transform:translate(-10px,20px);}}
+        @keyframes d5{to{transform:translate(10px,-14px);}} @keyframes d6{to{transform:translate(14px,-10px);}}
+        @keyframes d7{to{transform:translate(-12px,10px);}} @keyframes d8{to{transform:translate(8px,-16px);}}
+
+        .left-top {
+            position: absolute; top: 20px; left: 20px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 10; animation: fadeIn 0.8s 0.1s both;
         }
 
-.page-right {
-            width: 50%;
-            
-            /* MGA BAGONG CODE PARA SA BACKGROUND IMAGE */
-            background-image: url('{{ asset("images/loginleft.png") }}');
-            background-size: cover;       /* Para sakupin ng picture ang buong 50% width nang hindi na-e-stretch */
-            background-position: center;  /* Para laging nakagitna ang picture */
-            background-repeat: no-repeat; /* Para hindi mag-doble-doble ang picture kung maliit ito */
-            
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem;
+        .logo-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
         }
 
-        .brand-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .brand-name { font-size: 1rem; font-weight: 700; color: white; text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
+
+        .left-bottom { position: absolute; bottom: 28px; left: 28px; right: 28px; z-index: 10; animation: fadeUp 1s 0.4s both; }
+        .left-tagline { font-size: 1.05rem; font-weight: 700; color: white; line-height: 1.5; margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.3); }
+        .dev-row { display: flex; align-items: center; gap: 10px; }
+        .dev-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 0.64rem; font-weight: 700; color: white; flex-shrink: 0; }
+
+        /* ===== RIGHT PANEL ===== */
+        .right {
+            flex: 1; background: var(--bg-right);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 3rem 2.5rem 3.5rem; position: relative;
+            transition: background 0.3s;
         }
 
-    .login-logo {
-            width: 120px; /* Pwede mo itong lakihan o liitan depende sa gusto mo */
-            height: auto;
-            margin-bottom: 1rem; /* Naglalagay ng espasyo sa pagitan ng logo at ng salitang AnBite */
-        }
-        .brand {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #1a3a1a;
-            margin-bottom: 0.5rem;
+        .top-controls {
+            position: absolute; top: 20px; right: 20px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 20;
         }
 
-        .tagline {
-            color: #0a400d; /* Halimbawa lang ng kulay ng normal na text */
-            font-size: 1rem;
-            text-align: center;
-            line-height: 1.5;
-            max-width: 200px;
+        .dark-toggle {
+            width: 42px; height: 24px;
+            background: var(--border);
+            border-radius: 99px; border: none; cursor: pointer;
+            position: relative; transition: background 0.3s;
+            flex-shrink: 0;
         }
-
-        .acronym {
-            font-weight: 800; /* Pinaka-bold */
-            color: #1a3a1a; /* Light green (papalitan mo ito depende sa theme mo) */
-        }
-
-        .card {
+        .dark-toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            border-radius: 50%;
             background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            width: 100%;
-            max-width: 340px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            top: 3px; left: 3px;
+            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        html.dark .dark-toggle { background: var(--green-accent); }
+        html.dark .dark-toggle::after { transform: translateX(18px); }
+
+        .toggle-label {
+            font-size: 0.7rem; font-weight: 600;
+            color: var(--settings-color);
+            display: flex; align-items: center; gap: 4px;
+            user-select: none; cursor: pointer;
         }
 
-        .card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a3a1a;
-            margin-bottom: 4px;
-        }
+        .settings-ico { color: var(--settings-color); cursor: pointer; transition: color 0.2s; display: flex; }
+        .settings-ico:hover { color: var(--green-accent); }
 
-        .card-sub {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 1.5rem;
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px; padding: 2.4rem 2.4rem 2rem;
+            width: 100%; max-width: 370px;
+            box-shadow: var(--card-shadow);
+            animation: cardIn 0.8s 0.15s cubic-bezier(.16,1,.3,1) both;
+            transition: background 0.3s, box-shadow 0.3s;
         }
+        @keyframes cardIn { from{opacity:0;transform:translateY(28px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
 
-        .card-sub a {
-            color: #2d6a2d;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
+        .card-title { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 6px; text-align: center; transition: color 0.3s; }
+        .card-sub { font-size: 0.8rem; color: var(--text-light); text-align: center; margin-bottom: 1.8rem; transition: color 0.3s; }
+        .card-sub a { color: var(--green-accent); font-weight: 600; text-decoration: none; }
         .card-sub a:hover { text-decoration: underline; }
 
-        .error-box {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            font-size: 0.78rem;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 1rem;
+        /* Fields */
+        .field { margin-bottom: 1.1rem; }
+        .field label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; transition: color 0.3s; }
+        .inp-wrap { position: relative; }
+        .inp-wrap input {
+            width: 100%; padding: 10.5px 36px;
+            border: 1.5px solid var(--border); border-radius: 9px;
+            font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark); background: var(--input-bg); outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
         }
+        .inp-wrap input::placeholder { color: var(--text-light); }
+        .inp-wrap input:focus { border-color: var(--green-accent); box-shadow: 0 0 0 3px rgba(61,186,133,0.12); }
+        .ico-left { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; transition: color 0.2s; display: flex; }
+        .inp-wrap:has(input:focus) .ico-left { color: var(--green-accent); }
+        .ico-right { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-light); display: flex; align-items: center; transition: color 0.2s; }
+        .ico-right:hover { color: var(--green-accent); }
 
-        .success-box {
-            background: #E1F5EE;
-            border: 1px solid #5DCAA5;
-            color: #0F6E56;
-            font-size: 0.78rem;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 1rem;
+        /* Remember / Forgot */
+        .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; }
+        .remember-lbl { display: flex; align-items: center; gap: 7px; font-size: 0.79rem; color: var(--meta-text); cursor: pointer; user-select: none; transition: color 0.3s; }
+        .remember-lbl input[type="checkbox"] { accent-color: var(--green-accent); width: 14px; height: 14px; cursor: pointer; }
+        .forgot-a { font-size: 0.79rem; font-weight: 600; color: var(--green-accent); text-decoration: none; }
+        .forgot-a:hover { text-decoration: underline; }
+
+        /* Error Messages */
+        .alert-error { background-color: #ffeaea; color: #d32f2f; padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 1rem; text-align: center; border: 1px solid #ffcdd2; }
+
+        /* Login btn */
+        .btn-login {
+            width: 100%; padding: 12.5px; background: var(--green-accent); color: white; border: none;
+            border-radius: 9px; font-size: 0.9rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            cursor: pointer; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 3px 16px rgba(61,186,133,0.38);
         }
+        .btn-login:hover { background: var(--green-hover); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(61,186,133,0.45); }
+        .btn-login:active { transform: translateY(0); }
+        .btn-login .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.28); transform: scale(0); animation: rip 0.55s linear; pointer-events: none; }
+        @keyframes rip { to { transform: scale(5); opacity: 0; } }
+        .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spn 0.65s linear infinite; display: none; }
+        @keyframes spn { to { transform: rotate(360deg); } }
 
-        label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #2d6a2d;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+        /* Terms */
+        .terms { margin-top: 1.4rem; font-size: 0.68rem; color: var(--terms-color); text-align: center; max-width: 370px; transition: color 0.3s; }
+        .terms a { color: var(--green-accent); text-decoration: none; }
+        .terms a:hover { text-decoration: underline; }
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+
+        @media (max-width: 700px) {
+            .left { display: none; }
+            .right { background: var(--card-bg); padding: 2rem 1.5rem 3rem; }
         }
-
-        input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            margin-bottom: 1rem;
-            outline: none;
-            background: #fafafa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        input:focus {
-            border-color: #2d6a2d;
-            background: #fff;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background: #1a3a1a;
-            color: white;
-            border: none;
-            border-radius: 99px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 0.03em;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .btn:hover { background: #2d6a2d; }
-
-        .forgot {
-            display: block;
-            text-align: center;
-            margin-top: 1rem;
-            font-size: 0.78rem;
-            color: #2d6a2d;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .forgot:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
+<div class="layout">
 
-    <!-- LEFT HALF: Branding -->
-<div class="page-left">
-        <div class="brand-area">
-            <img src="{{ asset('images/4thlogo.png') }}" alt="AnBite Logo" class="login-logo">
-            
-            <div class="brand">ANBITE</div>
-<div class="tagline">
-    <span class="acronym">A</span>nti-rabies 
-    <span class="acronym">N</span>etwork for 
-    <span class="acronym">B</span>ite 
-    <span class="acronym">I</span>ncident 
-    <span class="acronym">T</span>racking and 
-    <span class="acronym">E</span>valuation
-</div>
+    <div class="left">
+        <div class="circle c1"></div><div class="circle c2"></div><div class="circle c3"></div>
+        <div class="circle c4"></div><div class="circle c5"></div><div class="circle c6"></div>
+        <div class="circle c7"></div><div class="circle c8"></div>
+
+        <div class="left-top">
+            <img class="logo-img" src="./images/2ndlogo.png" alt="AnBite Logo">
+        </div>
+
+        <div class="left-bottom">
+            <<div class="left-tagline">Anti-rabies Network for Bite Incident Tracking and Evaluation</div>
+            <div class="dev-row">
+                <div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- RIGHT HALF: Login form -->
-    <div class="page-right">
+    <div class="right">
+
+        <div class="top-controls">
+            <label class="toggle-label" for="darkToggle">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </label>
+            <button class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode"></button>
+            <div class="settings-ico" title="Settings">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </div>
+        </div>
+
         <div class="card">
-
-            <h2>Login</h2>
-
+            <div class="card-title">Welcome back</div>
             <div class="card-sub">
                 No account yet? <a href="{{ route('register') }}">Create an Account</a>
             </div>
 
-            {{-- Success message after OTP verification --}}
-            @if (session('success'))
-                <div class="success-box">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            {{-- Error message for wrong credentials --}}
-            @if ($errors->any())
-                <div class="error-box">
+            @if($errors->any())
+                <div class="alert-error">
                     {{ $errors->first() }}
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
+            <form method="POST" action="{{ route('login') }}" id="loginForm">
+                @csrf <div class="field">
+                    <label>Username</label>
+                    <div class="inp-wrap">
+                        <span class="ico-left"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                        <input type="text" name="username" placeholder="Enter your username" required>
+                    </div>
+                </div>
 
-                <label>Username</label>
-                <input
-                    type="text"
-                    name="username"
-                    value="{{ old('username') }}"
-                    placeholder="Enter your username"
-                    required
-                >
+                <div class="field">
+                    <label>Password</label>
+                    <div class="inp-wrap">
+                        <span class="ico-left"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                        <input type="password" name="password" id="pwField" placeholder="Enter your password" required>
+                        <button type="button" class="ico-right" id="togglePw">
+                            <svg id="eyeIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
 
-                <label>Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    required
-                >
+                <div class="meta-row">
+                    <label class="remember-lbl"><input type="checkbox" name="remember"> Remember me</label>
+                    <a href="#" class="forgot-a">Forgot Password?</a>
+                </div>
 
-                <button type="submit" class="btn">Login</button>
-
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span id="btnTxt">Sign in</span>
+                    <div class="spin" id="spin"></div>
+                </button>
             </form>
+        </div>
 
-            <a href="#" class="forgot">Forgot Password?</a>
-
+        <div class="terms">
+            By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
         </div>
     </div>
+</div>
 
+<script>
+    /* ── Dark mode ── */
+    const html = document.getElementById('htmlRoot');
+    const toggleBtn = document.getElementById('darkToggle');
+
+    // Remember preference
+    if (localStorage.getItem('anbite-dark') === 'true') html.classList.add('dark');
+
+    toggleBtn.addEventListener('click', () => {
+        html.classList.toggle('dark');
+        localStorage.setItem('anbite-dark', html.classList.contains('dark'));
+    });
+
+    /* ── Password show/hide ── */
+    const pwField  = document.getElementById('pwField');
+    const togglePw = document.getElementById('togglePw');
+    const eyeIco   = document.getElementById('eyeIco');
+    const OPEN   = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+    const CLOSED = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+    togglePw.addEventListener('click', () => {
+        const vis = pwField.type === 'text';
+        pwField.type = vis ? 'password' : 'text';
+        eyeIco.innerHTML = vis ? OPEN : CLOSED;
+    });
+
+    /* ── Ripple ── */
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.addEventListener('click', e => {
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const rc = loginBtn.getBoundingClientRect(), sz = Math.max(rc.width, rc.height);
+        r.style.cssText = `width:${sz}px;height:${sz}px;left:${e.clientX-rc.left-sz/2}px;top:${e.clientY-rc.top-sz/2}px`;
+        loginBtn.appendChild(r);
+        setTimeout(() => r.remove(), 600);
+    });
+
+    /* ── Loading state ── */
+    document.getElementById('loginForm').addEventListener('submit', () => {
+        // TINANGGAL ANG e.preventDefault() PARA MAKAPASA YUNG FORM SA BACKEND
+        if(document.getElementById('btnTxt')) {
+            document.getElementById('btnTxt').textContent = 'Signing in…';
+        }
+        document.getElementById('spin').style.display = 'block';
+        
+        // Timeout prevents the button from disabling too fast before form submits
+        setTimeout(() => {
+            loginBtn.disabled = true;
+        }, 10);
+    });
+</script>
 </body>
 </html>

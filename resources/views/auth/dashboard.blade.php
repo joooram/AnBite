@@ -40,17 +40,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .logo-circle {
-            width: 36px; height: 36px;
-            background: white;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .logo-circle svg { width: 18px; height: 18px; }
-        .logo-text { font-size: 1.2rem; font-weight: 800; color: white; }
-
         .nav-label {
             font-size: 0.65rem;
             color: rgba(255,255,255,0.4);

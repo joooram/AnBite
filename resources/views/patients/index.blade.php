@@ -83,7 +83,7 @@
 .btn-edit { background-color: #2d5a3c; }
 .btn-delete { background-color: #a63d3d; }
 .btn-remind { background-color: #4a90e2; }
-.btn-print_patient_record { background-color: #1bff7e; }
+.btn-print_patient_record { background-color: #065428; }
     </style>
 </head>
 <body>

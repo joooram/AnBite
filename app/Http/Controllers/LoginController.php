@@ -30,7 +30,13 @@ class LoginController extends Controller
                 'full_name' => $user->first_name . ' ' . $user->last_name
             ]);
 
-            return redirect()->route('dashboard');
+            // --- ITO LANG ANG IDINAGDAG/BINAGO NATIN ---
+            if ($user->username === 'admin') {
+                return redirect()->route('admin.adminDashboard'); 
+            } else {
+                return redirect()->route('dashboard'); 
+            }
+            // -------------------------------------------
         }
 
         return back()->withErrors([

@@ -61,6 +61,10 @@
         .custom-table tr:hover {
             background-color: #fafafa;
         }
+
+        .leaflet-marker-icon {
+            color: #1a3a1a;
+        }
     </style>
 </head>
 <body>

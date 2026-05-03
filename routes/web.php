@@ -5,6 +5,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AdminController;
 
 // Root → Login
 Route::get('/', function () {
@@ -44,6 +45,12 @@ Route::post('/patients', [PatientController::class, 'store'])->name('patients.st
 
 // View one patient's full details
 Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show');
+
+// Route para ipakita ang admin page
+Route::get('/admin/adminDashboard', [AdminController::class, 'index'])->name('admin.adminDashboard');
+
+// Route para i-process ang pagpapalit ng password
+Route::post('/admin/update-password/{id}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
 
 // ── HOTSPOT MAP ───────────────────────────────────────────────
 Route::get('/hotspot', function () {

@@ -1,12 +1,14 @@
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
+
     .sidebar { 
         width: 230px; 
         min-width: 230px; 
-        background: #1a3a1a; 
+        background: #071907; 
         min-height: 100vh; 
         display: flex; 
         flex-direction: column; 
-        padding: 1.5rem 0.8rem; /* Reduced side padding for better button width */
+        padding: 1.5rem 0.8rem; 
         position: fixed; 
         top: 0; 
         left: 0; 
@@ -24,7 +26,7 @@
     .nav-menu-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 2px; /* Tight, consistent spacing */
+        gap: 2px; 
     }
 
     .nav-item { 
@@ -32,28 +34,43 @@
         align-items: center; 
         gap: 12px; 
         padding: 0 1rem; 
-        height: 48px; /* Fixed height prevents "jumping" when clicking */
+        height: 48px; 
         color: #bbb; 
         text-decoration: none; 
         border-radius: 8px; 
         transition: all 0.2s ease;
-        border-left: 4px solid transparent; /* Placeholder to prevent shifting */
+        border-left: 4px solid transparent; 
     }
-.sidebar-logo { 
+
+    /* NA-UPDATE PARA MAGKAROON NG LINYA SA IBABA */
+    .sidebar-logo { 
         display: flex; 
+        flex-direction: column; 
         align-items: center; 
         justify-content: center; 
-        height: 80px;      /* Locks the vertical space for the logo */
+        min-height: 90px; 
         width: 100%; 
-        margin-bottom: 1rem; 
-        flex-shrink: 0;    /* Prevents logo from squishing on small screens */
+        padding-bottom: 1.5rem; /* Nagbigay ng space sa pagitan ng text at ng linya */
+        margin-bottom: 1rem; /* Space sa ilalim ng linya papunta sa "MAIN MENU" */
+        flex-shrink: 0;    
+        gap: 8px; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* ITO ANG LINYA NA KULAY GRAY/TRANSPARENT WHITE */
     }
     
     .logo-image {
-        width: 45px;       /* Fixed size */
-        height: 45px;      /* Fixed size */
+        width: 45px; 
+        height: 45px;
         object-fit: contain; 
     }
+
+    .brand-name {
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif; 
+        font-size: 1.25rem; 
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
     .nav-item svg { 
         width: 20px; 
         height: 20px; 
@@ -71,12 +88,12 @@
         color: #fff; 
     }
 
-    /* Active State - Fixed to prevent layout shift */
+    /* Active State */
     .nav-item.active { 
         background: #2d6a2d; 
         color: #fff; 
         font-weight: 500;
-        border-left: 4px solid #4ade80; /* Brighter green indicator */
+        border-left: 4px solid #4ade80; 
     }
 
     .sidebar-footer { 
@@ -87,8 +104,9 @@
 </style>
 
 <aside class="sidebar">
-    <div class="sidebar-logo" style="margin-bottom: 2rem; text-align: center;">
-        <img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image" style="width: 40px;">
+    <div class="sidebar-logo">
+        <img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image">
+        <span class="brand-name">ANBITE</span>
     </div>
 
     <div class="nav-label">Main Menu</div>

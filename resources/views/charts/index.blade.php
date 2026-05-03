@@ -40,7 +40,7 @@
             <div class="row mb-4">
                 <div class="col-md-6">
                     <div class="card p-3 shadow-sm">
-                        <h5 class="text-center text-muted fw-bold">TOTAL SEX</h5>
+                        <h5 class="text-center text-muted fw-bold">TOTAL CASES IN TERMS OF GENDER</h5>
                         <div class="chart-wrapper"><canvas id="genderChart"></canvas></div>
                     </div>
                 </div>
