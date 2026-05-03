@@ -22,8 +22,8 @@
 
         /* ITO ANG PINAKAMAHALAGA: MATCH ANG 220px ng Sidebar */
         .main-container {
-            margin-left: 220px; 
-            padding: 2rem;
+            margin-left: 230px; 
+            padding: 5rem;
             width: calc(100% - 220px);
             max-width: calc(100% - 220px);
         }
@@ -31,7 +31,7 @@
         /* Pinantay natin yung white boxes sa ".panel" style ng records mo */
         .panel {
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
             border: 0.5px solid #e8e8e8;
             padding: 1.2rem 1.4rem;
             margin-bottom: 1.5rem;
@@ -45,7 +45,7 @@
 
         .custom-table th {
             text-align: left;
-            padding: 10px 12px;
+            padding: 20px 15px;
             background: #1a3a1a;
             color: white;
             font-weight: 600;
@@ -54,8 +54,8 @@
         }
 
         .custom-table td {
-            padding: 12px;
-            border-bottom: 0.5px solid #f5f5f5;
+            padding: 20px;
+            border-bottom: 0.2px solid #dcdcdc;
         }
 
         .custom-table tr:hover {
@@ -67,11 +67,11 @@
 
     @include('layouts.sidebar')
 
-    <div class="main-container">
+        <div class="main-container">
         <h2 style="margin-bottom: 20px; color: #1a3a1a;">Rabies Hotspot Map - Batangas City</h2>
 
         <div class="map-wrapper">
-            <div id="map" style="height: 400px; gap: 100px; border-radius: 5px; z-index: 1;"></div> 
+            <div id="map" style="height: 400px; border: 3px solid #ccc; border-radius: 5px; z-index: 1;"></div> 
         </div>
 
         <div class="table-wrapper">

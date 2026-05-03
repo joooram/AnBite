@@ -219,7 +219,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Total Bite Cases</div>
-                    <div class="stat-num">0</div>
+                    <div class="stat-num">35</div>
                     <div class="stat-sub">All recorded cases</div>
                 </div>
                 <div class="stat-icon" style="background:#fef2f2;">
@@ -249,7 +249,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Dog Bites</div>
-                    <div class="stat-num">0</div>
+                    <div class="stat-num">20</div>
                     <div class="stat-sub">Canine incidents</div>
                 </div>
                 <div class="stat-icon" style="background:#E6F1FB;">
@@ -261,7 +261,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Cat Bites</div>
-                    <div class="stat-num">0</div>
+                    <div class="stat-num">8</div>
                     <div class="stat-sub">Feline incidents</div>
                 </div>
                 <div class="stat-icon" style="background:#EEEDFE;">
@@ -292,7 +292,7 @@
             <div class="panel">
                 <div class="panel-title">
                     Hotspot Map Preview
-                    <a href="{{ route('hotspot') }}" style="font-size:0.75rem;color:#2d6a2d;text-decoration:none;">Click to expand →</a>
+                    <a href="{{ route('hotspot') }}" class="nav-item {{ request()->routeIs('hotspot') ? 'active' : '' }}">> View Full Map</a>
                 </div>
                 <div id="heatmapPreview"></div>
             </div>

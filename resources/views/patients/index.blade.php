@@ -44,6 +44,46 @@
         .btn-view:hover { background: #2d6a2d; }
         .empty-state { text-align: center; padding: 3rem; color: #bbb; font-size: 0.88rem; }
         .empty-state a { color: #2d6a2d; font-weight: 600; text-decoration: none; }
+
+    .btn-view, .btn-edit, .btn-delete, .btn-remind, .btn-print_patient_record {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+}
+
+/* Base Design para sa lahat ng action buttons */
+.btn-view, .btn-edit, .btn-delete, .btn-remind, .btn-print_patient_record {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.2s opacity;
+}
+
+/* Para may kaunting effect kapag tinapatan ng mouse */
+.btn-view:hover, .btn-edit:hover, .btn-delete:hover, .btn-remind:hover, .btn-print_patient_record:hover {
+    opacity: 0.8; 
+}
+
+/* Mga Kulay Mo */
+.btn-view { background-color: ##1b3a24; }
+.btn-view { background-color: #7da02d; }
+.btn-edit { background-color: #2d5a3c; }
+.btn-delete { background-color: #a63d3d; }
+.btn-remind { background-color: #4a90e2; }
+.btn-print_patient_record { background-color: #1bff7e; }
     </style>
 </head>
 <body>
@@ -53,7 +93,7 @@
     <main class="main">
         <div class="page-header">
             <div>
-                <div class="page-title">Patient Registration</div>
+                <div class="page-title">Patient Records</div>
                 <div class="page-sub">All registered bite incident patients</div>
             </div>
             <a href="{{ route('patients.create') }}" class="btn-add">
@@ -112,9 +152,22 @@
                                     <span class="badge badge-cat">{{ $patient->source_of_exposure }}</span>
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{ route('patients.show', $patient->id) }}" class="btn-view">View</a>
-                            </td>
+<td style="display: flex; gap: 5px; align-items: center;">
+    {{-- Remind Vaccination (Visual Only) --}}
+    <a href="#" class="btn-edit">Remind Vaccination</a>
+
+    {{-- VIEW BUTTON (Visual Only) --}}
+    <a href="#" class="btn-view">View</a>
+
+    {{-- EDIT BUTTON (Visual Only) --}}
+    <a href="#" class="btn-edit">Edit</a>
+
+    {{-- DELETE BUTTON (Visual Only) --}}
+    <a href="#" onclick="alert('Delete action simulated!'); return false;" class="btn-delete">Delete</a>
+
+    {{-- PRINT PATIENT RECORD BUTTON (Visual Only) --}}
+    <a href="#" class="btn-print_patient_record">Print Record</a>
+</td>
                         </tr>
                     @empty
                         <tr>

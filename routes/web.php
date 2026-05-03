@@ -31,6 +31,7 @@ Route::get('/dashboard', function () {
     return view('auth.dashboard');
 })->name('dashboard');
 
+
 // ── PATIENT ROUTES ────────────────────────────────────────────
 // Patient Registration — show the add patient form
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');

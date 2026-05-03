@@ -10,6 +10,7 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'username',
+        'role',        // 'admin' or 'cho_staff'
         'email',
         'password',
         'otp',
@@ -20,4 +21,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * Check if this user is an Admin
+     * Usage: $user->isAdmin()
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Check if this user is CHO Staff
+     * Usage: $user->isChoStaff()
+     */
+    public function isChoStaff(): bool
+    {
+        return $this->role === 'cho_staff';
+    }
 }

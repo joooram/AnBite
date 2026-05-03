@@ -129,3 +129,4 @@ class PatientController extends Controller
         return view('patients.show', compact('patient'));
     }
 }
+

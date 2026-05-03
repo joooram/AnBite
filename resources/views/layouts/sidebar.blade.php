@@ -1,85 +1,129 @@
-
-
 <style>
-    /* Dito nakalagay ang design ng sidebar mo para hindi masira sa ibang pages */
     .sidebar { 
-    width: 220px; 
-    min-width: 220px; /* Idinagdag natin ito para hindi siya bumaba sa 230px */
-    flex-shrink: 0;   /* Idinagdag natin ito para hindi siya mapisil ng malalaking mapa o charts */
-    background: #1a3a1a; 
-    min-height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-    padding: 1.5rem 1rem; 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    z-index: 9999; /* Para laging nasa ibabaw */ 
-}
-    
-    .sidebar-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    
-    /* Ito na ang design para sa mismong Logo mo (Walang background, walang bilog) */
-    .logo-image {
-        width: 36px;           /* Medyo pinalakihan ko para mas litaw */
-        height: auto;          /* Auto para hindi ma-stretch */
-        object-fit: contain; 
-        background: transparent; 
-        border-radius: 0; 
+        width: 230px; 
+        min-width: 230px; 
+        background: #1a3a1a; 
+        min-height: 100vh; 
+        display: flex; 
+        flex-direction: column; 
+        padding: 1.5rem 0.8rem; /* Reduced side padding for better button width */
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        z-index: 9999; 
+    }
+
+    .nav-label { 
+        color: rgba(255,255,255,0.4); 
+        font-size: 0.7rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1.2px; 
+        margin: 1rem 0 0.5rem 1rem; 
+    }
+
+    .nav-menu-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2px; /* Tight, consistent spacing */
+    }
+
+    .nav-item { 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+        padding: 0 1rem; 
+        height: 48px; /* Fixed height prevents "jumping" when clicking */
+        color: #bbb; 
+        text-decoration: none; 
+        border-radius: 8px; 
+        transition: all 0.2s ease;
+        border-left: 4px solid transparent; /* Placeholder to prevent shifting */
+    }
+.sidebar-logo { 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        height: 80px;      /* Locks the vertical space for the logo */
+        width: 100%; 
+        margin-bottom: 1rem; 
+        flex-shrink: 0;    /* Prevents logo from squishing on small screens */
     }
     
-    .logo-text { font-size: 1.2rem; font-weight: 800; color: white; }
-    .nav-label { color: #888; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.5rem; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.8rem 1rem; color: #bbb; text-decoration: none; border-radius: 8px; margin-bottom: 0.5rem; transition: 0.2s; }
-    .nav-item svg { width: 20px; height: 20px; }
-    .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-    .nav-item.active { background: #2d6a2d; color: white; }
-    .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
+    .logo-image {
+        width: 45px;       /* Fixed size */
+        height: 45px;      /* Fixed size */
+        object-fit: contain; 
+    }
+    .nav-item svg { 
+        width: 20px; 
+        height: 20px; 
+        flex-shrink: 0; 
+    }
+
+    .nav-item span {
+        font-size: 0.9rem;
+        white-space: nowrap;
+    }
+
+    /* Hover State */
+    .nav-item:hover { 
+        background: rgba(255,255,255,0.08); 
+        color: #fff; 
+    }
+
+    /* Active State - Fixed to prevent layout shift */
+    .nav-item.active { 
+        background: #2d6a2d; 
+        color: #fff; 
+        font-weight: 500;
+        border-left: 4px solid #4ade80; /* Brighter green indicator */
+    }
+
+    .sidebar-footer { 
+        margin-top: auto; 
+        padding: 1rem 0;
+        border-top: 1px solid rgba(255,255,255,0.1); 
+    }
 </style>
 
-
 <aside class="sidebar">
-    <div class="sidebar-logo">
-<img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image">
-        
+    <div class="sidebar-logo" style="margin-bottom: 2rem; text-align: center;">
+        <img src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo" class="logo-image" style="width: 40px;">
     </div>
 
     <div class="nav-label">Main Menu</div>
 
-    {{-- 1. Dashboard --}}
-    <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Dashboard
-    </a>
+    <div class="nav-menu-wrapper">
+        <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <span>Dashboard</span>
+        </a>
 
-    {{-- 2. Patient Registration --}}
-    <a href="{{ route('patients.create') }}" class="nav-item {{ request()->routeIs('patients.create') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-        Patient Registration
-    </a>
+        <a href="{{ route('patients.create') }}" class="nav-item {{ request()->routeIs('patients.create') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            <span>Patient Registration</span>
+        </a>
 
-    {{-- 3. Patient Records --}}
-    <a href="{{ route('patients.index') }}" class="nav-item {{ request()->routeIs('patients.index') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Patient Records
-    </a>
+        <a href="{{ route('patients.index') }}" class="nav-item {{ request()->routeIs('patients.index') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Patient Records</span>
+        </a>
 
-    {{-- 4. Hotspot Map --}}
-    <a href="{{ route('hotspot') }}" class="nav-item {{ request()->routeIs('hotspot') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/></svg>
-        Hotspot Map
-    </a>
+        <a href="{{ route('hotspot') }}" class="nav-item {{ request()->routeIs('hotspot') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/></svg>
+            <span>Hotspot Map</span>
+        </a>
 
-    {{-- 5. Charts --}}
-    <a href="{{ route('charts') }}" class="nav-item {{ request()->routeIs('charts') ? 'active' : '' }}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Charts & Reports
-    </a>
+        <a href="{{ route('charts') }}" class="nav-item {{ request()->routeIs('charts') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span>Charts & Reports</span>
+        </a>
+    </div>
 
     <div class="sidebar-footer">
         <a href="{{ route('logout') }}" class="nav-item logout">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Logout
+            <span>Logout</span>
         </a>
     </div>
 </aside>

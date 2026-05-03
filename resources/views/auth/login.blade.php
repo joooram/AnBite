@@ -57,11 +57,16 @@
         }
 
         .tagline {
-            font-size: 0.82rem;
-            color: #2d6a2d;
+            color: #0a400d; /* Halimbawa lang ng kulay ng normal na text */
+            font-size: 1rem;
             text-align: center;
             line-height: 1.5;
             max-width: 200px;
+        }
+
+        .acronym {
+            font-weight: 800; /* Pinaka-bold */
+            color: #1a3a1a; /* Light green (papalitan mo ito depende sa theme mo) */
         }
 
         .card {
@@ -177,10 +182,15 @@
         <div class="brand-area">
             <img src="{{ asset('images/4thlogo.png') }}" alt="AnBite Logo" class="login-logo">
             
-            <div class="brand">AnBite</div>
-            <div class="tagline">
-                Your Tracking System for Rabies Prevention, Control and Management
-            </div>
+            <div class="brand">ANBITE</div>
+<div class="tagline">
+    <span class="acronym">A</span>nti-rabies 
+    <span class="acronym">N</span>etwork for 
+    <span class="acronym">B</span>ite 
+    <span class="acronym">I</span>ncident 
+    <span class="acronym">T</span>racking and 
+    <span class="acronym">E</span>valuation
+</div>
         </div>
     </div>
 

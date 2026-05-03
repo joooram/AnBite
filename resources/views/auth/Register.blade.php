@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
     <title>AnBite — Create Account</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,12 +25,17 @@
 
         .page-right {
             width: 50%;
-            background: #1a3a1a;
+            
+            /* MGA BAGONG CODE PARA SA BACKGROUND IMAGE */
+            background-image: url('{{ asset("images/loginleft.png") }}');
+            background-size: cover;       /* Para sakupin ng picture ang buong 50% width nang hindi na-e-stretch */
+            background-position: center;  /* Para laging nakagitna ang picture */
+            background-repeat: no-repeat; /* Para hindi mag-doble-doble ang picture kung maliit ito */
+            
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 3rem 2rem;
-            overflow-y: auto;
         }
 
         .brand-area {
@@ -38,20 +44,13 @@
             align-items: center;
         }
 
-        .logo-circle {
-            width: 95px;
-            height: 95px;
-            background: #1a3a1a;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.2rem;
+        .login-logo {
+            width: 120px; /* Pwede mo itong lakihan o liitan depende sa gusto mo */
+            height: auto;
+            margin-bottom: 1rem; /* Naglalagay ng espasyo sa pagitan ng logo at ng salitang AnBite */
         }
 
-        .logo-circle svg { width: 44px; height: 44px; }
-
-        .brand {
+      .brand {
             font-size: 2.5rem;
             font-weight: 800;
             color: #1a3a1a;
@@ -59,11 +58,16 @@
         }
 
         .tagline {
-            font-size: 0.82rem;
-            color: #2d6a2d;
+            color: #0a400d; /* Halimbawa lang ng kulay ng normal na text */
+            font-size: 1rem;
             text-align: center;
             line-height: 1.5;
             max-width: 200px;
+        }
+
+        .acronym {
+            font-weight: 800; /* Pinaka-bold */
+            color: #1a3a1a; /* Light green (papalitan mo ito depende sa theme mo) */
         }
 
         .card-wrap {
@@ -178,18 +182,17 @@
 
     <!-- LEFT HALF: Branding -->
     <div class="page-left">
-        <div class="brand-area">
-            <div class="logo-circle">
-                <svg viewBox="0 0 42 42" fill="none">
-                    <circle cx="21" cy="21" r="20" stroke="white" stroke-width="1.5"/>
-                    <rect x="19" y="10" width="4" height="22" rx="2" fill="white"/>
-                    <rect x="10" y="19" width="22" height="4" rx="2" fill="white"/>
-                </svg>
-            </div>
-            <div class="brand">AnBite</div>
-            <div class="tagline">
-                Your Tracking System for Rabies Prevention, Control and Management
-            </div>
+        <<div class="brand-area">
+            <img src="{{ asset('images/4thlogo.png') }}" alt="AnBite Logo" class="login-logo">
+            <div class="brand">ANBITE</div>
+<div class="tagline">
+    <span class="acronym">A</span>nti-rabies 
+    <span class="acronym">N</span>etwork for 
+    <span class="acronym">B</span>ite 
+    <span class="acronym">I</span>ncident 
+    <span class="acronym">T</span>racking and 
+    <span class="acronym">E</span>valuation
+</div>
         </div>
     </div>
 
