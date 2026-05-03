@@ -270,9 +270,9 @@
             </div>
             <div class="stat-card">
                 <div>
-                    <div class="stat-label">Not Notified Patients</div>
+                    <div class="stat-label">Unnotified Patients</div>
                     <div class="stat-num">5</div>
-                    <div class="stat-sub">Not yet notified</div>
+                    <div class="stat-sub">Unnotified</div>
                 </div>
                 <div class="stat-icon" style="background:#F1EFE8;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#5F5E5A" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
