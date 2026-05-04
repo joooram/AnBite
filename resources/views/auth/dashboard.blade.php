@@ -303,12 +303,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Animal</th>
-                            <th>Date</th>
+                        <th>#</th>
+                        <th>Full Name</th>
+                        <th>Age / Sex</th>
+                        <th>Address</th>
+                        <th>Date of Exposure</th>
+                        <th>Type</th>
+                        <th>Source</th>
                         </tr>
                     </thead>
                     <tbody>

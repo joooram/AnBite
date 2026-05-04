@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" id="htmlRoot">
-<head>
+<html lang="en" id="htmlRoot" class="dark"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
@@ -8,33 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           LIGHT MODE (default)
+           PERMANENT DARK MODE THEME
+           (Tinanggal ang Light Mode root at html.dark selector,
+            ginawang default ang dark colors)
         ============================================================ */
         :root {
             --green-accent: #3dba85;
             --green-hover:  #30a873;
-            --text-dark:    #1a1a1a;
-            --text-light:   #999;
-            --border:       #e4ebe7;
-            --bg-right:     #eaf1ed;
-            --card-bg:      #ffffff;
-            --card-shadow:  0 8px 48px rgba(0,0,0,0.09);
-            --input-bg:     #ffffff;
-            --meta-text:    #555;
-            --terms-color:  #bbb;
-            --settings-color: #bbb;
-        }
-
-        /* ============================================================
-           DARK MODE
-        ============================================================ */
-        html.dark {
-            --bg-right:     #111c17;
-            --card-bg:      #1a2820;
+            --bg-right:     #111c17; /* Dark background sa kanan */
+            --card-bg:      #1a2820; /* Mas madilim na card */
             --card-shadow:  0 8px 48px rgba(0,0,0,0.5);
             --input-bg:     #1f3028;
             --border:       #2a4035;
-            --text-dark:    #e8f5ee;
+            --text-dark:    #e8f5ee; /* Light text para sa dark bg */
             --text-light:   #6b9980;
             --meta-text:    #88aa99;
             --terms-color:  #456055;
@@ -47,18 +32,28 @@
             font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
             display: flex;
-            transition: background 0.3s;
+            background: var(--bg-right); /* Siguraduhing dark ang body bg */
         }
 
         .layout { display: flex; width: 100%; min-height: 100vh; }
 
-        /* ===== LEFT PANEL ===== */
-        .left { width: 52%; position: relative; overflow: hidden; background: #c5d5cc; }
+        /* ===== LEFT PANEL (Animated Circles) ===== */
+        .left { 
+            width: 52%; 
+            position: relative; 
+            overflow: hidden; 
+            /* Pinanatili ang orihinal na kulay ng background at circles dahil maganda na ito */
+            background: #c5d5cc; 
+            display: flex; /* Idinagdag para sa pagpapakitna */
+            align-items: center; /* Vertical center */
+            justify-content: center; /* Horizontal center */
+        }
+        
         .circle { position: absolute; border-radius: 50%; }
         .c1 { width: 600px; height: 600px; top: -200px; left: 10%; background: #2e5a45; animation: d1 20s ease-in-out infinite alternate; }
         .c2 { width: 640px; height: 640px; top: -220px; right: -160px; background: #dce8e1; animation: d2 16s ease-in-out infinite alternate; }
         .c3 { width: 680px; height: 680px; top: 5%; left: -140px; background: #e4ede8; animation: d3 22s ease-in-out infinite alternate; }
-        .c4 { width: 520px; height: 520px; top: 28%; right: -120px; background: #2e5a45; animation: d4 18s ease-in-out infinite alternate; }
+        .c4 { width: 520px; height: 520px; top: 28%; right: -120px; background: #9ac5b0; animation: d4 18s ease-in-out infinite alternate; }
         .c5 { width: 580px; height: 580px; top: 20%; left: 5%; background: #d5e3dc; animation: d5 14s ease-in-out infinite alternate; }
         .c6 { width: 280px; height: 280px; bottom: 20px; left: 5%; background: #2e5a45; opacity: 0.8; animation: d6 12s ease-in-out infinite alternate; }
         .c7 { width: 500px; height: 500px; bottom: -160px; right: -100px; background: #dce8e1; animation: d7 18s ease-in-out infinite alternate; }
@@ -68,69 +63,40 @@
         @keyframes d5{to{transform:translate(10px,-14px);}} @keyframes d6{to{transform:translate(14px,-10px);}}
         @keyframes d7{to{transform:translate(-12px,10px);}} @keyframes d8{to{transform:translate(8px,-16px);}}
 
-        .left-top {
-            position: absolute; top: 20px; left: 20px;
-            display: flex; align-items: center; gap: 10px;
-            z-index: 10; animation: fadeIn 0.8s 0.1s both;
+        /* ===== BAGONG CENTERED BRANDING CSS ===== */
+        .brand-wrapper {
+            text-align: center; /* I-center ang text sa loob */
+            z-index: 10;
+            padding: 40px;
+            animation: fadeUp 1s 0.2s both;
         }
 
         .logo-img {
-            width: 70px;
-            height: 70px;
+            width: 120px; /* Pinalaki ng kaunti para mas bagay sa gitna */
+            height: 120px;
             object-fit: contain;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); /* Mas malalim na shadow */
+            margin-bottom: 20px; /* Patlang sa pagitan ng logo at tagline */
         }
 
-        .brand-name { font-size: 1rem; font-weight: 700; color: white; text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
-
-        .left-bottom { position: absolute; bottom: 28px; left: 28px; right: 28px; z-index: 10; animation: fadeUp 1s 0.4s both; }
-        .left-tagline { font-size: 1.05rem; font-weight: 700; color: white; line-height: 1.5; margin-bottom: 14px; text-shadow: 0 1px 8px rgba(0,0,0,0.3); }
-        .dev-row { display: flex; align-items: center; gap: 10px; }
-        .dev-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 0.64rem; font-weight: 700; color: white; flex-shrink: 0; }
+        .left-tagline { 
+            font-size: 1.2rem; /* Pinalaki ng kaunti */
+            font-weight: 700; 
+            color: #2e5a45; /* Binago ang kulay para bumagay sa light green background */
+            line-height: 1.4; 
+            max-width: 400px; /* Para hindi masyadong mahaba ang linya */
+            margin: 0 auto; /* I-center ang block mismo */
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5); /* Light shadow para umangat */
+        }
 
         /* ===== RIGHT PANEL ===== */
         .right {
             flex: 1; background: var(--bg-right);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 3rem 2.5rem 3.5rem; position: relative;
-            transition: background 0.3s;
         }
 
-        .top-controls {
-            position: absolute; top: 20px; right: 20px;
-            display: flex; align-items: center; gap: 10px;
-            z-index: 20;
-        }
-
-        .dark-toggle {
-            width: 42px; height: 24px;
-            background: var(--border);
-            border-radius: 99px; border: none; cursor: pointer;
-            position: relative; transition: background 0.3s;
-            flex-shrink: 0;
-        }
-        .dark-toggle::after {
-            content: '';
-            position: absolute;
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: white;
-            top: 3px; left: 3px;
-            transition: transform 0.3s, background 0.3s;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-        }
-        html.dark .dark-toggle { background: var(--green-accent); }
-        html.dark .dark-toggle::after { transform: translateX(18px); }
-
-        .toggle-label {
-            font-size: 0.7rem; font-weight: 600;
-            color: var(--settings-color);
-            display: flex; align-items: center; gap: 4px;
-            user-select: none; cursor: pointer;
-        }
-
-        .settings-ico { color: var(--settings-color); cursor: pointer; transition: color 0.2s; display: flex; }
-        .settings-ico:hover { color: var(--green-accent); }
+        /* Tinanggal ang top-controls CSS dahil tinanggal na ang toggle */
 
         /* Card */
         .card {
@@ -139,25 +105,24 @@
             width: 100%; max-width: 370px;
             box-shadow: var(--card-shadow);
             animation: cardIn 0.8s 0.15s cubic-bezier(.16,1,.3,1) both;
-            transition: background 0.3s, box-shadow 0.3s;
         }
         @keyframes cardIn { from{opacity:0;transform:translateY(28px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
 
-        .card-title { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 6px; text-align: center; transition: color 0.3s; }
-        .card-sub { font-size: 0.8rem; color: var(--text-light); text-align: center; margin-bottom: 1.8rem; transition: color 0.3s; }
+        .card-title { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 6px; text-align: center; }
+        .card-sub { font-size: 0.8rem; color: var(--text-light); text-align: center; margin-bottom: 1.8rem; }
         .card-sub a { color: var(--green-accent); font-weight: 600; text-decoration: none; }
         .card-sub a:hover { text-decoration: underline; }
 
         /* Fields */
         .field { margin-bottom: 1.1rem; }
-        .field label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; transition: color 0.3s; }
+        .field label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
         .inp-wrap { position: relative; }
         .inp-wrap input {
             width: 100%; padding: 10.5px 36px;
             border: 1.5px solid var(--border); border-radius: 9px;
             font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
             color: var(--text-dark); background: var(--input-bg); outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         .inp-wrap input::placeholder { color: var(--text-light); }
         .inp-wrap input:focus { border-color: var(--green-accent); box-shadow: 0 0 0 3px rgba(61,186,133,0.12); }
@@ -168,7 +133,7 @@
 
         /* Remember / Forgot */
         .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; }
-        .remember-lbl { display: flex; align-items: center; gap: 7px; font-size: 0.79rem; color: var(--meta-text); cursor: pointer; user-select: none; transition: color 0.3s; }
+        .remember-lbl { display: flex; align-items: center; gap: 7px; font-size: 0.79rem; color: var(--meta-text); cursor: pointer; user-select: none; }
         .remember-lbl input[type="checkbox"] { accent-color: var(--green-accent); width: 14px; height: 14px; cursor: pointer; }
         .forgot-a { font-size: 0.79rem; font-weight: 600; color: var(--green-accent); text-decoration: none; }
         .forgot-a:hover { text-decoration: underline; }
@@ -193,14 +158,15 @@
         @keyframes spn { to { transform: rotate(360deg); } }
 
         /* Terms */
-        .terms { margin-top: 1.4rem; font-size: 0.68rem; color: var(--terms-color); text-align: center; max-width: 370px; transition: color 0.3s; }
+        .terms { margin-top: 1.4rem; font-size: 0.68rem; color: var(--terms-color); text-align: center; max-width: 370px; }
         .terms a { color: var(--green-accent); text-decoration: none; }
         .terms a:hover { text-decoration: underline; }
 
-        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+        /* Animations */
         @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
 
-        @media (max-width: 700px) {
+        /* Responsive */
+        @media (max-width: 850px) { /* Ini-adjust ang breakpoint para sa centered logo */
             .left { display: none; }
             .right { background: var(--card-bg); padding: 2rem 1.5rem 3rem; }
         }
@@ -214,33 +180,13 @@
         <div class="circle c4"></div><div class="circle c5"></div><div class="circle c6"></div>
         <div class="circle c7"></div><div class="circle c8"></div>
 
-        <div class="left-top">
-            <img class="logo-img" src="./images/2ndlogo.png" alt="AnBite Logo">
-        </div>
-
-        <div class="left-bottom">
-            <<div class="left-tagline">Anti-rabies Network for Bite Incident Tracking and Evaluation</div>
-            <div class="dev-row">
-                <div>
-                </div>
-            </div>
+        <div class="brand-wrapper">
+            <img class="logo-img" src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo">
+            <div class="left-tagline">Anti-rabies Network for Bite Incident Tracking and Evaluation</div>
         </div>
     </div>
 
     <div class="right">
-
-        <div class="top-controls">
-            <label class="toggle-label" for="darkToggle">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </label>
-            <button class="dark-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode"></button>
-            <div class="settings-ico" title="Settings">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-            </div>
-        </div>
 
         <div class="card">
             <div class="card-title">Welcome back</div>
@@ -255,7 +201,8 @@
             @endif
 
             <form method="POST" action="{{ route('login') }}" id="loginForm">
-                @csrf <div class="field">
+                @csrf 
+                <div class="field">
                     <label>Username</label>
                     <div class="inp-wrap">
                         <span class="ico-left"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
@@ -293,17 +240,7 @@
 </div>
 
 <script>
-    /* ── Dark mode ── */
-    const html = document.getElementById('htmlRoot');
-    const toggleBtn = document.getElementById('darkToggle');
-
-    // Remember preference
-    if (localStorage.getItem('anbite-dark') === 'true') html.classList.add('dark');
-
-    toggleBtn.addEventListener('click', () => {
-        html.classList.toggle('dark');
-        localStorage.setItem('anbite-dark', html.classList.contains('dark'));
-    });
+    /* ── TINANGGAL ANG DARK MODE TOGGLE SCRIPT ── */
 
     /* ── Password show/hide ── */
     const pwField  = document.getElementById('pwField');
@@ -317,7 +254,7 @@
         eyeIco.innerHTML = vis ? OPEN : CLOSED;
     });
 
-    /* ── Ripple ── */
+    /* ── Ripple Effect ── */
     const loginBtn = document.getElementById('loginBtn');
     loginBtn.addEventListener('click', e => {
         const r = document.createElement('span');
@@ -330,13 +267,10 @@
 
     /* ── Loading state ── */
     document.getElementById('loginForm').addEventListener('submit', () => {
-        // TINANGGAL ANG e.preventDefault() PARA MAKAPASA YUNG FORM SA BACKEND
         if(document.getElementById('btnTxt')) {
             document.getElementById('btnTxt').textContent = 'Signing in…';
         }
         document.getElementById('spin').style.display = 'block';
-        
-        // Timeout prevents the button from disabling too fast before form submits
         setTimeout(() => {
             loginBtn.disabled = true;
         }, 10);
