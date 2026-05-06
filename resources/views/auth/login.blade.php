@@ -8,18 +8,16 @@
     <style>
         /* ============================================================
            PERMANENT DARK MODE THEME
-           (Tinanggal ang Light Mode root at html.dark selector,
-            ginawang default ang dark colors)
         ============================================================ */
         :root {
             --green-accent: #3dba85;
             --green-hover:  #30a873;
-            --bg-right:     #111c17; /* Dark background sa kanan */
-            --card-bg:      #1a2820; /* Mas madilim na card */
+            --bg-right:     #111c17; 
+            --card-bg:      #1a2820; 
             --card-shadow:  0 8px 48px rgba(0,0,0,0.5);
             --input-bg:     #1f3028;
             --border:       #2a4035;
-            --text-dark:    #e8f5ee; /* Light text para sa dark bg */
+            --text-dark:    #e8f5ee; 
             --text-light:   #6b9980;
             --meta-text:    #88aa99;
             --terms-color:  #456055;
@@ -32,21 +30,20 @@
             font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
             display: flex;
-            background: var(--bg-right); /* Siguraduhing dark ang body bg */
+            background: var(--bg-right); 
         }
 
         .layout { display: flex; width: 100%; min-height: 100vh; }
 
-        /* ===== LEFT PANEL (Animated Circles) ===== */
+        /* ===== LEFT PANEL (Ibinalik sa 52% ang space) ===== */
         .left { 
             width: 52%; 
             position: relative; 
             overflow: hidden; 
-            /* Pinanatili ang orihinal na kulay ng background at circles dahil maganda na ito */
             background: #c5d5cc; 
-            display: flex; /* Idinagdag para sa pagpapakitna */
-            align-items: center; /* Vertical center */
-            justify-content: center; /* Horizontal center */
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
         }
         
         .circle { position: absolute; border-radius: 50%; }
@@ -63,30 +60,60 @@
         @keyframes d5{to{transform:translate(10px,-14px);}} @keyframes d6{to{transform:translate(14px,-10px);}}
         @keyframes d7{to{transform:translate(-12px,10px);}} @keyframes d8{to{transform:translate(8px,-16px);}}
 
-        /* ===== BAGONG CENTERED BRANDING CSS ===== */
+        /* ===== CENTERED BRANDING CSS ===== */
         .brand-wrapper {
-            text-align: center; /* I-center ang text sa loob */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             z-index: 10;
             padding: 40px;
             animation: fadeUp 1s 0.2s both;
         }
 
+        /* Pinalaking Logo */
         .logo-img {
-            width: 120px; /* Pinalaki ng kaunti para mas bagay sa gitna */
-            height: 120px;
+            width: 180px; 
+            height: 180px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); /* Mas malalim na shadow */
-            margin-bottom: 20px; /* Patlang sa pagitan ng logo at tagline */
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); 
+            margin-bottom: 25px; 
         }
 
+        /* Pinalaking Title */
+        .brand-title {
+            font-weight: 900;
+            color: #1a4331; 
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        /* Pinalaking Acronym (Isang linyang straight) */
+        .left-description {
+            font-size: 1.3rem;
+            font-weight: 500; 
+            color: #4b5563; 
+            line-height: 1.6;
+            max-width: 100%; 
+            margin: 0 auto 24px auto; 
+        }
+        
+        .left-description span {
+            font-weight: 900; 
+            color: #1a4331; 
+            font-size: 1.5rem; 
+        }
+
+        /* Pinalaking Tagline */
         .left-tagline { 
-            font-size: 1.2rem; /* Pinalaki ng kaunti */
-            font-weight: 700; 
-            color: #2e5a45; /* Binago ang kulay para bumagay sa light green background */
-            line-height: 1.4; 
-            max-width: 400px; /* Para hindi masyadong mahaba ang linya */
-            margin: 0 auto; /* I-center ang block mismo */
-            text-shadow: 0 1px 2px rgba(255,255,255,0.5); /* Light shadow para umangat */
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #5c7c6c; 
+            font-style: italic; 
+            line-height: 1.5;
+            max-width: 450px;
+            margin: 0 auto;
         }
 
         /* ===== RIGHT PANEL ===== */
@@ -96,55 +123,56 @@
             padding: 3rem 2.5rem 3.5rem; position: relative;
         }
 
-        /* Tinanggal ang top-controls CSS dahil tinanggal na ang toggle */
-
-        /* Card */
+        /* Card (In-adjust nang konti ang lapad para magkasya ang malalaking text) */
         .card {
             background: var(--card-bg);
-            border-radius: 18px; padding: 2.4rem 2.4rem 2rem;
-            width: 100%; max-width: 370px;
+            border-radius: 18px; padding: 2.8rem 2.8rem 2.4rem;
+            width: 100%; max-width: 420px;
             box-shadow: var(--card-shadow);
             animation: cardIn 0.8s 0.15s cubic-bezier(.16,1,.3,1) both;
         }
         @keyframes cardIn { from{opacity:0;transform:translateY(28px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
 
-        .card-title { font-size: 1.8rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 6px; text-align: center; }
-        .card-sub { font-size: 0.8rem; color: var(--text-light); text-align: center; margin-bottom: 1.8rem; }
+        /* Pinalaking Card Title at Subtitle */
+        .card-title { font-size: 2.2rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 8px; text-align: center; }
+        .card-sub { font-size: 1rem; color: var(--text-light); text-align: center; margin-bottom: 2rem; }
         .card-sub a { color: var(--green-accent); font-weight: 600; text-decoration: none; }
         .card-sub a:hover { text-decoration: underline; }
 
-        /* Fields */
-        .field { margin-bottom: 1.1rem; }
-        .field label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
+        /* Pinalaking Fields (Labels at Inputs) */
+        .field { margin-bottom: 1.3rem; }
+        .field label { display: block; font-size: 1rem; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; }
         .inp-wrap { position: relative; }
         .inp-wrap input {
-            width: 100%; padding: 10.5px 36px;
+            width: 100%; padding: 12px 42px;
             border: 1.5px solid var(--border); border-radius: 9px;
-            font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+            font-size: 1.05rem; font-family: 'DM Sans', sans-serif;
             color: var(--text-dark); background: var(--input-bg); outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         .inp-wrap input::placeholder { color: var(--text-light); }
         .inp-wrap input:focus { border-color: var(--green-accent); box-shadow: 0 0 0 3px rgba(61,186,133,0.12); }
-        .ico-left { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; transition: color 0.2s; display: flex; }
+        
+        /* Pinalaking Icons */
+        .ico-left { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; transition: color 0.2s; display: flex; }
         .inp-wrap:has(input:focus) .ico-left { color: var(--green-accent); }
-        .ico-right { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-light); display: flex; align-items: center; transition: color 0.2s; }
+        .ico-right { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-light); display: flex; align-items: center; transition: color 0.2s; }
         .ico-right:hover { color: var(--green-accent); }
 
-        /* Remember / Forgot */
-        .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; }
-        .remember-lbl { display: flex; align-items: center; gap: 7px; font-size: 0.79rem; color: var(--meta-text); cursor: pointer; user-select: none; }
-        .remember-lbl input[type="checkbox"] { accent-color: var(--green-accent); width: 14px; height: 14px; cursor: pointer; }
-        .forgot-a { font-size: 0.79rem; font-weight: 600; color: var(--green-accent); text-decoration: none; }
+        /* Pinalaking Remember / Forgot */
+        .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.6rem; }
+        .remember-lbl { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; color: var(--meta-text); cursor: pointer; user-select: none; }
+        .remember-lbl input[type="checkbox"] { accent-color: var(--green-accent); width: 16px; height: 16px; cursor: pointer; }
+        .forgot-a { font-size: 0.95rem; font-weight: 600; color: var(--green-accent); text-decoration: none; }
         .forgot-a:hover { text-decoration: underline; }
 
         /* Error Messages */
-        .alert-error { background-color: #ffeaea; color: #d32f2f; padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 1rem; text-align: center; border: 1px solid #ffcdd2; }
+        .alert-error { background-color: #ffeaea; color: #d32f2f; padding: 12px; border-radius: 8px; font-size: 0.95rem; margin-bottom: 1rem; text-align: center; border: 1px solid #ffcdd2; }
 
-        /* Login btn */
+        /* Pinalaking Login btn */
         .btn-login {
-            width: 100%; padding: 12.5px; background: var(--green-accent); color: white; border: none;
-            border-radius: 9px; font-size: 0.9rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
+            width: 100%; padding: 14px; background: var(--green-accent); color: white; border: none;
+            border-radius: 9px; font-size: 1.1rem; font-weight: 600; font-family: 'DM Sans', sans-serif;
             cursor: pointer; position: relative; overflow: hidden;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
@@ -154,11 +182,11 @@
         .btn-login:active { transform: translateY(0); }
         .btn-login .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.28); transform: scale(0); animation: rip 0.55s linear; pointer-events: none; }
         @keyframes rip { to { transform: scale(5); opacity: 0; } }
-        .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spn 0.65s linear infinite; display: none; }
+        .spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spn 0.65s linear infinite; display: none; }
         @keyframes spn { to { transform: rotate(360deg); } }
 
-        /* Terms */
-        .terms { margin-top: 1.4rem; font-size: 0.68rem; color: var(--terms-color); text-align: center; max-width: 370px; }
+        /* Pinalaking Terms */
+        .terms { margin-top: 1.6rem; font-size: 0.85rem; color: var(--terms-color); text-align: center; max-width: 420px; }
         .terms a { color: var(--green-accent); text-decoration: none; }
         .terms a:hover { text-decoration: underline; }
 
@@ -166,7 +194,7 @@
         @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
 
         /* Responsive */
-        @media (max-width: 850px) { /* Ini-adjust ang breakpoint para sa centered logo */
+        @media (max-width: 1000px) { 
             .left { display: none; }
             .right { background: var(--card-bg); padding: 2rem 1.5rem 3rem; }
         }
@@ -182,7 +210,16 @@
 
         <div class="brand-wrapper">
             <img class="logo-img" src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo">
-            <div class="left-tagline">Anti-rabies Network for Bite Incident Tracking and Evaluation</div>
+
+            <div class="brand-title">ANBITE</div>
+
+            <div class="left-description">
+                <span>A</span>nti-rabies <span>N</span>etwork for <span>B</span>ite <span>I</span>ncident <span>T</span>racking and <span>E</span>valuation
+            </div>
+            
+            <div class="left-tagline">
+                Your Tracking System for Rabies Prevention<br>Control and Management
+            </div>
         </div>
     </div>
 
@@ -205,7 +242,7 @@
                 <div class="field">
                     <label>Username</label>
                     <div class="inp-wrap">
-                        <span class="ico-left"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+                        <span class="ico-left"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                         <input type="text" name="username" placeholder="Enter your username" required>
                     </div>
                 </div>
@@ -213,10 +250,10 @@
                 <div class="field">
                     <label>Password</label>
                     <div class="inp-wrap">
-                        <span class="ico-left"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                        <span class="ico-left"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
                         <input type="password" name="password" id="pwField" placeholder="Enter your password" required>
                         <button type="button" class="ico-right" id="togglePw">
-                            <svg id="eyeIco" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg id="eyeIco" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                     </div>
                 </div>
@@ -240,8 +277,6 @@
 </div>
 
 <script>
-    /* ── TINANGGAL ANG DARK MODE TOGGLE SCRIPT ── */
-
     /* ── Password show/hide ── */
     const pwField  = document.getElementById('pwField');
     const togglePw = document.getElementById('togglePw');

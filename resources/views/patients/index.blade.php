@@ -4,21 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnBite — Patient Records</title>
-     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; display: flex; min-height: 100vh; }
         .sidebar { width: 220px; background: #1a3a1a; min-height: 100vh; display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; left: 0; }
-        .sidebar-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .logo-circle { width: 36px; height: 36px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .logo-circle svg { width: 18px; height: 18px; }
-        .logo-text { font-size: 1.2rem; font-weight: 800; color: white; }
-        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; margin-bottom: 4px; transition: all 0.2s; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
-        .nav-item.active { background: rgba(255,255,255,0.15); color: white; font-weight: 600; }
-        .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-        .sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; }
-        .nav-item.logout { color: #ff9999; }
         .main { margin-left: 220px; flex: 1; padding: 2rem; }
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .page-title { font-size: 1.3rem; font-weight: 700; color: #1a3a1a; }
@@ -31,158 +21,119 @@
         .panel { background: white; border-radius: 12px; border: 0.5px solid #e8e8e8; padding: 1.2rem 1.4rem; }
         .success-box { background: #E1F5EE; border: 1px solid #5DCAA5; color: #0F6E56; font-size: 0.78rem; border-radius: 8px; padding: 10px 14px; margin-bottom: 1rem; }
         table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        thead th { text-align: left; padding: 10px 12px; background: #f8f8f8; color: #555; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid #eee; }
-        tbody td { padding: 12px 12px; color: #444; border-bottom: 0.5px solid #f5f5f5; vertical-align: top; }
-        tbody tr:hover { background: #fafafa; }
+        thead th { text-align: left; padding: 10px 12px; background: #f8f8f8; color: #555; font-weight: 600; border-bottom: 1px solid #eee; }
+        tbody td { padding: 12px 12px; color: #444; border-bottom: 0.5px solid #f5f5f5; vertical-align: middle; }
         .badge { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 99px; font-weight: 600; }
-        .badge-dog   { background: #E6F1FB; color: #185FA5; }
-        .badge-cat   { background: #FAEEDA; color: #854F0B; }
+        .badge-dog { background: #E6F1FB; color: #185FA5; }
+        .badge-cat { background: #FAEEDA; color: #854F0B; }
         .badge-scratch { background: #EEEDFE; color: #3C3489; }
-        .badge-bite    { background: #FCEBEB; color: #A32D2D; }
+        .badge-bite { background: #FCEBEB; color: #A32D2D; }
         .badge-nonbite { background: #E1F5EE; color: #0F6E56; }
-        .btn-view { font-size: 0.75rem; padding: 4px 12px; background: #1a3a1a; color: white; border-radius: 99px; text-decoration: none; }
-        .btn-view:hover { background: #2d6a2d; }
-        .empty-state { text-align: center; padding: 3rem; color: #bbb; font-size: 0.88rem; }
-        .empty-state a { color: #2d6a2d; font-weight: 600; text-decoration: none; }
-
-    .btn-view, .btn-edit, .btn-delete, .btn-remind, .btn-print_patient_record {
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: inline-block;
-}
-
-/* Base Design para sa lahat ng action buttons */
-.btn-view, .btn-edit, .btn-delete, .btn-remind, .btn-print_patient_record {
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
-    transition: 0.2s opacity;
-}
-
-/* Para may kaunting effect kapag tinapatan ng mouse */
-.btn-view:hover, .btn-edit:hover, .btn-delete:hover, .btn-remind:hover, .btn-print_patient_record:hover {
-    opacity: 0.8; 
-}
-
-/* Mga Kulay Mo */
-.btn-view { background-color: ##1b3a24; }
-.btn-view { background-color: #7da02d; }
-.btn-edit { background-color: #2d5a3c; }
-.btn-delete { background-color: #a63d3d; }
-.btn-remind { background-color: #4a90e2; }
-.btn-print_patient_record { background-color: #065428; }
+        
+        /* Action Buttons Styling */
+        .btn-view, .btn-edit, .btn-delete, .btn-print_patient_record {
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            transition: 0.2s opacity;
+        }
+        .btn-view:hover, .btn-edit:hover, .btn-delete:hover, .btn-print_patient_record:hover { opacity: 0.8; }
+        .btn-view { background-color: #7da02d; }
+        .btn-edit { background-color: #2d5a3c; }
+        .btn-delete { background-color: #a63d3d; }
+        .btn-print_patient_record { background-color: #065428; }
     </style>
 </head>
 <body>
 
 @include('layouts.sidebar')
 
-    <main class="main">
-        <div class="page-header">
-            <div>
-                <div class="page-title">Patient Records</div>
-                <div class="page-sub">All registered bite incident patients</div>
-            </div>
-            <a href="{{ route('patients.create') }}" class="btn-add">
-                + Add Patient
-            </a>
+<main class="main">
+    <div class="page-header">
+        <div>
+            <div class="page-title">Patient Records</div>
+            <div class="page-sub">All registered bite incident patients</div>
         </div>
+        <a href="{{ route('patients.create') }}" class="btn-add">+ Add Patient</a>
+    </div>
 
-        <div class="tabs">
-            <a href="{{ route('patients.index') }}" class="tab {{ !request('filter') ? 'active' : '' }}">All Patients</a>
-            <a href="{{ route('patients.index') }}?filter=vaccinated" class="tab {{ request('filter') == 'vaccinated' ? 'active' : '' }}">Vaccinated</a>
-            <a href="{{ route('patients.index') }}?filter=unvaccinated" class="tab {{ request('filter') == 'unvaccinated' ? 'active' : '' }}">Unvaccinated</a>
-        </div>
+    <div class="tabs">
+        <a href="{{ route('patients.index') }}" class="tab {{ !request('filter') ? 'active' : '' }}">All Patients</a>
+        <a href="{{ route('patients.index', ['filter' => 'vaccinated']) }}" class="tab {{ request('filter') == 'vaccinated' ? 'active' : '' }}">Vaccinated</a>
+        <a href="{{ route('patients.index', ['filter' => 'unvaccinated']) }}" class="tab {{ request('filter') == 'unvaccinated' ? 'active' : '' }}">Unvaccinated</a>
+    </div>
 
-        @if (session('success'))
-            <div class="success-box">{{ session('success') }}</div>
-        @endif
+    @if (session('success'))
+        <div class="success-box">{{ session('success') }}</div>
+    @endif
 
-        <div class="panel">
-            <table>
-                <thead>
+    <div class="panel">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Age / Sex</th>
+                    <th>Address</th>
+                    <th>Date of Exposure</th>
+                    <th>Type</th>
+                    <th>Source</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($patients as $patient)
                     <tr>
-                        <th>#</th>
-                        <th>Full Name</th>
-                        <th>Age / Sex</th>
-                        <th>Address</th>
-                        <th>Date of Exposure</th>
-                        <th>Type</th>
-                        <th>Source</th>
-                        <th>Action</th>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>
+                            <strong>{{ $patient->full_name }}</strong><br>
+                            <span style="font-size:0.72rem;color:#aaa;">{{ $patient->contact_number ?? 'No contact' }}</span>
+                        </td>
+                        <td>{{ $patient->age }} / {{ $patient->sex }}</td>
+                        <td>{{ $patient->address }}</td>
+                        <td>{{ \Carbon\Carbon::parse($patient->date_of_exposure)->format('M d, Y') }}</td>
+                        <td>
+                            @if($patient->type_of_exposure == 'Bite')
+                                <span class="badge badge-bite">Bite</span>
+                            @elseif($patient->type_of_exposure == 'Scratch')
+                                <span class="badge badge-scratch">Scratch</span>
+                            @else
+                                <span class="badge badge-nonbite">Non-Bite</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if(str_contains($patient->source_of_exposure, 'Dog'))
+                                <span class="badge badge-dog">{{ $patient->source_of_exposure }}</span>
+                            @else
+                                <span class="badge badge-cat">{{ $patient->source_of_exposure }}</span>
+                            @endif
+                        </td>
+                        <td style="display: flex; gap: 5px; align-items: center;">
+                            <a href="#" class="btn-edit">Remind Vaccination</a>
+                            <a href="#" class="btn-view">View</a>
+                            <a href="#" class="btn-edit">Edit</a>
+                            <a href="#" onclick="return confirm('Are you sure?')" class="btn-delete">Delete</a>
+                            <a href="#" class="btn-print_patient_record">Print Record</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($patients as $patient)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                <strong>{{ $patient->full_name }}</strong><br>
-                                <span style="font-size:0.72rem;color:#aaa;">{{ $patient->contact_number ?? 'No contact' }}</span>
-                            </td>
-                            <td>{{ $patient->age }} / {{ $patient->sex }}</td>
-                            <td>{{ $patient->address }}</td>
-                            <td>{{ \Carbon\Carbon::parse($patient->date_of_exposure)->format('M d, Y') }}</td>
-                            <td>
-                                @if($patient->type_of_exposure == 'Bite')
-                                    <span class="badge badge-bite">Bite</span>
-                                @elseif($patient->type_of_exposure == 'Scratch')
-                                    <span class="badge badge-scratch">Scratch</span>
-                                @else
-                                    <span class="badge badge-nonbite">Non-Bite</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if(str_contains($patient->source_of_exposure, 'Dog'))
-                                    <span class="badge badge-dog">{{ $patient->source_of_exposure }}</span>
-                                @else
-                                    <span class="badge badge-cat">{{ $patient->source_of_exposure }}</span>
-                                @endif
-                            </td>
-<td style="display: flex; gap: 5px; align-items: center;">
-    {{-- Remind Vaccination (Visual Only) --}}
-    <a href="#" class="btn-edit">Remind Vaccination</a>
-
-    {{-- VIEW BUTTON (Visual Only) --}}
-    <a href="#" class="btn-view">View</a>
-
-    {{-- EDIT BUTTON (Visual Only) --}}
-    <a href="#" class="btn-edit">Edit</a>
-
-    {{-- DELETE BUTTON (Visual Only) --}}
-    <a href="#" onclick="alert('Delete action simulated!'); return false;" class="btn-delete">Delete</a>
-
-    {{-- PRINT PATIENT RECORD BUTTON (Visual Only) --}}
-    <a href="#" class="btn-print_patient_record">Print Record</a>
-</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8">
-                                <div class="empty-state">
-                                    No patients registered yet.<br>
-                                    <a href="{{ route('patients.create') }}">Register your first patient →</a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </main>
+                @empty
+                    <tr>
+                        <td colspan="8">
+                            {{-- Kept empty for clean UI on Vaccinated tab --}}
+                            <div style="height: 100px;"></div>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</main>
 
 </body>
 </html>

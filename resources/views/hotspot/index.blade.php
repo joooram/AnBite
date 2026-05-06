@@ -101,6 +101,13 @@
                     <tr><td>Mahabang Dahilig</td><td>5</td></tr>
                 </tbody>
             </table>
+           <div style="margin-top: 15px; padding: 15px; background-color: #1a331a; color: white; border-radius: 5px; display: flex; align-items: center;">
+    <h4 style="margin: 0; flex: 1;">TOTAL CASES (BATANGAS CITY)</h4>
+    
+    <div style="margin-right: 35%; min-width: 50px; text-align: center;">
+        <h3 style="margin: 0; font-weight: bold;">96</h3>
+    </div>
+</div>
         </div>
     </div>
 

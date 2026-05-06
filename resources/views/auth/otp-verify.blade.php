@@ -7,9 +7,6 @@
     <title>AnBite — Verify Account</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           PERMANENT DARK MODE THEME
-        ============================================================ */
         :root {
             --green-accent: #3dba85;
             --green-hover:  #30a873;
@@ -53,61 +50,92 @@
         @keyframes d5{to{transform:translate(10px,-14px);}} @keyframes d6{to{transform:translate(14px,-10px);}}
         @keyframes d7{to{transform:translate(-12px,10px);}} @keyframes d8{to{transform:translate(8px,-16px);}}
 
-        /* CENTERED BRANDING */
-        .brand-wrapper {
+        /* CENTERED BRANDING (Pinalaki) */
+         .brand-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
             z-index: 10;
             padding: 40px;
             animation: fadeUp 1s 0.2s both;
         }
+
         .logo-img {
-            width: 120px;
-            height: 120px;
+            width: 180px; 
+            height: 180px;
             object-fit: contain;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-            margin-bottom: 20px;
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15)); 
+            margin-bottom: 25px; 
         }
+
+        .brand-title {
+            font-weight: 900;
+            color: #1a4331; 
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .left-description {
+            font-size: 1.3rem;
+            font-weight: 500; 
+            color: #4b5563; 
+            line-height: 1.6;
+            max-width: 100%; 
+            margin: 0 auto 24px auto; 
+        }
+
+        .left-description span {
+            font-weight: 900; 
+            color: #1a4331; 
+            font-size: 1.5rem; 
+        }
+
         .left-tagline { 
-            font-size: 1.2rem; 
-            font-weight: 700; 
-            color: #2e5a45; 
-            line-height: 1.4; 
-            max-width: 400px; 
-            margin: 0 auto; 
-            text-shadow: 0 1px 2px rgba(255,255,255,0.5); 
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #5c7c6c; 
+            font-style: italic; 
+            line-height: 1.5;
+            max-width: 450px;
+            margin: 0 auto;
         }
 
         /* ===== RIGHT ===== */
         .right { flex: 1; background: var(--bg-right); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 2.5rem 2.5rem; position: relative; overflow-y: auto; transition: background 0.3s; }
 
         /* Card */
-        .card { background: var(--card-bg); border-radius: 18px; padding: 2.2rem 2.4rem 2rem; width: 100%; max-width: 420px; box-shadow: var(--card-shadow); animation: cardIn 0.8s 0.15s cubic-bezier(.16,1,.3,1) both; transition: background 0.3s, box-shadow 0.3s; }
+        .card { background: var(--card-bg); border-radius: 18px; padding: 2.8rem 2.8rem 2.4rem; width: 100%; max-width: 440px; box-shadow: var(--card-shadow); animation: cardIn 0.8s 0.15s cubic-bezier(.16,1,.3,1) both; transition: background 0.3s, box-shadow 0.3s; }
         @keyframes cardIn { from{opacity:0;transform:translateY(28px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
 
-        .otp-icon { width: 50px; height: 50px; background: rgba(61,186,133,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; }
-        .card-title { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.02em; margin-bottom: 5px; transition: color 0.3s; text-align: center; }
-        .card-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.6rem; transition: color 0.3s; line-height: 1.5; text-align: center; }
+        /* Card Elements (Pinalaki) */
+        .otp-icon { width: 64px; height: 64px; background: rgba(61,186,133,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto; }
+        .card-title { font-size: 2.2rem; font-weight: 700; color: var(--text-dark); letter-spacing: -0.025em; margin-bottom: 8px; transition: color 0.3s; text-align: center; }
+        .card-sub { font-size: 1rem; color: var(--text-light); margin-bottom: 2rem; transition: color 0.3s; line-height: 1.5; text-align: center; }
 
-        /* Updated Alerts for Dark Mode by Default */
-        .alert { font-size: 0.8rem; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.2rem; text-align: center; }
+        /* Updated Alerts */
+        .alert { font-size: 0.95rem; border-radius: 8px; padding: 12px 14px; margin-bottom: 1.2rem; text-align: center; }
         .alert-info { background: #0c4a6e; color: #7dd3fc; border: 1px solid #0369a1; }
         .alert-error { background: #450a0a; color: #fca5a5; border: 1px solid #7f1d1d; }
 
-        /* OTP Boxes CSS adapted to theme */
-        .otp-boxes { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
-        .otp-box { width: 46px; height: 54px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 1.4rem; font-weight: 700; text-align: center; color: var(--text-dark); background: var(--input-bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s; }
+        /* OTP Boxes (Pinalaki) */
+        .otp-boxes { display: flex; gap: 10px; justify-content: center; margin-bottom: 1.8rem; }
+        .otp-box { width: 54px; height: 62px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 1.6rem; font-weight: 700; text-align: center; color: var(--text-dark); background: var(--input-bg); outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s; }
         .otp-box:focus { border-color: var(--green-accent); box-shadow: 0 0 0 3px rgba(61,186,133,0.12); }
         #otpHidden { display: none; }
 
-        .btn-submit { width: 100%; padding: 12.5px; background: var(--green-accent); color: white; border: none; border-radius: 9px; font-size: 0.9rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 3px 16px rgba(61,186,133,0.38); margin-bottom: 1rem; }
+        /* Submit Button (Pinalaki) */
+        .btn-submit { width: 100%; padding: 14px; background: var(--green-accent); color: white; border: none; border-radius: 9px; font-size: 1.1rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 3px 16px rgba(61,186,133,0.38); margin-bottom: 1.2rem; }
         .btn-submit:hover { background: var(--green-hover); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(61,186,133,0.45); }
         .btn-submit:active { transform: translateY(0); }
 
-        .links { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
-        .link { font-size: 0.79rem; color: var(--green-accent); font-weight: 600; text-decoration: none; background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+        /* Links & Timer (Pinalaki) */
+        .links { display: flex; justify-content: space-between; align-items: center; margin-top: 1.2rem; }
+        .link { font-size: 0.95rem; color: var(--green-accent); font-weight: 600; text-decoration: none; background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
         .link:hover { text-decoration: underline; }
 
-        .timer { text-align: center; font-size: 0.8rem; color: var(--text-light); }
+        .timer { text-align: center; font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem; }
         .timer span { color: var(--text-dark); font-weight: 600; transition: color 0.3s; }
 
         @keyframes fadeIn{from{opacity:0;}to{opacity:1;}} @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
@@ -124,14 +152,24 @@
 
         <div class="brand-wrapper">
             <img class="logo-img" src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo">
-            <div class="left-tagline">Anti-rabies Network for Bite Incident Tracking and Evaluation</div>
+
+            <div class="brand-title">ANBITE</div>
+
+            <div class="left-description">
+                <span>A</span>nti-rabies <span>N</span>etwork for <span>B</span>ite <span>I</span>ncident <span>T</span>racking and <span>E</span>valuation
+            </div>
+            
+            <div class="left-tagline">
+                Your Tracking System for Rabies Prevention<br>Control and Management
+            </div>
         </div>
     </div>
+
 
     <div class="right">
         <div class="card">
             <div class="otp-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </div>
             
             <div class="card-title">Verify Your Account</div>
@@ -213,6 +251,6 @@
             countdown.style.color = '#fca5a5'; /* In-update ang expiration color para sa dark mode */
         }
     }, 1000);
-</script>
+</script> 
 </body>
 </html>

@@ -25,15 +25,27 @@ class PatientController extends Controller
      * This function is called when the staff clicks "Patient Registration" in the sidebar.
      * It fetches ALL patients from the database and sends them to the index.blade.php page.
      */
-    public function index()
+   public function index(Request $request)
     {
-        // Patient::latest() = get all patients, newest first
-        // ->get() = actually run the query and get the results
-        $patients = Patient::latest()->get();
+        $filter = $request->query('filter');
 
-        // Return the view and pass the $patients data to it
-        // 'patients.index' means: resources/views/patients/index.blade.php
-        // compact('patients') = send the $patients variable to the blade file
+        // Start the query
+        $query = Patient::query();
+
+        // Filter logic
+        if ($filter == 'vaccinated') {
+            // This assumes your database has a 'vaccine_days' or status check
+            // For now, we use a status check. If 'vaccinated' is clicked, it shows nothing 
+            // unless the status in the DB matches exactly.
+            $query->where('bite_category', 'Vaccinated'); 
+        } elseif ($filter == 'unvaccinated') {
+            // Shows everyone who isn't marked fully vaccinated
+            $query->where('bite_category', '!=', 'Vaccinated');
+        }
+
+        // Get the results, newest first
+        $patients = $query->latest()->get();
+
         return view('patients.index', compact('patients'));
     }
 
@@ -129,4 +141,3 @@ class PatientController extends Controller
         return view('patients.show', compact('patient'));
     }
 }
-

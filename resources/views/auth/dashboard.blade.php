@@ -18,59 +18,6 @@
             min-height: 100vh;
         }
 
-        /* ── SIDEBAR ── */
-        .sidebar {
-            width: 230px;
-            background: #1a3a1a;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem 1rem;
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 100;
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .nav-label {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.4);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 0.5rem;
-            margin-top: 0.5rem;
-            padding-left: 12px;
-        }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; border-radius: 8px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none; font-size: 0.85rem;
-            margin-bottom: 2px; transition: all 0.2s;
-        }
-
-        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
-        .nav-item.active { background: rgba(255,255,255,0.18); color: white; font-weight: 600; }
-        .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; }
-
-        .sidebar-footer {
-            margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 1rem;
-        }
-
-        .nav-item.logout { color: #ff9999; }
-        .nav-item.logout:hover { background: rgba(255,100,100,0.1); }
-
         /* ── MAIN ── */
         .main { margin-left: 230px; flex: 1; padding: 2rem; }
 
@@ -107,7 +54,7 @@
         }
 
         .stat-card {
-            background: white;
+            background: #ffffff;
             border-radius: 12px;
             padding: 1.2rem 1.4rem;
             border: 0.5px solid #e8e8e8;
@@ -116,9 +63,9 @@
             align-items: flex-start;
         }
 
-        .stat-label { font-size: 0.72rem; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-        .stat-num { font-size: 2rem; font-weight: 800; color: #1a3a1a; line-height: 1; }
-        .stat-sub { font-size: 0.7rem; color: #aaa; margin-top: 4px; }
+        .stat-label { font-size: 0.72rem; color: #08270f; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .stat-num { font-size: 2rem; font-weight: 800; color: #08270f; line-height: 1; }
+        .stat-sub { font-size: 0.7rem; color: #08270f; margin-top: 4px; }
         .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .stat-icon svg { width: 20px; height: 20px; }
 
@@ -131,7 +78,7 @@
         }
 
         .panel {
-            background: white;
+            background: #ffffff;
             border-radius: 12px;
             border: 0.5px solid #e8e8e8;
             padding: 1.2rem 1.4rem;
@@ -158,7 +105,7 @@
         }
 
         table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        thead th { text-align: left; padding: 8px 12px; background: #f8f8f8; color: #555; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid #eee; }
+        thead th { text-align: left; padding: 8px 12px; background: #9cca97; color: #555; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid #eee; }
         tbody td { padding: 10px 12px; color: #444; border-bottom: 0.5px solid #f5f5f5; }
         tbody tr:hover { background: #fafafa; }
 

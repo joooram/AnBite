@@ -32,25 +32,26 @@ Route::get('/dashboard', function () {
     return view('auth.dashboard');
 })->name('dashboard');
 
-
 // ── PATIENT ROUTES ────────────────────────────────────────────
-// Patient Registration — show the add patient form
 Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
-
-// Patient Records — show the list of all patients
 Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
-
-// Save new patient to database
 Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
-
-// View one patient's full details
 Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show');
 
-// Route para ipakita ang admin page
+// ── ADMIN ROUTES ──────────────────────────────────────────────
+// DINAGDAG/NILINAW: Route para sa Admin Dashboard (Blangkong page na may sidebar)
 Route::get('/admin/adminDashboard', [AdminController::class, 'index'])->name('admin.adminDashboard');
 
 // Route para i-process ang pagpapalit ng password
 Route::post('/admin/update-password/{id}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
+
+Route::get('/admin/accounts', function () {
+    // Siguraduhin na tumutugma ito kung nasaan nakasave ang iyong file.
+    // Kung nasa loob ito ng 'views' folder lang, gawin mong view('admin-AccountManagement')
+    // Kung nasa loob ng 'auth', gawin mong view('auth.admin-AccountManagement')
+    return view('auth.admin-AccountManagement'); 
+})->name('admin.accounts');
+
 
 // ── HOTSPOT MAP ───────────────────────────────────────────────
 Route::get('/hotspot', function () {
