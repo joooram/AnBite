@@ -1,69 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnBite - Hotspot Map</title>
-
+    <title>AnBite — Hotspot Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
-
     <style>
-*       { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', sans-serif; /* Pinantay sa Patient Records font */
+            font-family: 'Poppins', sans-serif;
             background: #f3f4f6;
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* ITO ANG PINAKAMAHALAGA: MATCH ANG 220px ng Sidebar */
-        .main-container {
-            margin-left: 230px; 
-            padding: 5rem;
-            width: calc(100% - 220px);
-            max-width: calc(100% - 220px);
+        /* === MAIN === */
+        .main {
+            margin-left: 230px;
+            flex: 1;
+            padding: 2rem;
         }
 
-        /* Pinantay natin yung white boxes sa ".panel" style ng records mo */
-        .panel {
+        /* === TOPBAR === */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .topbar-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a3a1a;
+        }
+
+        .topbar-sub {
+            font-size: 0.82rem;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .topbar-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             background: white;
-            border-radius: 20px;
-            border: 0.5px solid #e8e8e8;
-            padding: 1.2rem 1.4rem;
-            margin-bottom: 1.5rem;
+            padding: 8px 16px;
+            border-radius: 99px;
+            border: 0.5px solid #e0e0e0;
+            font-size: 0.82rem;
+            color: #1a3a1a;
+            font-weight: 500;
         }
 
-        .custom-table {
+        .topbar-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+        }
+
+        /* === MAP PANEL === */
+        .map-panel {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .map-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .map-panel-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a3a1a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .map-panel-title svg { color: #2d6a2d; }
+
+        .map-panel-sub {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .map-legend {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        #map {
+            height: 440px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* === TABLE PANEL === */
+        .table-panel {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .table-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.4rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-panel-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a3a1a;
+        }
+
+        .table-panel-sub {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+
+        .month-badge {
+            font-size: 0.72rem;
+            background: #ecfdf5;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 600;
+        }
+
+        /* === TABLE === */
+        .hotspot-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.82rem;
         }
 
-        .custom-table th {
+        .hotspot-table thead th {
             text-align: left;
-            padding: 20px 15px;
-            background: #1a3a1a;
-            color: white;
+            padding: 10px 16px;
+            background: #ecfdf5;
+            color: #374151;
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
-        .custom-table td {
-            padding: 20px;
-            border-bottom: 0.2px solid #dcdcdc;
+        .hotspot-table thead th:last-child { text-align: center; }
+
+        .hotspot-table tbody td {
+            padding: 11px 16px;
+            color: #374151;
+            border-bottom: 0.5px solid #f5f5f5;
+            vertical-align: middle;
         }
 
-        .custom-table tr:hover {
-            background-color: #fafafa;
+        .hotspot-table tbody tr:last-child td { border-bottom: none; }
+        .hotspot-table tbody tr:hover { background: #fafafa; }
+
+        /* Rank badge */
+        .rank-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
-        .leaflet-marker-icon {
+        .rank-num.top-1 { background: #fef3c7; color: #92400e; }
+        .rank-num.top-2 { background: #f1f5f9; color: #475569; }
+        .rank-num.top-3 { background: #fef2f2; color: #991b1b; }
+
+        /* Case count + bar */
+        .cases-cell { text-align: center; }
+
+        .cases-count {
+            font-size: 0.88rem;
+            font-weight: 700;
             color: #1a3a1a;
+            margin-bottom: 4px;
+        }
+
+        .cases-bar-wrap {
+            width: 100%;
+            height: 5px;
+            background: #f0f0f0;
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .cases-bar {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(to right, #2d6a2d, #6abf69);
+        }
+
+        /* === TOTAL FOOTER === */
+        .total-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.4rem;
+            background: linear-gradient(135deg, #1a3a1a, #2d6a2d);
+            color: white;
+        }
+
+        .total-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .total-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .total-sub {
+            font-size: 0.7rem;
+            opacity: 0.65;
+            margin-top: 1px;
         }
     </style>
 </head>
@@ -71,45 +275,118 @@
 
     @include('layouts.sidebar')
 
-        <div class="main-container">
-        <h2 style="margin-bottom: 20px; color: #1a3a1a;">Rabies Hotspot Map - Batangas City</h2>
+    <main class="main">
 
-        <div class="map-wrapper">
-            <div id="map" style="height: 400px; border: 3px solid #ccc; border-radius: 5px; z-index: 1;"></div> 
+        {{-- TOPBAR --}}
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Rabies Hotspot Map</div>
+                <div class="topbar-sub">Batangas City — {{ date('F Y') }}</div>
+            </div>
+            <div class="topbar-badge">
+                <div class="topbar-badge-dot"></div>
+                Live Map
+            </div>
         </div>
 
-        <div class="table-wrapper">
-            <h4>Top 10 Barangays with Highest Rabies Cases (This Month)</h4>
+        {{-- MAP PANEL --}}
+        <div class="map-panel">
+            <div class="map-panel-header">
+                <div>
+                    <div class="map-panel-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        Barangay Incident Map
+                    </div>
+                    <div class="map-panel-sub">Click a marker to view barangay details</div>
+                </div>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#2d6a2d;"></div>
+                        Barangay Marker
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#e53e3e;"></div>
+                        High Risk
+                    </div>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
 
-            <table class="custom-table">
+        {{-- TABLE PANEL --}}
+        <div class="table-panel">
+            <div class="table-panel-header">
+                <div>
+                    <div class="table-panel-title">Top 10 Barangays — Highest Rabies Cases</div>
+                    <div class="table-panel-sub">Ranked by total reported incidents this month</div>
+                </div>
+                <span class="month-badge">{{ date('F Y') }}</span>
+            </div>
+
+            <table class="hotspot-table">
                 <thead>
                     <tr>
+                        <th style="width:50px;">#</th>
                         <th>Barangay Name</th>
-                        <th>Total Cases</th>
+                        <th style="width:180px; text-align:center;">Total Cases</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Pallocan Silangan</td><td>15</td></tr>
-                    <tr><td>Kumintang Ibaba</td><td>13</td></tr>
-                    <tr><td>Balete</td><td>12</td></tr>
-                    <tr><td>Tabangao Ambulong</td><td>11</td></tr>
-                    <tr><td>San Pedro</td><td>10</td></tr>
-                    <tr><td>Bolbok</td><td>9</td></tr>
-                    <tr><td>Alangilan</td><td>8</td></tr>
-                    <tr><td>Santa Clara</td><td>7</td></tr>
-                    <tr><td>Sorosoro Ilaya</td><td>6</td></tr>
-                    <tr><td>Mahabang Dahilig</td><td>5</td></tr>
+                    @php
+                        $hotspots = [
+                            ['name' => 'Pallocan Silangan',   'cases' => 15],
+                            ['name' => 'Kumintang Ibaba',     'cases' => 13],
+                            ['name' => 'Balete',              'cases' => 12],
+                            ['name' => 'Tabangao Ambulong',   'cases' => 11],
+                            ['name' => 'San Pedro',           'cases' => 10],
+                            ['name' => 'Bolbok',              'cases' =>  9],
+                            ['name' => 'Alangilan',           'cases' =>  8],
+                            ['name' => 'Santa Clara',         'cases' =>  7],
+                            ['name' => 'Sorosoro Ilaya',      'cases' =>  6],
+                            ['name' => 'Mahabang Dahilig',    'cases' =>  5],
+                        ];
+                        $max = $hotspots[0]['cases'];
+                    @endphp
+
+                    @foreach($hotspots as $i => $row)
+                    <tr>
+                        <td>
+                            <div class="rank-num {{ $i === 0 ? 'top-1' : ($i === 1 ? 'top-2' : ($i === 2 ? 'top-3' : '')) }}">
+                                {{ $i + 1 }}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600; color:#1f2937;">{{ $row['name'] }}</div>
+                            <div style="font-size:0.7rem; color:#9ca3af; margin-top:1px;">Batangas City</div>
+                        </td>
+                        <td class="cases-cell">
+                            <div class="cases-count">{{ $row['cases'] }}</div>
+                            <div class="cases-bar-wrap">
+                                <div class="cases-bar" style="width: {{ ($row['cases'] / $max) * 100 }}%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
-           <div style="margin-top: 15px; padding: 15px; background-color: #1a331a; color: white; border-radius: 5px; display: flex; align-items: center;">
-    <h4 style="margin: 0; flex: 1;">TOTAL CASES (BATANGAS CITY)</h4>
-    
-    <div style="margin-right: 35%; min-width: 50px; text-align: center;">
-        <h3 style="margin: 0; font-weight: bold;">96</h3>
-    </div>
-</div>
+
+            {{-- TOTAL FOOTER --}}
+            <div class="total-footer">
+                <div>
+                    <div class="total-label">Total Cases — Batangas City</div>
+                    <div class="total-sub">All barangays combined this month</div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="total-value">96</div>
+                    <div class="total-sub">reported incidents</div>
+                </div>
+            </div>
         </div>
-    </div>
+
+    </main>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
@@ -149,7 +426,6 @@
             ];
 
             barangays.forEach(function(name) {
-                // Generates random coordinates near Batangas City center
                 var lat = 13.7565 + (Math.random() - 0.5) * 0.05;
                 var lng = 121.0583 + (Math.random() - 0.5) * 0.05;
 
@@ -160,5 +436,6 @@
 
         });
     </script>
+
 </body>
 </html>

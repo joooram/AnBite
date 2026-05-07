@@ -7,16 +7,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f3f4f6;
-            display: flex;
-            min-height: 100vh;
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f3f4f6;
+        display: flex;
+        min-height: 100vh;
         }
 
         .main { margin-left: 230px; flex: 1; padding: 2rem; }

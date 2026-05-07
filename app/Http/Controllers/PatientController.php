@@ -92,7 +92,9 @@ class PatientController extends Controller
             'date_of_exposure'   => 'required|date',
             'place_of_exposure'  => 'required|string|max:255',
             'type_of_exposure'   => 'required|in:Scratch,Bite,Non-Bite/Non-Scratch',
-            'source_of_exposure' => 'required|in:Dog - With Breed,Dog - Without Breed,Cat - With Breed,Cat - Without Breed',
+            
+            'source_of_exposure' => 'required|in:Dog - With Breed,Dog - Without Breed,Cat - With Breed,Cat - Without Breed,other animal',
+            'other_animal_details' => 'required_if:source_of_exposure,other animal|string|max:100',
 
             // Optional fields
             'bite_category'      => 'nullable|in:1,2,3',

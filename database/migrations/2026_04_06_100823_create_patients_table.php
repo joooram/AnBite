@@ -60,11 +60,12 @@ return new class extends Migration
             // What animal caused the incident and its breed status
             // These are the 4 possible combinations
             $table->enum('source_of_exposure', [
-                'Dog - With Breed',
-                'Dog - Without Breed',
-                'Cat - With Breed',
-                'Cat - Without Breed',
-            ]);
+            'Dog - With Breed',
+            'Dog - Without Breed',
+            'Cat - With Breed',
+            'Cat - Without Breed',
+            'other animal'
+]);
  
             // ── ADDITIONAL TRACKING FIELDS ────────────────────────
  
