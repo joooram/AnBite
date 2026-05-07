@@ -3,61 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnBite — Manage Staff Accounts</title>
+    <title>AnBite — Account Management</title>
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="margin: 0; background-color: #f4f7f6; font-family: 'Poppins', sans-serif;">
+<body>
 
     @include('layouts.adminSidebar')
 
-    <div style="margin-left: 230px; padding: 40px; min-height: 100vh; box-sizing: border-box;">
-        
-        <h2 style="color: #1a4331; margin-bottom: 25px; font-weight: 700; font-size: 1.8rem;">Admin Dashboard – Manage Staff Accounts</h2>
+    <main class="main">
 
-        @if(session('success'))
-            <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #c3e6cb; font-weight: 500;">
-                {{ session('success') }}
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Account Management</div>
+                <div class="topbar-sub">Manage CHO staff accounts — {{ date('F Y') }}</div>
             </div>
-        @endif
+            <div class="topbar-user">
+                <div class="user-avatar">AD</div>
+                Admin
+            </div>
+        </div>
 
-        <div style="background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; min-width: 800px; text-align: left;">
+        <!-- ACCOUNTS TABLE -->
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <div class="panel-title">CHO Staff Accounts</div>
+                    <div class="panel-sub">All registered staff with system access</div>
+                </div>
+                <a href="#" class="btn-add">+ Add New CHO Staff</a>
+            </div>
+
+            <table>
                 <thead>
-                    <tr style="background-color: #1a4331; color: white;">
-                        <th style="padding: 18px 20px; font-weight: 600; font-size: 1rem;">Name</th>
-                        <th style="padding: 18px 20px; font-weight: 600; font-size: 1rem;">Username</th>
-                        <th style="padding: 18px 20px; font-weight: 600; font-size: 1rem;">Email</th>
-                        <th style="padding: 18px 20px; font-weight: 600; font-size: 1rem;">Reset Password</th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email Address</th>
+                        <th>Reset Password</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if(isset($users))
-                        @foreach($users as $user)
-                        <tr style="border-bottom: 1px solid #f0f0f0;">
-                            <td style="padding: 15px 20px; color: #111827; font-weight: 600;">{{ $user->first_name }} {{ $user->last_name }}</td>
-                            <td style="padding: 15px 20px; color: #4b5563; font-weight: 500;">{{ $user->username }}</td>
-                            <td style="padding: 15px 20px; color: #4b5563; font-weight: 500;">{{ $user->email }}</td>
-                            <td style="padding: 15px 20px;">
-                                
-                                <form action="{{ route('admin.updatePassword', $user->id) }}" method="POST" style="display: flex; gap: 10px; margin: 0; align-items: center;" onsubmit="return confirm('Are you sure you want to change the password for this account?');">
-                                    @csrf
-                                    <input type="password" name="new_password" placeholder="Type new password" required minlength="8" style="padding: 10px 15px; border: 1px solid #d1d5db; border-radius: 6px; flex: 1; outline: none; font-family: 'Poppins', sans-serif; font-size: 0.9rem;">
-                                    <button type="submit" style="background-color: #1a4331; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; transition: background-color 0.2s;">Save</button>
-                                </form>
-
-                            </td>
-                        </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="4" style="padding: 30px; text-align: center; color: #6b7280; font-style: italic;">No staff accounts found.</td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar">JR</div>
+                                Joram Reyes
+                            </div>
+                        </td>
+                        <td>cho_staff1</td>
+                        <td>joram@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar" style="background:#2d6a2d;">C2</div>
+                                Maria Santos
+                            </div>
+                        </td>
+                        <td>cho_staff2</td>
+                        <td>cho.staff2@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar" style="background:#2d6a2d;">C3</div>
+                                Juan dela Cruz
+                            </div>
+                        </td>
+                        <td>cho_staff3</td>
+                        <td>cho.staff3@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar" style="background:#2d6a2d;">C4</div>
+                                Ana Reyes
+                            </div>
+                        </td>
+                        <td>cho_staff4</td>
+                        <td>cho.staff4@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar" style="background:#2d6a2d;">C5</div>
+                                Pedro Lim
+                            </div>
+                        </td>
+                        <td>cho_staff5</td>
+                        <td>cho.staff5@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="table-avatar" style="background:#9ca3af;">C6</div>
+                                Rosa Mendoza
+                            </div>
+                        </td>
+                        <td>cho_staff6</td>
+                        <td>cho.staff6@gmail.com</td>
+                        <td>
+                            <form class="reset-pw-form">
+                                <input type="password" class="pw-input" placeholder="Type new password...">
+                                <button type="submit" class="btn-add" style="border-radius:6px; padding: 7px 14px;">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="action-btn">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Edit
+                            </button>
+                            <button class="action-btn danger">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
 
-    </div>
+    </main>
+
 </body>
 </html>

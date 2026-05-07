@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* ── MAIN ── */
         .main { margin-left: 230px; flex: 1; padding: 2rem; }
 
         .topbar {
@@ -45,31 +45,79 @@
             font-size: 0.72rem; color: white; font-weight: 700;
         }
 
-        /* ── STAT CARDS ── */
+        /* ===== IMPROVED STAT CARDS ===== */
         .stat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 1.2rem;
             margin-bottom: 1.5rem;
         }
 
         .stat-card {
             background: #ffffff;
-            border-radius: 12px;
-            padding: 1.2rem 1.4rem;
-            border: 0.5px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 1.4rem;
+            border: 1px solid #f0f0f0;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.04);
         }
 
-        .stat-label { font-size: 0.72rem; color: #08270f; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-        .stat-num { font-size: 2rem; font-weight: 800; color: #08270f; line-height: 1; }
-        .stat-sub { font-size: 0.7rem; color: #08270f; margin-top: 4px; }
-        .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .stat-icon svg { width: 20px; height: 20px; }
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #2d6a2d, #6abf69);
+        }
 
-        /* ── MID ROW ── */
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .stat-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .stat-sub {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .stat-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.95;
+        }
+
+        .stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* ===== PANELS ===== */
         .mid-grid {
             display: grid;
             grid-template-columns: 1.4fr 1fr;
@@ -79,13 +127,14 @@
 
         .panel {
             background: #ffffff;
-            border-radius: 12px;
-            border: 0.5px solid #e8e8e8;
-            padding: 1.2rem 1.4rem;
+            border-radius: 16px;
+            border: 1px solid #f0f0f0;
+            padding: 1.3rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
         }
 
         .panel-title {
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #1a3a1a;
             margin-bottom: 1rem;
@@ -94,10 +143,16 @@
             align-items: center;
         }
 
-        .panel-title span { font-size: 0.75rem; color: #888; font-weight: 400; }
-        #heatmapPreview { height: 220px; border-radius: 8px; }
+        .panel-title span {
+            font-size: 0.75rem;
+            color: #888;
+        }
 
-        /* ── BOTTOM ROW ── */
+        #heatmapPreview {
+            height: 220px;
+            border-radius: 10px;
+        }
+
         .bottom-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -105,50 +160,107 @@
         }
 
         table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-        thead th { text-align: left; padding: 8px 12px; background: #9cca97; color: #555; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid #eee; }
-        tbody td { padding: 10px 12px; color: #444; border-bottom: 0.5px solid #f5f5f5; }
+
+        thead th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #ecfdf5;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.72rem;
+        }
+
+        tbody td {
+            padding: 10px 12px;
+            color: #444;
+            border-bottom: 0.5px solid #f5f5f5;
+        }
+
         tbody tr:hover { background: #fafafa; }
 
-        .badge { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 99px; font-weight: 600; }
-        .badge-dog { background: #E6F1FB; color: #185FA5; }
-        .badge-cat { background: #FAEEDA; color: #854F0B; }
+        .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-weight: 600;
+        }
 
-        .right-col { display: flex; flex-direction: column; gap: 1rem; }
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-        .activity-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid #f5f5f5; }
-        .activity-item:last-child { border-bottom: none; }
-        .activity-dot { width: 8px; height: 8px; border-radius: 50%; background: #1a3a1a; margin-top: 5px; flex-shrink: 0; }
-        .activity-text { font-size: 0.8rem; color: #444; line-height: 1.5; }
-        .activity-time { font-size: 0.7rem; color: #bbb; }
+        .activity-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 0.5px solid #f5f5f5;
+        }
 
-        .empty-state { text-align: center; padding: 2rem; color: #bbb; font-size: 0.82rem; }
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #1a3a1a;
+            margin-top: 5px;
+        }
+
+        .activity-text {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        .activity-time {
+            font-size: 0.7rem;
+            color: #bbb;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #bbb;
+            font-size: 0.82rem;
+        }
 
         .btn-add {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 7px 16px; background: #1a3a1a; color: white;
-            border-radius: 99px; text-decoration: none;
-            font-size: 0.8rem; font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: linear-gradient(135deg, #1a3a1a, #2d6a2d);
+            color: white;
+            border-radius: 99px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
-        .btn-add:hover { background: #2d6a2d; }
+
+        .btn-add:hover {
+            background: #2d6a2d;
+        }
     </style>
 </head>
+
 <body>
 @stack('scripts')
 @include('layouts.sidebar')
 
-    {{-- ── MAIN CONTENT ── --}}
-    <main class="main">
+<main class="main">
 
-        <div class="topbar">
-            <div>
-                <div class="topbar-title">Dashboard</div>
-                <div class="topbar-sub">Batangas City — {{ date('F Y') }}</div>
-            </div>
-            <div class="topbar-user">
-                <div class="user-avatar">{{ strtoupper(substr(session('full_name', 'U'), 0, 2)) }}</div>
-                {{ session('full_name', 'Staff') }}
-            </div>
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Dashboard</div>
+            <div class="topbar-sub">Batangas City — {{ date('F Y') }}</div>
         </div>
+        <div class="topbar-user">
+            <div class="user-avatar">{{ strtoupper(substr(session('full_name', 'U'), 0, 2)) }}</div>
+            {{ session('full_name', 'Staff') }}
+        </div>
+    </div>
+
+    <!-- SAME CONTENT BELOW (NO CHANGES) -->
 
         {{-- STAT CARDS --}}
         <div class="stat-grid">
