@@ -80,31 +80,24 @@ class PatientController extends Controller
         // 'in:' = must be one of these specific values
         // 'nullable' = optional, can be empty
         $request->validate([
-            // Patient Personal Information
-            'full_name'          => 'required|string|max:200',
-            'sex'                => 'required|in:Male,Female',
-            'age'                => 'required|integer|min:1|max:150',
-            'contact_number'     => 'nullable|string|max:20',
-            'email'              => 'nullable|email|max:200',
-            'address'            => 'required|string|max:255',
-
-            // History of Exposure
-            'date_of_exposure'   => 'required|date',
-            'place_of_exposure'  => 'required|string|max:255',
-            'type_of_exposure'   => 'required|in:Scratch,Bite,Non-Bite/Non-Scratch',
-            
-            'source_of_exposure' => 'required|in:Dog - With Breed,Dog - Without Breed,Cat - With Breed,Cat - Without Breed,other animal',
-            'other_animal_details' => 'required_if:source_of_exposure,other animal|string|max:100',
-
-            // Optional fields
-            'bite_category'      => 'nullable|in:1,2,3',
-            'referred_clinic'    => 'nullable|string',
-            'vaccine_days'       => 'nullable|string',
+            'full_name'            => 'required|string|max:200',
+            'sex'                  => 'required|in:Male,Female',
+            'age'                  => 'required|integer|min:1|max:150',
+            'contact_number'       => 'nullable|string|max:20',
+            'email'                => 'nullable|email|max:200',
+            'address'              => 'required|string|max:255',
+            'medical_history'      => 'nullable|string',
+            'date_of_exposure'     => 'required|date',
+            'place_of_exposure'    => 'required|string|max:255',
+            'type_of_exposure'     => 'required|in:Scratch,Bite,Non-Bite/Non-Scratch',
+            'source_of_exposure'   => 'required|in:Dog - With Breed,Dog - Without Breed,Cat - With Breed,Cat - Without Breed,other animal',
+            'other_animal_details' => 'required_if:source_of_exposure,other animal|nullable|string|max:100',
+            'wound_site'           => 'nullable|string',
+            'bite_category'        => 'nullable|in:1,2,3',
+            'referred_clinic'      => 'nullable|string',
+            'vaccine_days'         => 'nullable|string',
         ]);
 
-        // CREATE — save the patient to the database
-        // Patient::create() inserts a new row into the patients table
-        // $request->only() picks only the listed fields from the form submission
         Patient::create($request->only([
             'full_name',
             'sex',
@@ -112,10 +105,13 @@ class PatientController extends Controller
             'contact_number',
             'email',
             'address',
+            'medical_history',
             'date_of_exposure',
             'place_of_exposure',
             'type_of_exposure',
             'source_of_exposure',
+            'other_animal_details',
+            'wound_site',
             'bite_category',
             'referred_clinic',
             'vaccine_days',

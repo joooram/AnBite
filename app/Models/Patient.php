@@ -23,21 +23,19 @@ class Patient extends Model
      * If a column is NOT in $fillable, Laravel will ignore it when saving.
      */
     protected $fillable = [
-        // Patient Personal Information
         'full_name',
         'sex',
         'age',
         'contact_number',
         'email',
         'address',
- 
-        // History of Exposure
+        'medical_history',
         'date_of_exposure',
         'place_of_exposure',
         'type_of_exposure',
         'source_of_exposure',
- 
-        // Additional tracking
+        'other_animal_details',
+        'wound_site',
         'bite_category',
         'referred_clinic',
         'vaccine_days',

@@ -8,28 +8,90 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    // Pinapakita nito ang page at kinukuha lahat ng registered accounts
+    // Admin Dashboard — show all users
     public function index()
     {
-        // Kukunin natin lahat ng users, pwede mo i-exclude ang sarili mong admin account kung gusto mo
-        $users = User::all(); 
-        
-        return view('auth.adminDashboard', compact('users'));
+        $users = User::where('role', 'cho_staff')->orderBy('created_at', 'desc')->get();
+        $totalUsers = $users->count();
+
+        return view('auth.adminDashboard', compact('users', 'totalUsers'));
     }
 
-    // Ito ang nagse-save ng bagong password kapag kinlick ang "Save"
+    // Account Management page — show all staff
+    public function accounts()
+    {
+        $users = User::where('role', 'cho_staff')->orderBy('created_at', 'desc')->get();
+
+        return view('auth.admin-AccountManagement', compact('users'));
+    }
+
+    // Store new CHO Staff account
+    public function storeStaff(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'username'   => 'required|string|max:255|unique:users',
+            'password'   => 'required|string|min:8',
+        ]);
+
+        User::create([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'username'   => $request->username,
+            'password'   => Hash::make($request->password),
+            'role'       => 'cho_staff',
+            'email'      => null,
+        ]);
+
+        return redirect()->route('admin.accounts')
+            ->with('success', "Account for {$request->first_name} {$request->last_name} was successfully created!");
+    }
+
+    // Update staff name/username (Edit)
+    public function updateStaff(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'username'   => 'required|string|max:255|unique:users,username,' . $id,
+        ]);
+
+        $user->update([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'username'   => $request->username,
+        ]);
+
+        return redirect()->route('admin.accounts')
+            ->with('success', "Account for {$user->first_name} {$user->last_name} was successfully updated!");
+    }
+
+    // Reset password
     public function updatePassword(Request $request, $id)
     {
         $request->validate([
-            'new_password' => 'required|min:8',
+            'new_password' => 'required|string|min:8',
         ]);
 
         $user = User::findOrFail($id);
-        
-        // Ine-encrypt natin ulit ang bagong password bago i-save
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->back()->with('success', "Password for {$user->first_name} has been successfully updated!");
+        return redirect()->route('admin.accounts')
+            ->with('success', "Password for {$user->first_name} {$user->last_name} was successfully reset!");
+    }
+
+    // Delete staff account
+    public function destroyStaff($id)
+    {
+        $user = User::findOrFail($id);
+        $name = $user->first_name . ' ' . $user->last_name;
+        $user->delete();
+
+        return redirect()->route('admin.accounts')
+            ->with('success', "Account for {$name} was successfully deleted!");
     }
 }

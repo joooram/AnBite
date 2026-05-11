@@ -13,6 +13,12 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('username', 100)->unique();
+            
+            // --- MGA IDINAGDAG NATIN ---
+            $table->string('email', 255)->nullable()->unique(); 
+            $table->string('role', 50)->default('cho_staff'); 
+            // ---------------------------
+
             $table->string('password', 255);
             $table->timestamps();
         });

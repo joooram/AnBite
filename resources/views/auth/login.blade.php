@@ -228,7 +228,6 @@
         <div class="card">
             <div class="card-title">Welcome back</div>
             <div class="card-sub">
-                No account yet? <a href="{{ route('register') }}">Create an Account</a>
             </div>
 
             @if($errors->any())
@@ -264,7 +263,7 @@
                 </div>
 
                 <button type="submit" class="btn-login" id="loginBtn">
-                    <span id="btnTxt">Sign in</span>
+                    <span id="btnTxt">Log in</span>
                     <div class="spin" id="spin"></div>
                 </button>
             </form>

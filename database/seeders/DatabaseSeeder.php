@@ -8,19 +8,16 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Gagawa ito ng admin account na gagamitin natin sa login
         User::updateOrCreate(
-            ['username' => 'admin'], // Hahanapin kung may 'admin' na
+            ['username' => 'admin'],
             [
                 'first_name' => 'System',
                 'last_name'  => 'Admin',
                 'email'      => 'admin@anbite.com',
-                'password'   => Hash::make('admin123'), // Ito ang password na 'admin123'
+                'password'   => Hash::make('admin123'), // Kailangan natin ito!
+                'role'       => 'admin', // Idinagdag natin ito
             ]
         );
     }

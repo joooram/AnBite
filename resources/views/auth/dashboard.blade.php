@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+    @vite('resources/css/app.css')
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -256,8 +256,8 @@
             <div class="topbar-sub">Batangas City — {{ date('F Y') }}</div>
         </div>
         <div class="topbar-user">
-            <div class="user-avatar">{{ strtoupper(substr(session('full_name', 'U'), 0, 2)) }}</div>
-            {{ session('full_name', 'Staff') }}
+            <div class="user-avatar">{{ substr(Auth::user()->first_name, 0, 1) }}</div>
+            {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
         </div>
     </div>
 

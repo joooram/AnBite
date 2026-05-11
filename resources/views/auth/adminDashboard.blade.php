@@ -30,7 +30,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Total Users</div>
-                    <div class="stat-num">6</div>
+                    <div class="stat-num">{{ $users->count() }}</div>
                     <div class="stat-sub">Registered in system</div>
                 </div>
                 <div class="stat-icon" style="background-color: #e0f2e9; color: #2d6a2d;">
@@ -43,7 +43,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Active Users</div>
-                    <div class="stat-num">5</div>
+                    <div class="stat-num">{{ $users->count() }}</div>
                     <div class="stat-sub">Currently active</div>
                 </div>
                 <div class="stat-icon" style="background-color: #dcfce7; color: #166534;">
@@ -56,7 +56,7 @@
             <div class="stat-card">
                 <div>
                     <div class="stat-label">Inactive Users</div>
-                    <div class="stat-num">1</div>
+                    <div class="stat-num">0</div>
                     <div class="stat-sub">Disabled accounts</div>
                 </div>
                 <div class="stat-icon" style="background-color: #f3f4f6; color: #6b7280;">
@@ -73,8 +73,9 @@
             <div class="panel-header">
                 <div>
                     <div class="panel-title">System Users</div>
-                    <div class="panel-sub">All registered CHO staff accounts</div>
+                    <div class="panel-sub">{{ $users->count() }} registered CHO staff account{{ $users->count() !== 1 ? 's' : '' }}</div>
                 </div>
+                <a href="{{ route('admin.accounts') }}" class="btn-add">Manage Accounts</a>
             </div>
 
             <table>
@@ -83,115 +84,36 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Username</th>
-                        <th>Email</th>
                         <th>Role</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Registered</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse ($users as $i => $user)
                     <tr>
-                        <td>1</td>
+                        <td>{{ $i + 1 }}</td>
                         <td>
                             <div class="user-cell">
-                                <div class="table-avatar">MJM</div>
-                                Marl Joram Mapa
+                                <div class="table-avatar" style="background:#2d6a2d;">
+                                    {{ strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1)) }}
+                                </div>
+                                {{ $user->first_name }} {{ $user->last_name }}
                             </div>
                         </td>
-                        <td>CHO Staff 1</td>
-                        <td>mapa@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-active">Active</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
+                        <td>{{ $user->username }}</td>
+                        <td><span class="badge badge-staff">CHO Staff</span></td>
+                        <td style="font-size:0.78rem; color:#9ca3af;">
+                            {{ $user->created_at->format('M d, Y') }}
                         </td>
                     </tr>
+                    @empty
                     <tr>
-                        <td>2</td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="table-avatar" style="background:#2d6a2d;">C2</div>
-                                Maria Santos
-                            </div>
-                        </td>
-                        <td>cho_staff2</td>
-                        <td>cho.staff2@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-active">Active</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
+                        <td colspan="5" style="text-align:center; padding:2rem; color:#9ca3af; font-size:0.82rem;">
+                            No staff accounts yet.
+                            <a href="{{ route('admin.accounts') }}" style="color:#2d6a2d; font-weight:600;">Go to Account Management</a> to add one.
                         </td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="table-avatar" style="background:#2d6a2d;">C3</div>
-                                Juan dela Cruz
-                            </div>
-                        </td>
-                        <td>cho_staff3</td>
-                        <td>cho.staff3@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-active">Active</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="table-avatar" style="background:#2d6a2d;">C4</div>
-                                Ana Reyes
-                            </div>
-                        </td>
-                        <td>cho_staff4</td>
-                        <td>cho.staff4@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-active">Active</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="table-avatar" style="background:#2d6a2d;">C5</div>
-                                Pedro Lim
-                            </div>
-                        </td>
-                        <td>cho_staff5</td>
-                        <td>cho.staff5@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-active">Active</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>
-                            <div class="user-cell">
-                                <div class="table-avatar" style="background:#9ca3af;">C6</div>
-                                Rosa Mendoza
-                            </div>
-                        </td>
-                        <td>cho_staff6</td>
-                        <td>cho.staff6@gmail.com</td>
-                        <td><span class="badge badge-staff">Staff</span></td>
-                        <td><span class="badge badge-inactive">Inactive</span></td>
-                        <td>
-                            <button class="action-btn">Edit</button>
-                            <button class="action-btn danger">Delete</button>
-                        </td>
-                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

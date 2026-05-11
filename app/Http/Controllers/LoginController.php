@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -16,37 +14,40 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        // 1. I-validate ang in-input ng user
+        $credentials = $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        // 2. Gamitin ang Auth::attempt para si Laravel na ang mag-login nang secure
+        if (Auth::attempt($credentials)) {
+            
+            // I-regenerate ang session para iwas-hack (Security Best Practice)
+            $request->session()->regenerate();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            session([
-                'user_id'   => $user->id,
-                'username'  => $user->username,
-                'full_name' => $user->first_name . ' ' . $user->last_name
-            ]);
-
-            // --- ITO LANG ANG IDINAGDAG/BINAGO NATIN ---
-            if ($user->username === 'admin') {
+            // 3. I-check kung sino ang nag-login gamit ang Auth::user()
+            if (Auth::user()->username === 'admin') {
                 return redirect()->route('admin.adminDashboard'); 
-            } else {
-                return redirect()->route('dashboard'); 
+            } elseif (Auth::user()->role === 'cho_staff') {
+                return redirect()->route('dashboard'); // Pinalitan ang 'auth.dashboard' ng 'dashboard'
             }
-            // -------------------------------------------
         }
 
+        // 4. Kung mali ang username o password
         return back()->withErrors([
             'username' => 'Invalid username or password.',
-        ]);
+        ])->onlyInput('username'); // Ibabalik yung nai-type na username para hindi na i-type ulit
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->flush();
+        // Tamang paraan ng pag-logout sa Laravel
+        Auth::logout();
+        
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('login');
     }
 }

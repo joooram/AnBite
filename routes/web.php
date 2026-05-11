@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\OtpController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AdminController;
 
@@ -16,19 +14,12 @@ Route::get('/', function () {
 Route::get('/login',  [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/register',  [RegisterController::class, 'show'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
-
-Route::get('/otp-verify',  [OtpController::class, 'show'])->name('otp.show');
-Route::post('/otp-verify', [OtpController::class, 'verify'])->name('otp.verify');
-Route::post('/otp-resend', [OtpController::class, 'resend'])->name('otp.resend');
-
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/forgot-password', function () { return view('auth.login'); })->name('password.request');
 
 // ── DASHBOARD ─────────────────────────────────────────────────
 Route::get('/dashboard', function () {
-    if (!session('user_id')) return redirect()->route('login');
+    if (!auth()->check()) return redirect()->route('login');
     return view('auth.dashboard');
 })->name('dashboard');
 
@@ -39,19 +30,14 @@ Route::post('/patients', [PatientController::class, 'store'])->name('patients.st
 Route::get('/patients/{id}', [PatientController::class, 'show'])->name('patients.show');
 
 // ── ADMIN ROUTES ──────────────────────────────────────────────
-// DINAGDAG/NILINAW: Route para sa Admin Dashboard (Blangkong page na may sidebar)
 Route::get('/admin/adminDashboard', [AdminController::class, 'index'])->name('admin.adminDashboard');
+Route::get('/admin/accounts',       [AdminController::class, 'accounts'])->name('admin.accounts');
 
-// Route para i-process ang pagpapalit ng password
-Route::post('/admin/update-password/{id}', [AdminController::class, 'updatePassword'])->name('admin.updatePassword');
-
-Route::get('/admin/accounts', function () {
-    // Siguraduhin na tumutugma ito kung nasaan nakasave ang iyong file.
-    // Kung nasa loob ito ng 'views' folder lang, gawin mong view('admin-AccountManagement')
-    // Kung nasa loob ng 'auth', gawin mong view('auth.admin-AccountManagement')
-    return view('auth.admin-AccountManagement'); 
-})->name('admin.accounts');
-
+// CRUD for CHO Staff accounts
+Route::post('/admin/staff',              [AdminController::class, 'storeStaff'])->name('admin.storeStaff');
+Route::put('/admin/staff/{id}',          [AdminController::class, 'updateStaff'])->name('admin.updateStaff');
+Route::post('/admin/staff/{id}/password',[AdminController::class, 'updatePassword'])->name('admin.updatePassword');
+Route::delete('/admin/staff/{id}',       [AdminController::class, 'destroyStaff'])->name('admin.destroyStaff');
 
 // ── HOTSPOT MAP ───────────────────────────────────────────────
 Route::get('/hotspot', function () {
@@ -60,6 +46,6 @@ Route::get('/hotspot', function () {
 
 // ── CHARTS & REPORTS ─────────────────────────────────────────
 Route::get('/charts', function () {
-    if (!session('user_id')) return redirect()->route('login');
+    // Tinanggal na natin ang manual session check
     return view('charts.index');
-})->name('charts');
+})->name('charts')->middleware('auth');
