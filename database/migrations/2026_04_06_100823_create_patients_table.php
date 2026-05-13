@@ -54,11 +54,10 @@ return new class extends Migration
             $table->string('place_of_exposure', 255);
  
             // Type of wound/contact with animal
-            // Scratch = minor contact, Bite = actual bite, Non-Bite/Non-Scratch = indirect contact
-            $table->enum('type_of_exposure', ['Scratch', 'Bite', 'Non-Bite/Non-Scratch']);
- 
-            // What animal caused the incident and its breed status
-            // These are the 4 possible combinations
+            // Dinagdagan ng 'Scratch and Bite' sa listahan
+            $table->enum('type_of_exposure', ['Scratch', 'Bite', 'Scratch and Bite', 'Non-Bite/Non-Scratch']);
+
+            // Source of Exposure (Maintain the current options)
             $table->enum('source_of_exposure', [
             'Dog - With Breed',
             'Dog - Without Breed',

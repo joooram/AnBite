@@ -179,8 +179,9 @@
                     <div class="select-wrap">
                         <select name="type_of_exposure" id="type_of_exposure_select" required>
                             <option value="" disabled selected>Select type</option>
-                            <option value="Scratch"              {{ old('type_of_exposure') == 'Scratch'              ? 'selected' : '' }}>Scratch</option>
-                            <option value="Bite"                 {{ old('type_of_exposure') == 'Bite'                 ? 'selected' : '' }}>Bite</option>
+                            <option value="Scratch" {{ old('type_of_exposure') == 'Scratch' ? 'selected' : '' }}>Scratch</option>
+                            <option value="Bite" {{ old('type_of_exposure') == 'Bite' ? 'selected' : '' }}>Bite</option>
+                            <option value="Scratch and Bite" {{ old('type_of_exposure') == 'Scratch and Bite' ? 'selected' : '' }}>Scratch and Bite</option>
                             <option value="Non-Bite/Non-Scratch" {{ old('type_of_exposure') == 'Non-Bite/Non-Scratch' ? 'selected' : '' }}>Non-Bite / Non-Scratch</option>
                         </select>
                     </div>
@@ -231,6 +232,7 @@
             <div class="exposure-btn-row" id="exp-pill-row">
                 <button type="button" class="exp-pill" data-val="Scratch">Scratch</button>
                 <button type="button" class="exp-pill" data-val="Bite">Bite</button>
+                <button type="button" class="exp-pill" data-val="Scratch and Bite">Scratch and Bite</button>
                 <button type="button" class="exp-pill" data-val="Non-Bite/Non-Scratch">Non-Bite / Non-Scratch</button>
             </div>
 
@@ -358,12 +360,12 @@
                 <div class="form-group">
                     <label>Category Level of Bite</label>
                     <div class="select-wrap">
-                        <select name="bite_category" id="bite_category_select">
-                            <option value="" disabled selected>Select category</option>
-                            <option value="1" {{ old('bite_category') == '1' ? 'selected' : '' }}>Category 1</option>
-                            <option value="2" {{ old('bite_category') == '2' ? 'selected' : '' }}>Category 2</option>
-                            <option value="3" {{ old('bite_category') == '3' ? 'selected' : '' }}>Category 3</option>
-                        </select>
+                        <select id="category_level_select" name="bite_category" class="your-css-classes">
+    <option value="" disabled selected>Select category</option>
+    <option value="1" {{ old('bite_category') == '1' ? 'selected' : '' }}>Category 1</option>
+    <option value="2" {{ old('bite_category') == '2' ? 'selected' : '' }}>Category 2</option>
+    <option value="3" {{ old('bite_category') == '3' ? 'selected' : '' }}>Category 3</option>
+</select>
                     </div>
                 </div>
 
@@ -403,173 +405,210 @@
 </div>
 
 <script>
+ document.addEventListener('DOMContentLoaded', function() {
+    // ─── INITIALIZATION ───
     const selected = new Set();
     let exposureType = null;
 
+    // Listahan ng mga parte na matik Category 3
     const HIGH_RISK = new Set([
-        'Head','Head (back)','Neck','Neck (back)',
-        'Left hand','Right hand','Left hand (back)','Right hand (back)',
-        'Left foot','Right foot','Left foot (back)','Right foot (back)'
+        'Head', 'Head (back)', 'Neck', 'Neck (back)',
+        'Left hand', 'Right hand', 'Left hand (back)', 'Right hand (back)',
+        'Left foot', 'Right foot', 'Left foot (back)', 'Right foot (back)'
     ]);
 
     const CAT_INFO = {
-        1: { label:'Category 1 — No wound',      desc:'Touching or feeding of animals, licks on intact skin. No wound, no mucosal contact. Prophylaxis not required.',                                                                                cls:'cat-1', val:'1' },
-        2: { label:'Category 2 — Minor exposure', desc:'Nibbling of uncovered skin, minor scratches or abrasions without bleeding. Wound washing and vaccination required immediately.',                                                              cls:'cat-2', val:'2' },
-        3: { label:'Category 3 — Severe exposure',desc:'Single or multiple transdermal bites or scratches, licks on broken skin or mucous membranes, or exposure to head/neck/hands/feet. Immediate RIG + vaccine required.',                        cls:'cat-3', val:'3' }
+        1: { label:'Category 1 — No wound',      desc:'Touching or feeding of animals, licks on intact skin. No wound, no mucosal contact.', cls:'cat-1' },
+        2: { label:'Category 2 — Minor exposure', desc:'Nibbling of uncovered skin, minor scratches or abrasions without bleeding.', cls:'cat-2' },
+        3: { label:'Category 3 — Severe exposure',desc:'Transdermal bites/scratches, licks on broken skin, or exposure to head/neck/hands/feet.', cls:'cat-3' }
     };
 
-    // ── Exposure pills ──────────────────────────────────────────
-    document.querySelectorAll('.exp-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.exp-pill').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            exposureType = btn.dataset.val;
-            const sel = document.getElementById('type_of_exposure_select');
-            if (sel) sel.value = exposureType;
-            updateCategory();
-        });
-    });
-
-    const expSelect = document.getElementById('type_of_exposure_select');
-    if (expSelect) {
-        expSelect.addEventListener('change', () => {
-            exposureType = expSelect.value;
-            document.querySelectorAll('.exp-pill').forEach(b =>
-                b.classList.toggle('active', b.dataset.val === exposureType));
-            updateCategory();
-        });
-        if (expSelect.value) {
-            exposureType = expSelect.value;
-            document.querySelectorAll('.exp-pill').forEach(b =>
-                b.classList.toggle('active', b.dataset.val === exposureType));
-        }
-    }
-
-    // ── Zone clicks ─────────────────────────────────────────────
-    document.querySelectorAll('.zone').forEach(zone => {
-        zone.addEventListener('click', () => {
-            if (selected.has(zone.id)) {
-                selected.delete(zone.id);
-                zone.classList.remove('selected');
-            } else {
-                selected.add(zone.id);
-                zone.classList.add('selected');
-            }
-            renderTags();
-            updateCategory();
-        });
-    });
-
-    // ── Render wound tags ────────────────────────────────────────
+    // ─── SOLUTION 2: RENDER WOUND TAGS (Dapat lumabas ang pangalan ng body part) ───
     function renderTags() {
         const container   = document.getElementById('wound-tags');
         const hiddenInput = document.getElementById('wound_site_input');
-        container.innerHTML = '';
+        
+        if (!container || !hiddenInput) return;
+
+        container.innerHTML = ''; // Clear previous content
+
         if (selected.size === 0) {
             const ph = document.createElement('span');
             ph.className   = 'no-site-placeholder';
-            ph.textContent = 'No wound site selected — click a body region above';
+            ph.id          = 'no-site-msg';
+            ph.textContent = exposureType === 'Non-Bite/Non-Scratch' 
+                ? 'No wound site needed for Category 1' 
+                : 'No wound site selected — click a body region above';
             container.appendChild(ph);
             hiddenInput.value = '';
             return;
         }
+
         const labels = [];
         selected.forEach(id => {
             const el = document.getElementById(id);
             if (!el) return;
             const label = el.dataset.label;
             labels.push(label);
+
             const tag = document.createElement('span');
             tag.className = 'wound-tag';
-            tag.innerHTML = label + ' <button type="button" onclick="removeZone(\'' + id + '\')">x</button>';
+            // Important: Dinagdagan ko ng inline style para magmukhang tag
+            tag.innerHTML = `${label} <button type="button" class="remove-tag" data-id="${id}" style="margin-left:5px; cursor:pointer;">&times;</button>`;
             container.appendChild(tag);
         });
+
         hiddenInput.value = labels.join(', ');
     }
 
-    function removeZone(id) {
-        selected.delete(id);
-        const el = document.getElementById(id);
-        if (el) el.classList.remove('selected');
-        renderTags();
-        updateCategory();
-    }
-
-    // ── Auto category ────────────────────────────────────────────
+    // ─── SOLUTION 1: LOGIC FOR BITE, SCRATCH, AND COMBINED ───
     function updateCategory() {
         const badge = document.getElementById('cat-badge-auto');
         const title = document.getElementById('cat-auto-title');
         const desc  = document.getElementById('cat-auto-desc');
         const hiddenCat = document.getElementById('bite_category_input');
-        const selectCat = document.getElementById('bite_category_select');
+        const selectCat = document.getElementById('category_level_select');
+        const zones = document.querySelectorAll('.zone');
 
-        let cat = null;
-
-        if (!exposureType || selected.size === 0) {
-            badge.className = 'cat-badge cat-none';
-            badge.textContent = '—';
-            title.textContent = 'Select exposure type and wound site';
-            desc.textContent  = '';
-            return;
-        }
+        let cat = 1;
 
         if (exposureType === 'Non-Bite/Non-Scratch') {
             cat = 1;
-        } else if (exposureType === 'Scratch') {
-            const hasHighRisk = [...selected].some(id => {
-                const el = document.getElementById(id);
-                return el && HIGH_RISK.has(el.dataset.label);
+            selected.clear();
+            renderTags();
+            zones.forEach(z => {
+                z.style.pointerEvents = 'none';
+                z.classList.remove('selected');
             });
-            cat = hasHighRisk ? 3 : 2;
-        } else if (exposureType === 'Bite') {
-            const hasHighRisk = [...selected].some(id => {
+        } 
+        else {
+            zones.forEach(z => z.style.pointerEvents = 'auto');
+
+            if (!exposureType || selected.size === 0) {
+                resetCategoryUI();
+                return;
+            }
+
+            let hasHighRiskZone = false;
+            selected.forEach(id => {
                 const el = document.getElementById(id);
-                return el && HIGH_RISK.has(el.dataset.label);
+                if (el && HIGH_RISK.has(el.dataset.label)) hasHighRiskZone = true;
             });
-            cat = hasHighRisk ? 3 : 2;
+
+            // Logic Fix: Bite OR Scratch and Bite OR High Risk = Category 3
+            if (exposureType === 'Bite' || exposureType === 'Scratch and Bite' || hasHighRiskZone) {
+                cat = 3;
+            } else if (exposureType === 'Scratch') {
+                cat = 2;
+            }
         }
 
-        if (cat && CAT_INFO[cat]) {
+        // Update step 4 dropdown and visual UI
+        if (CAT_INFO[cat]) {
             const info = CAT_INFO[cat];
-            badge.className   = 'cat-badge ' + info.cls;
-            badge.textContent = 'Category ' + cat;
-            title.textContent = info.label;
-            desc.textContent  = info.desc;
-            if (hiddenCat) hiddenCat.value = info.val;
-            if (selectCat) selectCat.value = info.val;
+            if(badge) {
+                badge.className = 'cat-badge ' + info.cls;
+                badge.textContent = 'Category ' + cat;
+            }
+            if(title) title.textContent = info.label;
+            if(desc) desc.textContent = info.desc;
+            
+            if (hiddenCat) hiddenCat.value = cat;
+            if (selectCat) {
+                selectCat.value = cat;
+                selectCat.dispatchEvent(new Event('change'));
+            }
         }
     }
 
-    // ── Other Animal toggle ──────────────────────────────────────
-    const sourceSelect    = document.getElementById('source_of_exposure');
-    const otherContainer  = document.getElementById('other_animal_container');
-    const otherInput      = document.getElementById('other_animal_details');
-
-    function toggleOtherAnimal() {
-        const isOther = sourceSelect && sourceSelect.value === 'other animal';
-        if (otherContainer) otherContainer.style.display = isOther ? 'flex' : 'none';
-        if (otherInput)     otherInput.required = isOther;
+    function resetCategoryUI() {
+        const badge = document.getElementById('cat-badge-auto');
+        if(badge) { badge.className = 'cat-badge cat-none'; badge.textContent = '—'; }
+        const title = document.getElementById('cat-auto-title');
+        if(title) title.textContent = 'Select exposure type and wound site';
     }
 
+    // ─── EVENT LISTENERS ───
+
+    // Zone clicks (SVG)
+    document.querySelectorAll('.zone').forEach(zone => {
+        zone.addEventListener('click', function() {
+            if (selected.has(this.id)) {
+                selected.delete(this.id);
+                this.classList.remove('selected');
+            } else {
+                selected.add(this.id);
+                this.classList.add('selected');
+            }
+            renderTags(); // Update labels sa baba
+            updateCategory(); // Update Category
+        });
+    });
+
+    // Tag removal button
+    document.getElementById('wound-tags').addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-tag')) {
+            const id = e.target.dataset.id;
+            selected.delete(id);
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('selected');
+            renderTags();
+            updateCategory();
+        }
+    });
+
+    // Pills interaction
+    document.querySelectorAll('.exp-pill').forEach(btn => {
+        btn.addEventListener('click', function() {
+            exposureType = this.dataset.val;
+            document.querySelectorAll('.exp-pill').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const sel = document.getElementById('type_of_exposure_select');
+            if (sel) sel.value = exposureType;
+            
+            updateCategory();
+        });
+    });
+
+    // Sync Dropdown (Step 2) to Pills (Step 3)
+    const expSelect = document.getElementById('type_of_exposure_select');
+    if (expSelect) {
+        expSelect.addEventListener('change', function() {
+            exposureType = this.value;
+            document.querySelectorAll('.exp-pill').forEach(b => 
+                b.classList.toggle('active', b.dataset.val === exposureType));
+            updateCategory();
+        });
+    }
+
+    // Source of Exposure (Other Animal Toggle)
+    const sourceSelect = document.getElementById('source_of_exposure');
+    const otherContainer = document.getElementById('other_animal_container');
+    const otherInput = document.getElementById('other_animal_details');
+    
     if (sourceSelect) {
-        sourceSelect.addEventListener('change', toggleOtherAnimal);
-        toggleOtherAnimal();
+        sourceSelect.addEventListener('change', function() {
+            const isOther = this.value === 'other animal';
+            if (otherContainer) otherContainer.style.display = isOther ? 'flex' : 'none';
+            if (otherInput) otherInput.required = isOther;
+        });
     }
 
-    // ── Restore old() values on validation fail ──────────────────
+    // Restore old values (Laravel validation fail)
     const oldWound = document.getElementById('wound_site_input').value;
     if (oldWound) {
-        oldWound.split(',').map(s => s.trim()).forEach(label => {
-            document.querySelectorAll('.zone').forEach(z => {
-                if (z.dataset.label === label) {
-                    selected.add(z.id);
-                    z.classList.add('selected');
-                }
-            });
+        const labelsArray = oldWound.split(',').map(s => s.trim());
+        document.querySelectorAll('.zone').forEach(z => {
+            if (labelsArray.includes(z.dataset.label)) {
+                selected.add(z.id);
+                z.classList.add('selected');
+            }
         });
         renderTags();
         updateCategory();
     }
+});
 </script>
 
 </body>

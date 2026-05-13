@@ -159,9 +159,13 @@
             background:#E1F5EE;
             color:#0F6E56;
         }
+        .badge-scratch-bite {
+        background-color: #6f42c1; /* Purple color para maiba sa Bite at Scratch */
+        color: white;
+}
 
         .btn-view,
-        .btn-edit,
+        .btn-vaccine-reminder,
         .btn-delete,
         .btn-print_patient_record{
             padding:6px 12px;
@@ -176,11 +180,11 @@
         }
 
         .btn-view{
-            background:#7da02d;
+            background: linear-gradient(135deg, #1a3a1a, #2d6a2d);
         }
 
-        .btn-edit{
-            background:#2d5a3c;
+        .btn-vaccine-reminder{
+           background: linear-gradient(135deg, #1a3a1a, #74ce74ff);
         }
 
         .btn-delete{
@@ -192,7 +196,7 @@
         }
 
         .btn-view:hover,
-        .btn-edit:hover,
+        .btn-vaccine-reminder:hover,
         .btn-delete:hover,
         .btn-print_patient_record:hover{
             opacity:0.85;
@@ -275,6 +279,21 @@
         </a>
     </div>
 
+    {{-- SUCCESS / ERROR ALERTS --}}
+    @if (session('success'))
+        <div style="display:flex;align-items:center;gap:10px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;font-size:0.82rem;border-radius:12px;padding:12px 16px;margin-bottom:1.2rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div style="display:flex;align-items:center;gap:10px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;font-size:0.82rem;border-radius:12px;padding:12px 16px;margin-bottom:1.2rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ $errors->first() }}
+        </div>
+    @endif
+
     <div class="tabs">
         <a href="{{ route('patients.index') }}"
            class="tab {{ !request('filter') ? 'active' : '' }}">
@@ -340,8 +359,11 @@
                         @elseif($patient->type_of_exposure == 'Scratch')
                             <span class="badge badge-scratch">Scratch</span>
 
+                        @elseif($patient->type_of_exposure == 'Scratch and Bite')
+                            <span class="badge badge-bite">Scratch and Bite</span>
+
                         @else
-                            <span class="badge badge-nonbite">Non-Bite</span>
+                            <span class="badge badge-nonbite">Non-Bite and Non-Scratch</span>
                         @endif
                     </td>
 
@@ -360,32 +382,51 @@
                     <td style="display:flex;gap:5px;flex-wrap:wrap;">
 
                         <!-- VIEW BUTTON -->
-
                         <button
                             type="button"
                             class="btn-view"
-
                             data-bs-toggle="modal"
                             data-bs-target="#viewPatientModal"
-
                             data-full-name="{{ $patient->full_name }}"
                             data-age="{{ $patient->age }}"
                             data-sex="{{ $patient->sex }}"
                             data-address="{{ $patient->address }}"
+                            data-contact="{{ $patient->contact_number ?? 'N/A' }}"
                             data-date="{{ \Carbon\Carbon::parse($patient->date_of_exposure)->format('M d, Y') }}"
+                            data-place="{{ $patient->place_of_exposure ?? 'N/A' }}"
                             data-type="{{ $patient->type_of_exposure }}"
                             data-source="{{ $patient->source_of_exposure }}"
-                            data-vaccination="{{ $patient->vaccination_status }}"
-                            data-contact="{{ $patient->contact_number }}"
+                            data-wound="{{ $patient->wound_site ?? 'N/A' }}"
+                            data-category="{{ $patient->bite_category ? 'Category ' . $patient->bite_category : 'N/A' }}"
+                            data-clinic="{{ $patient->referred_clinic ?? 'N/A' }}"
+                            data-vaccine="{{ $patient->vaccine_days ?? 'N/A' }}"
+                            data-medical="{{ $patient->medical_history ?? 'N/A' }}"
                         >
                             View
                         </button>
 
-                        <a href="#" class="btn-edit">Edit</a>
+                        <!-- VACCINE REMINDER BUTTON -->
+                        <button
+                            type="button"
+                            class="btn btn-success btn-sm reminder-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#vaccineReminderModal"
+                            data-patient-id="{{ $patient->id }}"
+                            data-full-name="{{ $patient->full_name }}"
+                            data-contact-number="{{ $patient->contact_number ?? 'N/A' }}"
+                            data-email="{{ $patient->email ?? 'N/A' }}"
+                            data-clinic="{{ $patient->referred_clinic ?? 'N/A' }}"
+                        >
+                            Vaccine Reminder
+                        </button>
 
-                        <a href="#" onclick="return confirm('Are you sure?')" class="btn-delete">
-                            Delete
-                        </a>
+                        <!-- DELETE BUTTON -->
+                        <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" style="display:inline;"
+                              onsubmit="return confirm('Delete patient record of {{ addslashes($patient->full_name) }}? This cannot be undone.')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
 
                     </td>
 
@@ -409,48 +450,68 @@
 
 </main>
 
-<!-- INCLUDE MODAL -->
+<!-- INCLUDE MODALS -->
 @include('patients.view-modal')
+@include('patients.reminder-modal')
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
-    const viewButtons = document.querySelectorAll('.btn-view');
-
-    viewButtons.forEach(button => {
-
-        button.addEventListener('click', function () {
-
-            document.getElementById('detail-full-name').innerText =
-                this.dataset.fullName;
-
-            document.getElementById('detail-age-sex').innerText =
-                this.dataset.age + ' / ' + this.dataset.sex;
-
-            document.getElementById('detail-address').innerText =
-                this.dataset.address;
-
-            document.getElementById('detail-date-of-exposure').innerText =
-                this.dataset.date;
-
-            document.getElementById('detail-type-of-exposure').innerText =
-                this.dataset.type;
-
-            document.getElementById('detail-source-of-exposure').innerText =
-                this.dataset.source;
-
-            document.getElementById('detail-vaccination-status').innerText =
-                this.dataset.vaccination;
-
-            document.getElementById('detail-contact-number').innerText =
-                this.dataset.contact;
-
+    // ── VIEW MODAL: populate fields on button click ──────────────
+    document.querySelectorAll('.btn-view').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.getElementById('detail-full-name').textContent        = this.dataset.fullName   || '—';
+            document.getElementById('detail-age-sex').textContent          = (this.dataset.age || '—') + ' / ' + (this.dataset.sex || '—');
+            document.getElementById('detail-contact-number').textContent   = this.dataset.contact    || '—';
+            document.getElementById('detail-address').textContent          = this.dataset.address    || '—';
+            document.getElementById('detail-date-of-exposure').textContent = this.dataset.date       || '—';
+            document.getElementById('detail-place-of-exposure').textContent= this.dataset.place      || '—';
+            document.getElementById('detail-type-of-exposure').textContent = this.dataset.type       || '—';
+            document.getElementById('detail-source-of-exposure').textContent= this.dataset.source   || '—';
+            document.getElementById('detail-wound-site').textContent       = this.dataset.wound      || '—';
+            document.getElementById('detail-bite-category').textContent    = this.dataset.category   || '—';
+            document.getElementById('detail-referred-clinic').textContent  = this.dataset.clinic     || '—';
+            document.getElementById('detail-vaccine-days').textContent     = this.dataset.vaccine    || '—';
+            document.getElementById('detail-medical-history').textContent  = this.dataset.medical    || '—';
         });
-
     });
 
+    // ── VACCINE REMINDER MODAL: populate fields ──────────────────
+    document.querySelectorAll('.reminder-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.getElementById('reminder-patient-id').value           = this.dataset.patientId  || '';
+            document.getElementById('reminder-full-name').textContent      = this.dataset.fullName   || '—';
+            document.getElementById('reminder-contact-number').textContent = this.dataset.contactNumber || '—';
+            document.getElementById('reminder-email').textContent          = this.dataset.email      || '—';
+            document.getElementById('reminder-clinic').textContent         = this.dataset.clinic     || '—';
+
+            // Auto-fill message
+            var name   = this.dataset.fullName   || 'Patient';
+            var clinic = this.dataset.clinic     || 'the clinic';
+            document.getElementById('reminder-message').value =
+                'Dear ' + name + ',\n\n' +
+                'This is a friendly reminder from AnBite — Batangas City Health Office.\n\n' +
+                'Please visit ' + clinic + ' for your scheduled vaccine dose.\n\n' +
+                'For inquiries, please contact us at the City Health Office.\n\n' +
+                'Thank you and stay safe!';
+        });
+    });
+
+    // ── Radio button visual highlight ────────────────────────────
+    document.querySelectorAll('input[name="method"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('input[name="method"]').forEach(function(r) {
+                var lbl = r.closest('label');
+                if (lbl) {
+                    lbl.style.borderColor = r.checked ? '#2d6a2d' : '#e5e7eb';
+                    lbl.style.background  = r.checked ? '#f0fdf4' : 'white';
+                    lbl.style.fontWeight  = r.checked ? '600' : '500';
+                    lbl.style.color       = r.checked ? '#1a3a1a' : '#374151';
+                }
+            });
+        });
+    });
 </script>
 
 </body>
