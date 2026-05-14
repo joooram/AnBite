@@ -147,7 +147,6 @@
 
 <aside class="sidebar" id="sidebar">
 
-    <!-- LOGO -->
     <div class="sidebar-logo">
         <img src="{{ asset('images/2ndlogo.png') }}" class="logo-image">
         <span class="brand-name">ANBITE</span>
@@ -157,7 +156,6 @@
 
     <div class="nav-menu-wrapper">
 
-        <!-- DASHBOARD -->
         <a href="{{ route('dashboard') }}"
            class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -169,7 +167,6 @@
             <span>Dashboard</span>
         </a>
 
-        <!-- PATIENT REGISTRATION -->
         <a href="{{ route('patients.create') }}"
            class="nav-item {{ request()->routeIs('patients.create') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -181,7 +178,6 @@
             <span>Patient Registration</span>
         </a>
 
-        <!-- PATIENT RECORDS -->
         <a href="{{ route('patients.index') }}"
            class="nav-item {{ request()->routeIs('patients.index') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -193,7 +189,6 @@
             <span>Patient Records</span>
         </a>
 
-        <!-- HOTSPOT -->
         <a href="{{ route('hotspot') }}"
            class="nav-item {{ request()->routeIs('hotspot') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -203,7 +198,6 @@
             <span>Hotspot Map</span>
         </a>
 
-        <!-- CHARTS -->
         <a href="{{ route('charts') }}"
            class="nav-item {{ request()->routeIs('charts') ? 'active' : '' }}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -214,6 +208,15 @@
             <span>Charts & Reports</span>
         </a>
 
+<a href="{{ route('ai.decision') }}"
+   class="nav-item {{ request()->routeIs('ai.decision') ? 'active' : '' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M12 8v4"/>
+        <path d="M12 16h.01"/>
+    </svg>
+    <span>AI Decision Support</span>
+</a>
     </div>
 
     <div class="sidebar-footer">

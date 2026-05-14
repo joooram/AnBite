@@ -115,6 +115,11 @@
         Edit
     </button>
 </div>
+</div>
+</div>
+</div>
+
+
 
 <style>
     #viewPatientModal .modal-content {

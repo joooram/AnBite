@@ -7,7 +7,6 @@
 
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -381,7 +380,6 @@
 
                     <td style="display:flex;gap:5px;flex-wrap:wrap;">
 
-                        <!-- VIEW BUTTON -->
                         <button
                             type="button"
                             class="btn-view"
@@ -405,7 +403,6 @@
                             View
                         </button>
 
-                        <!-- VACCINE REMINDER BUTTON -->
                         <button
                             type="button"
                             class="btn btn-success btn-sm reminder-btn"
@@ -420,7 +417,6 @@
                             Vaccine Reminder
                         </button>
 
-                        <!-- DELETE BUTTON -->
                         <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" style="display:inline;"
                               onsubmit="return confirm('Delete patient record of {{ addslashes($patient->full_name) }}? This cannot be undone.')">
                             @csrf
@@ -450,67 +446,69 @@
 
 </main>
 
-<!-- INCLUDE MODALS -->
-@include('patients.view-modal')
+@include('patients.view-modal') 
 @include('patients.reminder-modal')
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // ── VIEW MODAL: populate fields on button click ──────────────
-    document.querySelectorAll('.btn-view').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.getElementById('detail-full-name').textContent        = this.dataset.fullName   || '—';
-            document.getElementById('detail-age-sex').textContent          = (this.dataset.age || '—') + ' / ' + (this.dataset.sex || '—');
-            document.getElementById('detail-contact-number').textContent   = this.dataset.contact    || '—';
-            document.getElementById('detail-address').textContent          = this.dataset.address    || '—';
-            document.getElementById('detail-date-of-exposure').textContent = this.dataset.date       || '—';
-            document.getElementById('detail-place-of-exposure').textContent= this.dataset.place      || '—';
-            document.getElementById('detail-type-of-exposure').textContent = this.dataset.type       || '—';
-            document.getElementById('detail-source-of-exposure').textContent= this.dataset.source   || '—';
-            document.getElementById('detail-wound-site').textContent       = this.dataset.wound      || '—';
-            document.getElementById('detail-bite-category').textContent    = this.dataset.category   || '—';
-            document.getElementById('detail-referred-clinic').textContent  = this.dataset.clinic     || '—';
-            document.getElementById('detail-vaccine-days').textContent     = this.dataset.vaccine    || '—';
-            document.getElementById('detail-medical-history').textContent  = this.dataset.medical    || '—';
-        });
-    });
-
-    // ── VACCINE REMINDER MODAL: populate fields ──────────────────
-    document.querySelectorAll('.reminder-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.getElementById('reminder-patient-id').value           = this.dataset.patientId  || '';
-            document.getElementById('reminder-full-name').textContent      = this.dataset.fullName   || '—';
-            document.getElementById('reminder-contact-number').textContent = this.dataset.contactNumber || '—';
-            document.getElementById('reminder-email').textContent          = this.dataset.email      || '—';
-            document.getElementById('reminder-clinic').textContent         = this.dataset.clinic     || '—';
-
-            // Auto-fill message
-            var name   = this.dataset.fullName   || 'Patient';
-            var clinic = this.dataset.clinic     || 'the clinic';
-            document.getElementById('reminder-message').value =
-                'Dear ' + name + ',\n\n' +
-                'This is a friendly reminder from AnBite — Batangas City Health Office.\n\n' +
-                'Please visit ' + clinic + ' for your scheduled vaccine dose.\n\n' +
-                'For inquiries, please contact us at the City Health Office.\n\n' +
-                'Thank you and stay safe!';
-        });
-    });
-
-    // ── Radio button visual highlight ────────────────────────────
-    document.querySelectorAll('input[name="method"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            document.querySelectorAll('input[name="method"]').forEach(function(r) {
-                var lbl = r.closest('label');
-                if (lbl) {
-                    lbl.style.borderColor = r.checked ? '#2d6a2d' : '#e5e7eb';
-                    lbl.style.background  = r.checked ? '#f0fdf4' : 'white';
-                    lbl.style.fontWeight  = r.checked ? '600' : '500';
-                    lbl.style.color       = r.checked ? '#1a3a1a' : '#374151';
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // ── VIEW MODAL: populate fields on button click ──────────────
+        document.querySelectorAll('.btn-view').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.getElementById('detail-full-name').textContent        = this.dataset.fullName   || '—';
+                document.getElementById('detail-age-sex').textContent          = (this.dataset.age || '—') + ' / ' + (this.dataset.sex || '—');
+                document.getElementById('detail-contact-number').textContent   = this.dataset.contact    || '—';
+                document.getElementById('detail-address').textContent          = this.dataset.address    || '—';
+                document.getElementById('detail-date-of-exposure').textContent = this.dataset.date       || '—';
+                document.getElementById('detail-place-of-exposure').textContent= this.dataset.place      || '—';
+                document.getElementById('detail-type-of-exposure').textContent = this.dataset.type       || '—';
+                document.getElementById('detail-source-of-exposure').textContent= this.dataset.source   || '—';
+                document.getElementById('detail-wound-site').textContent       = this.dataset.wound      || '—';
+                document.getElementById('detail-bite-category').textContent    = this.dataset.category   || '—';
+                document.getElementById('detail-referred-clinic').textContent  = this.dataset.clinic     || '—';
+                document.getElementById('detail-vaccine-days').textContent     = this.dataset.vaccine    || '—';
+                document.getElementById('detail-medical-history').textContent  = this.dataset.medical    || '—';
             });
         });
+
+        // ── VACCINE REMINDER MODAL: populate fields ──────────────────
+        document.querySelectorAll('.reminder-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.getElementById('reminder-patient-id').value           = this.dataset.patientId  || '';
+                document.getElementById('reminder-full-name').textContent      = this.dataset.fullName   || '—';
+                document.getElementById('reminder-contact-number').textContent = this.dataset.contactNumber || '—';
+                document.getElementById('reminder-email').textContent          = this.dataset.email      || '—';
+                document.getElementById('reminder-clinic').textContent         = this.dataset.clinic     || '—';
+
+                // Auto-fill message
+                var name   = this.dataset.fullName   || 'Patient';
+                var clinic = this.dataset.clinic     || 'the clinic';
+                document.getElementById('reminder-message').value =
+                    'Dear ' + name + ',\n\n' +
+                    'This is a friendly reminder from AnBite — Batangas City Health Office.\n\n' +
+                    'Please visit ' + clinic + ' for your scheduled vaccine dose.\n\n' +
+                    'For inquiries, please contact us at the City Health Office.\n\n' +
+                    'Thank you and stay safe!';
+            });
+        });
+
+        // ── Radio button visual highlight ────────────────────────────
+        document.querySelectorAll('input[name="method"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('input[name="method"]').forEach(function(r) {
+                    var lbl = r.closest('label');
+                    if (lbl) {
+                        lbl.style.borderColor = r.checked ? '#2d6a2d' : '#e5e7eb';
+                        lbl.style.background  = r.checked ? '#f0fdf4' : 'white';
+                        lbl.style.fontWeight  = r.checked ? '600' : '500';
+                        lbl.style.color       = r.checked ? '#1a3a1a' : '#374151';
+                    }
+                });
+            });
+        });
+
     });
 </script>
 

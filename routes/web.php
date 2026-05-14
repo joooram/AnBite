@@ -41,3 +41,9 @@ Route::delete('/admin/staff/{id}',       [AdminController::class, 'destroyStaff'
 // ── HOTSPOT MAP & CHARTS ──────────────────────────────────────
 Route::get('/hotspot', function () { return view('hotspot.index'); })->name('hotspot');
 Route::get('/charts', function () { return view('charts.index'); })->name('charts')->middleware('auth');
+
+// ── AI DECISION SUPPORT ───────────────────────────────────────
+Route::get('/ai-decision-support', function () { 
+    // Ang 'AI' ay ang folder name, ang 'AI-Decision-Support' ay ang file name
+    return view('AI.AI-Decision-Support'); 
+})->name('ai.decision')->middleware('auth');
