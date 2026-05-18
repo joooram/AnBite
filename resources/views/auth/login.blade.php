@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/2ndlogo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/CHO LOGO.png') }}">    
     <title>AnBite — Login</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -45,20 +46,22 @@
             align-items: center; 
             justify-content: center; 
         }
+
+        /* Background Image with 12% Opacity */
+        .left::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("{{ asset('images/CHO Background.png') }}");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.12;
+            z-index: 1;
+        }
         
-        .circle { position: absolute; border-radius: 50%; }
-        .c1 { width: 600px; height: 600px; top: -200px; left: 10%; background: #2e5a45; animation: d1 20s ease-in-out infinite alternate; }
-        .c2 { width: 640px; height: 640px; top: -220px; right: -160px; background: #dce8e1; animation: d2 16s ease-in-out infinite alternate; }
-        .c3 { width: 680px; height: 680px; top: 5%; left: -140px; background: #e4ede8; animation: d3 22s ease-in-out infinite alternate; }
-        .c4 { width: 520px; height: 520px; top: 28%; right: -120px; background: #9ac5b0; animation: d4 18s ease-in-out infinite alternate; }
-        .c5 { width: 580px; height: 580px; top: 20%; left: 5%; background: #d5e3dc; animation: d5 14s ease-in-out infinite alternate; }
-        .c6 { width: 280px; height: 280px; bottom: 20px; left: 5%; background: #2e5a45; opacity: 0.8; animation: d6 12s ease-in-out infinite alternate; }
-        .c7 { width: 500px; height: 500px; bottom: -160px; right: -100px; background: #dce8e1; animation: d7 18s ease-in-out infinite alternate; }
-        .c8 { width: 400px; height: 400px; bottom: -80px; left: 20%; background: #c2d6cc; animation: d8 15s ease-in-out infinite alternate; }
-        @keyframes d1{to{transform:translate(12px,18px);}} @keyframes d2{to{transform:translate(-14px,16px);}}
-        @keyframes d3{to{transform:translate(16px,-12px);}} @keyframes d4{to{transform:translate(-10px,20px);}}
-        @keyframes d5{to{transform:translate(10px,-14px);}} @keyframes d6{to{transform:translate(14px,-10px);}}
-        @keyframes d7{to{transform:translate(-12px,10px);}} @keyframes d8{to{transform:translate(8px,-16px);}}
 
         /* ===== CENTERED BRANDING CSS ===== */
         .brand-wrapper {
@@ -109,7 +112,7 @@
         .left-tagline { 
             font-size: 1.1rem;
             font-weight: 400;
-            color: #5c7c6c; 
+            color: #213b2e; 
             font-style: italic; 
             line-height: 1.5;
             max-width: 450px;
@@ -209,9 +212,11 @@
         <div class="circle c7"></div><div class="circle c8"></div>
 
         <div class="brand-wrapper">
-            <img class="logo-img" src="{{ asset('images/2ndlogo.png') }}" alt="AnBite Logo">
+            <img class="logo-img" src="{{ asset('images/CHO LOGO.png') }}" alt="CHO Logo">
 
-            <div class="brand-title">ANBITE</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 12px;">
+                <div class="brand-title" style="margin-bottom: 0;">ANBITE</div>
+            </div>
 
             <div class="left-description">
                 <span>A</span>nti-rabies <span>N</span>etwork for <span>B</span>ite <span>I</span>ncident <span>T</span>racking and <span>E</span>valuation

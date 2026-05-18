@@ -75,7 +75,7 @@
 
         <div class="topbar">
             <div>
-                <div class="topbar-title">Rabies Hotspot Map</div>
+                <div class="topbar-title">Rabies Heatmap</div>
                 <div class="topbar-sub">Batangas City &mdash; {{ date('F Y') }}</div>
             </div>
             <div class="topbar-badge">
@@ -85,9 +85,9 @@
         </div>
 
         <div class="controls-row">
-            <button class="view-btn active" id="btn-heat"    onclick="setView('heat')">&#128293; Heatmap</button>
-            <button class="view-btn"         id="btn-markers" onclick="setView('markers')">&#128205; Markers</button>
-            <button class="view-btn"         id="btn-both"    onclick="setView('both')">&#9889; Both</button>
+            <button class="view-btn active" id="btn-heat"    onclick="setView('heat')">Heatmap</button>
+            <button class="view-btn"         id="btn-markers" onclick="setView('markers')"> Markers</button>
+            <button class="view-btn"         id="btn-both"    onclick="setView('both')"> Both</button>
             <select class="filter-select" id="filterSel" onchange="filterTable()">
                 <option value="all">All Barangays</option>
                 <option value="high">Critical / High (&ge; 7 cases)</option>

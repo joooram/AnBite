@@ -5,6 +5,7 @@
     .sidebar,
     .sidebar * {
         font-family: 'Poppins', sans-serif;
+        box-sizing: border-box; /* Sinisigurong sakop ng width ang padding */
     }
 
     body {
@@ -16,6 +17,7 @@
     .sidebar { 
         width: 230px; 
         min-width: 230px; 
+        max-width: 230px; /* Ipinako ang sukat para hindi lumaki kailanman */
         background: #071907; 
         min-height: 100vh; 
         display: flex; 
@@ -26,7 +28,8 @@
         left: 0; 
         z-index: 9999;
         transition: all 0.35s ease;
-        overflow: hidden;
+        overflow-x: hidden; /* Pinipigilan ang pag-overflow pakanan */
+        overflow-y: auto;   /* Pwedeng mag-scroll pababa kung madaming menu */
         box-shadow: 4px 0 18px rgba(0,0,0,0.15);
     }
 
@@ -34,6 +37,7 @@
     .sidebar.collapsed {
         width: 78px;
         min-width: 78px;
+        max-width: 78px;
     }
 
     .sidebar.collapsed .brand-name,
@@ -42,6 +46,7 @@
         opacity: 0;
         visibility: hidden;
         width: 0;
+        display: none; /* Tinatanggal sa layout flow kapag nakasara */
     }
 
     .sidebar.collapsed .nav-item {
@@ -63,32 +68,41 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        width: 100%;
     }
 
-    /* ITEM */
+    /* ITEM (TINAMAAN AT INAYOS PARA SA TEXT-WRAPPING) */
     .nav-item { 
         display: flex; 
         align-items: center; 
         gap: 12px; 
-        padding: 0 1rem; 
-        height: 50px; 
+        padding: 0.5rem 1rem; /* Pinalitan mula height:50px para mag-adjust ang taas base sa linya ng text */
+        min-height: 50px; 
+        width: 100%;
         color: #bbb; 
         text-decoration: none; 
         border-radius: 10px; 
         transition: all 0.25s ease;
         border-left: 4px solid transparent;
         position: relative;
+        overflow: hidden;
     }
 
+    /* TINAMAAN NA SPAN TAG */
     .nav-item span {
         font-size: 0.92rem;
         font-weight: 400;
+        white-space: normal !important;  /* PINAPAYAGANG MAGBABA NG LINYA ANG TEXT */
+        word-wrap: break-word !important; /* PINAPALIPAT SA BABA KAPAG MAHABANG SALITA */
+        line-height: 1.3 !important;      /* MAGANDANG SPACING SA PAGITAN NG DALAWANG LINYA */
+        text-align: left;
+        flex: 1; /* Kinukuha ang natitirang espasyo sa tabi ng icon */
     }
 
     .nav-item svg {
         width: 20px;
         height: 20px;
-        flex-shrink: 0;
+        flex-shrink: 0; /* Pinipigilan ang icon na mapikit o mayumak kapag bumaba ang text */
     }
 
     /* HOVER */
@@ -142,6 +156,7 @@
         margin-top: auto; 
         padding: 1rem 0;
         border-top: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
     }
 </style>
 
@@ -195,7 +210,7 @@
                 <circle cx="12" cy="10" r="3"/>
                 <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/>
             </svg>
-            <span>Hotspot Map</span>
+            <span>Heatmap</span>
         </a>
 
         <a href="{{ route('charts') }}"
@@ -208,15 +223,15 @@
             <span>Charts & Reports</span>
         </a>
 
-<a href="{{ route('ai.decision') }}"
-   class="nav-item {{ request()->routeIs('ai.decision') ? 'active' : '' }}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <path d="M12 8v4"/>
-        <path d="M12 16h.01"/>
-    </svg>
-    <span>AI Decision Support</span>
-</a>
+        <a href="{{ route('ai.decision') }}"
+           class="nav-item {{ request()->routeIs('ai.decision') ? 'active' : '' }}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M12 8v4"/>
+                <path d="M12 16h.01"/>
+            </svg>
+            <span>AI Decision Support</span>
+        </a>
     </div>
 
     <div class="sidebar-footer">

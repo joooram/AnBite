@@ -139,9 +139,20 @@
             font-weight: 600;
             color: #1a3a1a;
             margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    
+            /* Pwersahang alignment pakanan at pakaliwa */
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+    
+            /* PINIPIGILAN ANG TEXT AT PREVIEW NA MAGHIWALAY AT BUMABA */
+            white-space: nowrap !important; 
+        }
+
+            /* Dagdag mo lang ito sa ilalim para mapuwersa ang link na dumikit sa dulong kanan */
+        .panel-title .nav-item {
+            margin-left: auto !important; 
         }
 
         .panel-title span {
@@ -343,7 +354,7 @@
             
             <div class="panel">
                 <div class="panel-title">
-                    Hotspot Map Preview
+                    Heatmap Preview
                     <a href="{{ route('hotspot') }}" class="nav-item {{ request()->routeIs('hotspot') ? 'active' : '' }}">> View Full Map</a>
                 </div>
                 <div id="heatmapPreview"></div>
