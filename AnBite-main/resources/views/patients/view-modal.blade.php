@@ -1,32 +1,28 @@
-<!-- ============================================================
-     VIEW PATIENT MODAL
-     Triggered by: .btn-view buttons in index.blade.php
-     ============================================================ -->
+<!-- VIEW PATIENT MODAL -->
 <div class="modal fade" id="viewPatientModal" tabindex="-1" aria-labelledby="viewPatientModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" id="vm-modal-content">
-
+        <div class="modal-content">
+            
             {{-- HEADER --}}
-            <div class="modal-header" id="vm-header">
+            <div class="modal-header">
                 <div class="vm-header-left">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.85;">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     <h5 class="modal-title" id="viewPatientModalLabel">Patient Details</h5>
                 </div>
                 <button type="button" class="vm-close-btn" data-bs-dismiss="modal" aria-label="Close">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                     </svg>
                 </button>
             </div>
 
             {{-- BODY --}}
-            <div class="modal-body" id="vm-body">
+            <div class="modal-body">
                 <div class="vm-grid">
-
+                    
                     <div class="vm-field vm-full">
                         <div class="vm-label">Full Name</div>
                         <div class="vm-value" id="detail-full-name">—</div>
@@ -87,39 +83,24 @@
                         <div class="vm-value" id="detail-vaccine-days">—</div>
                     </div>
 
-                    <div class="vm-field vm-full" id="vm-medical-row">
-                        <div class="vm-label">Medical History / Known Allergies</div>
+                    <div class="vm-field vm-full">
+                        <div class="vm-label">Medical History</div>
                         <div class="vm-value" id="detail-medical-history">—</div>
                     </div>
 
                 </div>
             </div>
 
-{{-- FOOTER --}}
-<div class="modal-footer">
-    <button type="button" class="btn-print" onclick="window.print()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 17h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2"></path>
-            <path d="M17 9V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4"></path>
-            <path d="M15 13H9a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z"></path>
-        </svg>
-        Print Record
-    </button>
+            {{-- FOOTER --}}
+            <div class="modal-footer">
+                <button type="button" class="vm-btn vm-btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
 
-    <button type="button" class="vm-btn vm-btn-secondary" data-bs-dismiss="modal">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-3"></path>
-            <path d="M9 14.996h3l8.5-8.5a2.121 2.121 0 0 0-3-3l-8.5 8.5v3Z"></path>
-            <path d="m16 5 3 3"></path>
-        </svg>
-        Edit
-    </button>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-
-
 
 <style>
     #viewPatientModal .modal-content {
@@ -205,24 +186,23 @@
         min-height: 18px;
     }
 
-    /* FOOTER FIX - Pinagsama ang flex logic */
     #viewPatientModal .modal-footer {
         background: white;
         border-top: 1px solid #f0f0f0;
         padding: 0.9rem 1.4rem;
-        display: flex !important; /* Force Side-by-Side */
+        display: flex !important;
         flex-direction: row !important;
         justify-content: flex-end;
         gap: 12px; 
     }
 
-#viewPatientModal .vm-btn {
+    #viewPatientModal .vm-btn {
         display: inline-flex;
         align-items: center;
-        gap: 10px;        /* Mas malawak na gap para sa malaking icon */
-        padding: 12px 24px; /* Dinagdagan ang padding (Dating 8px 18px) */
+        gap: 10px;
+        padding: 12px 24px;
         border-radius: 10px;
-        font-size: 1rem;    /* Ginawang 1rem (Dating 0.82rem) */
+        font-size: 1rem;
         font-weight: 600;
         border: none;
         cursor: pointer;
@@ -237,29 +217,27 @@
 
     #viewPatientModal .vm-btn-secondary:hover { opacity: 0.9; }
 
-    /* PRINT BUTTON STYLE */
-#viewPatientModal .btn-print {
+    #viewPatientModal .btn-print {
         background: linear-gradient(135deg, #24452e, #355840);
         color: white;
         border: none;
-        padding: 12px 24px; /* Dinagdagan ang padding (Dating 8px 18px) */
+        padding: 12px 24px;
         border-radius: 10px;
-        font-size: 1rem;    /* Ginawang 1rem (Dating 0.82rem) */
+        font-size: 1rem;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
-        gap: 10px;        /* Mas malawak na gap */
+        gap: 10px;
         cursor: pointer;
         font-family: 'Poppins', sans-serif;
         transition: all 0.2s ease;
         text-decoration: none;
     }
 
-    /* Hover effects para sa premium feel */
     #viewPatientModal .btn-print:hover, 
     #viewPatientModal .vm-btn:hover{
         opacity: 0.9;
-        transform: translateY(-2px); /* Bahagyang aangat pag ni-hover */
+        transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 </style>

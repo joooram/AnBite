@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PatientController;
@@ -18,9 +18,8 @@ Route::get('/forgot-password', function () { return view('auth.login'); })->name
 
 // ── DASHBOARD ─────────────────────────────────────────────────
 Route::get('/dashboard', function () {
-    if (!auth()->check()) return redirect()->route('login');
     return view('auth.dashboard');
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
 // ── PATIENT ROUTES ────────────────────────────────────────────
 Route::get('/patients/create',         [PatientController::class, 'create'])->name('patients.create');
@@ -28,7 +27,7 @@ Route::get('/patients',                [PatientController::class, 'index'])->nam
 Route::post('/patients',               [PatientController::class, 'store'])->name('patients.store');
 Route::post('/patients/send-reminder', [PatientController::class, 'sendReminder'])->name('patients.sendReminder');
 Route::delete('/patients/{id}',        [PatientController::class, 'destroy'])->name('patients.destroy');
-Route::get('/patients/{id}',           [PatientController::class, 'show'])->name('patients.show');
+Route::delete('/patients/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
 
 // ── ADMIN ROUTES ──────────────────────────────────────────────
 Route::get('/admin/adminDashboard', [AdminController::class, 'index'])->name('admin.adminDashboard');

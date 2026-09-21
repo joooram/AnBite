@@ -1,43 +1,43 @@
 <?php
- 
+
 namespace App\Models;
- 
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- 
-/**
- * WHAT IS A MODEL?
- * A Model is a PHP class that represents ONE ROW in your database table.
- * When you save a patient, Laravel creates a Patient object and stores it.
- * When you read a patient, Laravel gives you a Patient object back.
- * Think of it as the "middleman" between your PHP code and MySQL.
- */
+
 class Patient extends Model
 {
+    use HasFactory;
+
     /**
-     * WHAT IS $fillable?
-     * $fillable is a security feature in Laravel called "Mass Assignment Protection".
-     * It tells Laravel: "ONLY allow these specific columns to be saved."
-     * This prevents hackers from injecting extra fields into your form submission.
-     *
-     * Every column you want to save from a form MUST be listed here.
-     * If a column is NOT in $fillable, Laravel will ignore it when saving.
+     * Personal information lang ng pasyente ang ilalagay sa $fillable.
+     * Ang mga detalye ng kagat (exposure) at bakuna ay inilipat na sa hiwalay na tables.
      */
     protected $fillable = [
-        'full_name',
+        'first_name',
+        'last_name',
         'sex',
-        'age',
+        'birthdate',
         'contact_number',
         'email',
         'address',
         'medical_history',
-        'date_of_exposure',
-        'place_of_exposure',
-        'type_of_exposure',
-        'source_of_exposure',
-        'other_animal_details',
-        'wound_site',
-        'bite_category',
-        'referred_clinic',
-        'vaccine_days',
+        'created_by_user_id',
     ];
+
+    /**
+     * RELASYON: Ang isang pasyente ay pwedeng magkaroon ng maraming bite incidents (1 to Many).
+     */
+    public function biteIncidents()
+    {
+        return $this->hasMany(BiteIncident::class);
+    }
+
+    /**
+     * RELASYON: Ang pasyente ay na-encode ng isang User (CHO Staff/Admin).
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_user_id');
+    }
 }

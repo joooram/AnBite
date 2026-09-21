@@ -158,10 +158,11 @@
             background:#E1F5EE;
             color:#0F6E56;
         }
+
         .badge-scratch-bite {
-        background-color: #6f42c1; /* Purple color para maiba sa Bite at Scratch */
-        color: white;
-}
+            background-color: #6f42c1;
+            color: white;
+        }
 
         .btn-view,
         .btn-vaccine-reminder,
@@ -182,9 +183,9 @@
             background: linear-gradient(135deg, #1a3a1a, #2d6a2d);
         }
 
-        .btn-vaccine-reminder{
-           background: linear-gradient(135deg, #1a3a1a, #74ce74ff);
-        }
+  .btn-vaccine-reminder {
+    background: linear-gradient(135deg, #1a3a1a, #74ce74);
+}
 
         .btn-delete{
             background:#a63d3d;
@@ -203,7 +204,6 @@
         }
 
         /* MODAL */
-
         .modal-content{
             border:none;
             border-radius:18px;
@@ -318,7 +318,8 @@
                 <tr>
                     <th>#</th>
                     <th>Full Name</th>
-                    <th>Age / Sex</th>
+                    <th>Age</th>
+                    <th>Sex</th>
                     <th>Address</th>
                     <th>Date of Exposure</th>
                     <th>Type</th>
@@ -330,111 +331,141 @@
             <tbody>
 
                 @forelse ($patients as $patient)
+                    @php
+                        $incident = $patient->biteIncidents ? $patient->biteIncidents->first() : null;
+                        $age = $patient->birthdate ? \Carbon\Carbon::parse($patient->birthdate)->age : '—';
+                        $fullName = trim(($patient->first_name ?? '') . ' ' . ($patient->last_name ?? ''));
+                        $type = $incident->type_of_exposure ?? 'N/A';
+                        $source = $incident->source_of_exposure ?? 'N/A';
 
-                <tr>
+                        // 🟢 VACCINE DAYS PARSER
+                        $vaccineDays = '—';
+                        if ($incident && !empty($incident->vaccine_days)) {
+                            $vDays = $incident->vaccine_days;
 
-                    <td>{{ $loop->iteration }}</td>
+                            if (is_string($vDays)) {
+                                $decoded = json_decode($vDays, true);
+                                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                                    $vDays = $decoded;
+                                }
+                            }
 
-                    <td>
-                        <strong>{{ $patient->full_name }}</strong><br>
+                            if (is_array($vDays)) {
+                                $vaccineDays = implode(', ', array_filter($vDays));
+                            } else {
+                                $vaccineDays = (string) $vDays;
+                            }
+                        }
+                    @endphp
 
-                        <span style="font-size:0.72rem;color:#aaa;">
-                            {{ $patient->contact_number ?? 'No contact' }}
-                        </span>
-                    </td>
+                    <tr>
 
-                    <td>{{ $patient->age }} / {{ $patient->sex }}</td>
+                        <td>{{ $loop->iteration }}</td>
 
-                    <td>{{ $patient->address }}</td>
-
-                    <td>
-                        {{ \Carbon\Carbon::parse($patient->date_of_exposure)->format('M d, Y') }}
-                    </td>
-
-                    <td>
-                        @if($patient->type_of_exposure == 'Bite')
-                            <span class="badge badge-bite">Bite</span>
-
-                        @elseif($patient->type_of_exposure == 'Scratch')
-                            <span class="badge badge-scratch">Scratch</span>
-
-                        @elseif($patient->type_of_exposure == 'Scratch and Bite')
-                            <span class="badge badge-bite">Scratch and Bite</span>
-
-                        @else
-                            <span class="badge badge-nonbite">Non-Bite and Non-Scratch</span>
-                        @endif
-                    </td>
-
-                    <td>
-                        @if(str_contains($patient->source_of_exposure, 'Dog'))
-                            <span class="badge badge-dog">
-                                {{ $patient->source_of_exposure }}
+                        <td>
+                            <strong>{{ $fullName ?: 'Unnamed Patient' }}</strong><br>
+                            <span style="font-size:0.72rem;color:#aaa;">
+                                {{ $patient->contact_number ?? 'No contact' }}
                             </span>
-                        @else
-                            <span class="badge badge-cat">
-                                {{ $patient->source_of_exposure }}
-                            </span>
-                        @endif
-                    </td>
+                        </td>
 
-                    <td style="display:flex;gap:5px;flex-wrap:wrap;">
+                        <td>{{ $age }}</td>
 
-                        <button
-                            type="button"
-                            class="btn-view"
-                            data-bs-toggle="modal"
-                            data-bs-target="#viewPatientModal"
-                            data-full-name="{{ $patient->full_name }}"
-                            data-age="{{ $patient->age }}"
-                            data-sex="{{ $patient->sex }}"
-                            data-address="{{ $patient->address }}"
-                            data-contact="{{ $patient->contact_number ?? 'N/A' }}"
-                            data-date="{{ \Carbon\Carbon::parse($patient->date_of_exposure)->format('M d, Y') }}"
-                            data-place="{{ $patient->place_of_exposure ?? 'N/A' }}"
-                            data-type="{{ $patient->type_of_exposure }}"
-                            data-source="{{ $patient->source_of_exposure }}"
-                            data-wound="{{ $patient->wound_site ?? 'N/A' }}"
-                            data-category="{{ $patient->bite_category ? 'Category ' . $patient->bite_category : 'N/A' }}"
-                            data-clinic="{{ $patient->referred_clinic ?? 'N/A' }}"
-                            data-vaccine="{{ $patient->vaccine_days ?? 'N/A' }}"
-                            data-medical="{{ $patient->medical_history ?? 'N/A' }}"
-                        >
-                            View
-                        </button>
+                        <td>{{ $patient->sex ?? '—' }}</td>
 
-                        <button
-                            type="button"
-                            class="btn btn-success btn-sm reminder-btn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#vaccineReminderModal"
-                            data-patient-id="{{ $patient->id }}"
-                            data-full-name="{{ $patient->full_name }}"
-                            data-contact-number="{{ $patient->contact_number ?? 'N/A' }}"
-                            data-email="{{ $patient->email ?? 'N/A' }}"
-                            data-clinic="{{ $patient->referred_clinic ?? 'N/A' }}"
-                        >
-                            Vaccine Reminder
-                        </button>
+                        <td>{{ $patient->address ?? '—' }}</td>
 
-                        <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" style="display:inline;"
-                              onsubmit="return confirm('Delete patient record of {{ addslashes($patient->full_name) }}? This cannot be undone.')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-delete">Delete</button>
-                        </form>
+                        <td>
+                            @if($incident && $incident->date_of_exposure)
+                                {{ \Carbon\Carbon::parse($incident->date_of_exposure)->format('M d, Y') }}
+                            @else
+                                N/A
+                            @endif
+                        </td>
 
-                    </td>
+                        <td>
+                            @if($type == 'Bite')
+                                <span class="badge badge-bite">Bite</span>
+                            @elseif($type == 'Scratch')
+                                <span class="badge badge-scratch">Scratch</span>
+                            @elseif($type == 'Scratch and Bite')
+                                <span class="badge badge-bite">Scratch and Bite</span>
+                            @else
+                                <span class="badge badge-nonbite">{{ $type }}</span>
+                            @endif
+                        </td>
 
-                </tr>
+                        <td>
+                            @if(str_contains($source, 'Dog'))
+                                <span class="badge badge-dog">
+                                    {{ $source }}
+                                </span>
+                            @else
+                                <span class="badge badge-cat">
+                                    {{ $source }}
+                                </span>
+                            @endif
+                        </td>
+
+                        <td style="display:flex;gap:5px;flex-wrap:wrap;">
+
+                            <!-- VIEW BUTTON -->
+                            <button type="button" 
+                                class="btn-view"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewPatientModal"
+                                data-full-name="{{ $fullName }}"
+                                data-age="{{ $age }}"
+                                data-sex="{{ $patient->sex ?? '—' }}"
+                                data-contact="{{ $patient->contact_number ?? '—' }}"
+                                data-address="{{ $patient->address ?? '—' }}"
+                                data-date="{{ $incident && $incident->date_of_exposure ? \Carbon\Carbon::parse($incident->date_of_exposure)->format('M d, Y') : '—' }}"
+                                data-place="{{ $incident->place_of_exposure ?? '—' }}"
+                                data-type="{{ $type }}"
+                                data-source="{{ $source }}"
+                                data-wound="{{ $incident->wound_site ?? '—' }}"
+                                data-category="{{ $incident->bite_category ?? '—' }}"
+                                data-clinic="{{ $incident->referred_clinic ?? '—' }}"
+                                data-vaccine="{{ $vaccineDays }}"
+                                data-medical="{{ $patient->medical_history ?? '—' }}">
+                                View
+                            </button>
+
+                            <!-- REMINDER BUTTON -->
+<button type="button" 
+    class="btn-vaccine-reminder reminder-btn"
+    data-bs-toggle="modal"
+    data-bs-target="#vaccineReminderModal"
+    data-patient-id="{{ $patient->id }}"
+    data-full-name="{{ $fullName }}"
+    data-contact-number="{{ $patient->contact_number ?? '—' }}"
+    data-email="{{ $patient->email ?? '—' }}"
+    data-clinic="{{ $incident->referred_clinic ?? 'the clinic' }}">
+    Reminder
+</button>
+
+                            <!-- DELETE BUTTON -->
+                            <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" 
+                                        class="btn-delete" 
+                                        onclick="if(confirm('Delete patient record of {{ addslashes($fullName) }}? This cannot be undone.')) { this.closest('form').submit(); }">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </td>
+
+                    </tr>
 
                 @empty
 
-                <tr>
-                    <td colspan="8">
-                        <div style="height:100px;"></div>
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="9">
+                            <div style="height:100px;"></div>
+                        </td>
+                    </tr>
 
                 @endforelse
 
@@ -454,43 +485,56 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
+        function setElementText(id, value) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.textContent = value || '—';
+            }
+        }
+
         // ── VIEW MODAL: populate fields on button click ──────────────
         document.querySelectorAll('.btn-view').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.getElementById('detail-full-name').textContent        = this.dataset.fullName   || '—';
-                document.getElementById('detail-age-sex').textContent          = (this.dataset.age || '—') + ' / ' + (this.dataset.sex || '—');
-                document.getElementById('detail-contact-number').textContent   = this.dataset.contact    || '—';
-                document.getElementById('detail-address').textContent          = this.dataset.address    || '—';
-                document.getElementById('detail-date-of-exposure').textContent = this.dataset.date       || '—';
-                document.getElementById('detail-place-of-exposure').textContent= this.dataset.place      || '—';
-                document.getElementById('detail-type-of-exposure').textContent = this.dataset.type       || '—';
-                document.getElementById('detail-source-of-exposure').textContent= this.dataset.source   || '—';
-                document.getElementById('detail-wound-site').textContent       = this.dataset.wound      || '—';
-                document.getElementById('detail-bite-category').textContent    = this.dataset.category   || '—';
-                document.getElementById('detail-referred-clinic').textContent  = this.dataset.clinic     || '—';
-                document.getElementById('detail-vaccine-days').textContent     = this.dataset.vaccine    || '—';
-                document.getElementById('detail-medical-history').textContent  = this.dataset.medical    || '—';
+                setElementText('detail-full-name',          this.dataset.fullName);
+                setElementText('detail-age-sex',            (this.dataset.age || '—') + ' / ' + (this.dataset.sex || '—'));
+                setElementText('detail-contact-number',     this.dataset.contact);
+                setElementText('detail-address',            this.dataset.address);
+                setElementText('detail-date-of-exposure',   this.dataset.date);
+                setElementText('detail-place-of-exposure',  this.dataset.place);
+                setElementText('detail-type-of-exposure',   this.dataset.type);
+                setElementText('detail-source-of-exposure', this.dataset.source);
+                setElementText('detail-wound-site',         this.dataset.wound);
+                setElementText('detail-bite-category',      this.dataset.category);
+                setElementText('detail-referred-clinic',    this.dataset.clinic);
+                setElementText('detail-vaccine-days',       this.dataset.vaccine);
+                setElementText('detail-medical-history',    this.dataset.medical);
             });
         });
 
         // ── VACCINE REMINDER MODAL: populate fields ──────────────────
         document.querySelectorAll('.reminder-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                document.getElementById('reminder-patient-id').value           = this.dataset.patientId  || '';
-                document.getElementById('reminder-full-name').textContent      = this.dataset.fullName   || '—';
-                document.getElementById('reminder-contact-number').textContent = this.dataset.contactNumber || '—';
-                document.getElementById('reminder-email').textContent          = this.dataset.email      || '—';
-                document.getElementById('reminder-clinic').textContent         = this.dataset.clinic     || '—';
+                var patientIdInput = document.getElementById('reminder-patient-id');
+                if (patientIdInput) {
+                    patientIdInput.value = this.dataset.patientId || '';
+                }
 
-                // Auto-fill message
-                var name   = this.dataset.fullName   || 'Patient';
-                var clinic = this.dataset.clinic     || 'the clinic';
-                document.getElementById('reminder-message').value =
-                    'Dear ' + name + ',\n\n' +
-                    'This is a friendly reminder from AnBite — Batangas City Health Office.\n\n' +
-                    'Please visit ' + clinic + ' for your scheduled vaccine dose.\n\n' +
-                    'For inquiries, please contact us at the City Health Office.\n\n' +
-                    'Thank you and stay safe!';
+                setElementText('reminder-full-name',      this.dataset.fullName);
+                setElementText('reminder-contact-number', this.dataset.contactNumber);
+                setElementText('reminder-email',          this.dataset.email);
+                setElementText('reminder-clinic',         this.dataset.clinic);
+
+                var name   = this.dataset.fullName || 'Patient';
+                var clinic = this.dataset.clinic   || 'the clinic';
+                var msgBox = document.getElementById('reminder-message');
+                if (msgBox) {
+                    msgBox.value =
+                        'Dear ' + name + ',\n\n' +
+                        'This is a friendly reminder from AnBite — Batangas City Health Office.\n\n' +
+                        'Please visit ' + clinic + ' for your scheduled vaccine dose.\n\n' +
+                        'For inquiries, please contact us at the City Health Office.\n\n' +
+                        'Thank you and stay safe!';
+                }
             });
         });
 

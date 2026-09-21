@@ -13,18 +13,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Gagawa tayo ng Admin account
+        // 1. Admin Account
         User::updateOrCreate(
-            ['username' => 'admin'], // Ito ang hahanapin ng system para hindi mag-duplicate
+            ['username' => 'admin'],
             [
                 'first_name' => 'System',
                 'last_name'  => 'Admin',
                 'email'      => 'admin@anbite.com',
-                'password'   => Hash::make('admin123'), // Naka-encrypt para secure
+                'password'   => Hash::make('admin123'),
                 'role'       => 'admin',
             ]
         );
-        
-        // Maaari kang magdagdag pa ng ibang users dito kung gusto mo sa hinaharap
+
+        // 2. CHO Staff 1 Account
+        User::updateOrCreate(
+            ['username' => 'chostaff1'], // Username para mag-login
+            [
+                'first_name' => 'CHO',
+                'last_name'  => 'Staff 1',
+                'email'      => 'chostaff1@anbite.com',
+                'password'   => Hash::make('staff123'), // Password
+                'role'       => 'staff', // Palitan kung 'cho_staff' o iba pa ang nakatala sa role system ninyo
+            ]
+        );
     }
 }

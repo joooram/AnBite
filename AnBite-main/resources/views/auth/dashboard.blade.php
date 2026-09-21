@@ -717,73 +717,42 @@
                      RECENT ACTIVITY
                 ================================================== --}}
 
-                <div
-                    class="overflow-hidden rounded-2xl border border-[#dfe9e1] bg-white shadow-[0_4px_16px_rgba(0,0,0,0.045)]"
-                >
+<div class="card border-0 shadow-sm p-3 mb-3" style="background: #ffffff; border-radius: 14px;">
+    <!-- Header (Kapareho ng Vaccine Follow-up header) -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h6 class="fw-bold m-0 text-dark d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+            <span style="color: #1a3a1a; font-size: 1.1rem;">•</span> Urgent Action Items
+        </h6>
+        <span class="text-muted" style="font-size: 0.75rem;">Today's Priority</span>
+    </div>
 
-                    <div class="border-b border-[#edf2ee] px-4 py-3">
-
-                        <div class="flex items-center gap-2">
-
-                            <div class="flex h-7 w-7 items-center justify-center rounded-lg bg-[#edf7ef]">
-
-                                <div class="h-2 w-2 rounded-full bg-[#2d6a2d]"></div>
-
-                            </div>
-
-                            <div class="text-[0.82rem] font-semibold text-[#163716]">
-                                Recent Activity
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- Activity 1 --}}
-                    <div class="flex gap-2.5 border-b border-[#edf1ee] px-4 py-3">
-
-                        <div class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#1a3a1a]"></div>
-
-                        <div>
-
-                            <div class="text-[0.72rem] font-medium text-[#4b5750]">
-                                System initialized successfully
-                            </div>
-
-                            <div class="mt-0.5 text-[0.62rem] text-[#a4aea8]">
-                                Just now
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    {{-- Activity 2 --}}
-                    <div class="flex gap-2.5 px-4 py-3">
-
-                        <div class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#2d6a2d]"></div>
-
-                        <div>
-
-                            <div class="text-[0.72rem] font-medium text-[#4b5750]">
-                                {{ session('full_name', 'Staff') }} logged in
-                            </div>
-
-                            <div class="mt-0.5 text-[0.62rem] text-[#a4aea8]">
-                                {{ date('h:i A') }}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+    <!-- Alert Items Container -->
+    <div class="d-flex flex-column gap-2">
+        
+        <!-- Alert Item 1 (Overdue) -->
+        <div class="p-3 rounded-3 d-flex align-items-center justify-content-between" style="background: #fff5f5; border: 1px solid #fee2e2;">
+            <div>
+                <div class="fw-semibold" style="font-size: 0.82rem; color: #991b1b;">3 Patients Overdue (Day 3)</div>
+                <div class="text-muted" style="font-size: 0.73rem; margin-top: 2px;">Kailangan ng tawag o SMS ngayong araw</div>
             </div>
-
+            <a href="{{ route('patients.index') }}" class="btn btn-sm fw-semibold p-0 ms-2" style="font-size: 0.75rem; color: #991b1b; text-decoration: underline;">
+                View
+            </a>
         </div>
+
+        <!-- Alert Item 2 (Unnotified) -->
+        <div class="p-3 rounded-3 d-flex align-items-center justify-content-between" style="background: #fffbeb; border: 1px solid #fef3c7;">
+            <div>
+                <div class="fw-semibold" style="font-size: 0.82rem; color: #92400e;">5 Unnotified Patients</div>
+                <div class="text-muted" style="font-size: 0.73rem; margin-top: 2px;">Pending schedule reminders</div>
+            </div>
+            <button type="button" class="btn btn-sm fw-semibold p-0 ms-2" style="font-size: 0.75rem; color: #92400e; text-decoration: underline;">
+                Send All
+            </button>
+        </div>
+
+    </div>
+</div>
 
 
     </main>
@@ -809,7 +778,6 @@
             if (!sidebar || !dashboardMain) {
                 return;
             }
-
 
             // =====================================================
             // UPDATE DASHBOARD POSITION
