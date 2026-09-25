@@ -459,11 +459,7 @@
                 class="anbite-logo"
             >
 
-            <img
-                src="{{ asset('images/CHO LOGO.png') }}"
-                alt="CHO Logo"
-                class="cho-logo"
-            >
+
         </div>
 
         <span class="brand-name">

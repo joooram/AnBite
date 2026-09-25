@@ -152,7 +152,7 @@
 
     <script>
         const barangayData = [
-            {name:"Pallocan Silangan",  lat:13.7732, lng:121.0721, cases:15},
+            {name:"Libjo",  lat:13.744747694154713, lng:121.07194462181437, cases:2},
             {name:"Kumintang Ibaba",    lat:13.7560, lng:121.0583, cases:13},
             {name:"Balete",             lat:13.7490, lng:121.0620, cases:12},
             {name:"Tabangao Ambulong",  lat:13.7210, lng:121.0720, cases:11},
