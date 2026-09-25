@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 
 // Root → Login
 Route::get('/', function () {
@@ -20,6 +21,10 @@ Route::get('/forgot-password', function () { return view('auth.login'); })->name
 Route::get('/dashboard', function () {
     return view('auth.dashboard');
 })->middleware('auth')->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
 // ── PATIENT ROUTES ────────────────────────────────────────────
 Route::get('/patients/create',         [PatientController::class, 'create'])->name('patients.create');

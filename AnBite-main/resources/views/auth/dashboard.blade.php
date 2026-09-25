@@ -136,27 +136,43 @@
         </div>
 
         {{-- CHART + MAP --}}
-        <div class="grid grid-cols-[1.6fr_1fr] max-[1100px]:grid-cols-1 gap-4 mb-4 items-stretch">
-            <div class="bg-white rounded-[14px] border border-[#edf1ee] p-[1.3rem_1.4rem] shadow-[0_4px_14px_rgba(16,40,28,0.04)]">
-                <div class="flex justify-between items-start gap-4 mb-[1.1rem]">
-                    <div class="flex items-start gap-2.5">
-                        <div class="w-[30px] h-[30px] rounded-lg bg-[#e7f2ec] flex items-center justify-center shrink-0 mt-px">
-                            <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="#1f6f4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
-                        </div>
-                        <div>
-                            <div class="text-[0.98rem] font-bold text-[#16241c]">Quarterly Bite Cases — Batangas City</div>
-                            <div class="text-[0.75rem] text-[#8b978f] mt-0.5">Recorded animal-bite cases per quarter</div>
-                        </div>
-                    </div>
-                    <div class="inline-flex items-center gap-1.5 bg-[#f1f6f2] text-[#45564c] text-[0.74rem] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                        {{ date('Y') }}
-                    </div>
+       <div class="grid grid-cols-[1.6fr_1fr] max-[1100px]:grid-cols-1 gap-4 mb-4 items-stretch">
+    <div class="bg-white rounded-[14px] border border-[#edf1ee] p-[1.3rem_1.4rem] shadow-[0_4px_14px_rgba(16,40,28,0.04)]">
+        <div class="flex justify-between items-start gap-4 mb-[1.1rem]">
+            <div class="flex items-start gap-2.5">
+                <div class="w-[30px] h-[30px] rounded-lg bg-[#e7f2ec] flex items-center justify-center shrink-0 mt-px">
+                    <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="#1f6f4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 17 9 11 13 15 21 7"/>
+                        <polyline points="14 7 21 7 21 14"/>
+                    </svg>
                 </div>
-                <div class="relative h-[280px] w-full">
-                    <canvas id="casesChart"></canvas>
+
+                <div>
+                    <div class="text-[0.98rem] font-bold text-[#16241c]">
+                        Present Month Bite Case Trend
+                    </div>
+
+                    <div class="text-[0.75rem] text-[#8b978f] mt-0.5">
+                        Weekly count of animal-bite cases for {{ date('F Y') }}
+                    </div>
                 </div>
             </div>
+
+            <div class="inline-flex items-center gap-1.5 bg-[#f1f6f2] text-[#45564c] text-[0.74rem] font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                {{ date('F Y') }}
+            </div>
+        </div>
+
+        <div class="relative h-[280px] w-full">
+            <canvas id="casesChart"></canvas>
+        </div>
+    </div>
 
             <div class="bg-white rounded-[14px] border border-[#edf1ee] p-[1.3rem_1.4rem] shadow-[0_4px_14px_rgba(16,40,28,0.04)]">
                 <div class="flex justify-between items-start gap-4 mb-[1.1rem]">
@@ -279,45 +295,151 @@
 
     </main>
 
-    <script>
-        // Chart.js — SAME CONFIG/DATA AS BEFORE (no changes)
-        const ctx = document.getElementById('casesChart').getContext('2d');
+@php
+    // Dashboard chart data only:
+    // Current month, grouped into exactly 4 reporting weeks.
+    // Week 1 = Day 1-7
+    // Week 2 = Day 8-14
+    // Week 3 = Day 15-21
+    // Week 4 = Day 22-end of month (up to today)
 
-        const casesChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)', 'Q4 (Oct-Dec)'],
-                datasets: [{
-                    label: 'Bite Cases',
-                    data: [55, 95, 108, 76],
-                    borderColor: '#1f6f4a',
-                    backgroundColor: 'rgba(31, 111, 74, 0.12)',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#1f6f4a',
-                    fill: true,
-                    tension: 0.3
-                }]
+    $dashboardNow = now();
+    $dashboardStartOfMonth = $dashboardNow->copy()->startOfMonth();
+
+    $weeklyLabels = [
+        'Week 1',
+        'Week 2',
+        'Week 3',
+        'Week 4',
+    ];
+
+    $weeklyCases = [];
+
+    for ($week = 0; $week < 4; $week++) {
+        $startDay = ($week * 7) + 1;
+        $endDay = $week < 3 ? ($startDay + 6) : $dashboardStartOfMonth->daysInMonth;
+
+        // Do not count future dates in the current month.
+        if ($dashboardNow->day < $startDay) {
+            $weeklyCases[] = 0;
+            continue;
+        }
+
+        $endDay = min($endDay, $dashboardNow->day);
+
+        $weekStart = $dashboardStartOfMonth->copy()
+            ->day($startDay)
+            ->startOfDay();
+
+        $weekEnd = $dashboardStartOfMonth->copy()
+            ->day($endDay)
+            ->endOfDay();
+
+        $weeklyCases[] = \App\Models\BiteIncident::whereBetween('date_of_exposure', [
+            $weekStart->toDateString(),
+            $weekEnd->toDateString(),
+        ])->count();
+    }
+@endphp
+
+<script type="application/json" id="casesChartData">{!! json_encode([
+    'labels' => $weeklyLabels,
+    'data' => $weeklyCases,
+]) !!}</script>
+
+<script>
+    const chartDataElement = document.getElementById('casesChartData');
+    const chartData = JSON.parse(chartDataElement.textContent);
+
+    const weeklyLabels = chartData.labels;
+    const weeklyData = chartData.data;
+
+    const ctx = document.getElementById('casesChart').getContext('2d');
+
+    const casesChart = new Chart(ctx, {
+        type: 'line',
+
+        data: {
+            labels: weeklyLabels,
+
+            datasets: [{
+                label: 'Bite Cases',
+                data: weeklyData,
+
+                borderColor: '#1f6f4a',
+                backgroundColor: 'rgba(31, 111, 74, 0.12)',
+                borderWidth: 2,
+
+                pointBackgroundColor: '#1f6f4a',
+                pointBorderColor: '#1f6f4a',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+
+                fill: true,
+                tension: 0.3
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.parsed.y} bite case${context.parsed.y === 1 ? '' : 's'}`;
+                        }
+                    }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
+
+            scales: {
+                x: {
+                    grid: {
                         display: false
+                    },
+
+                    title: {
+                        display: true,
+                        text: 'Week'
                     }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true
+
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    },
+
+                    title: {
+                        display: true,
+                        text: 'Number of Bite Cases'
                     }
                 }
             }
-        });
+        }
+    });
 
-        // Leaflet map preview — SAME CONFIG AS BEFORE (no changes)
-        const map = L.map('heatmapPreview', { center: [13.7565, 121.0583], zoom: 11, zoomControl: false, dragging: false, scrollWheelZoom: false });
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-    </script>
+
+    // Leaflet map preview — SAME CONFIG AS BEFORE (no changes)
+    const map = L.map('heatmapPreview', {
+        center: [13.7565, 121.0583],
+        zoom: 11,
+        zoomControl: false,
+        dragging: false,
+        scrollWheelZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+</script>
 
 </body>
 </html>
